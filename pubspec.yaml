@@ -45,9 +45,24 @@ flutter:
   assets:
     - .env
   fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans-Black.ttf
+          weight: 900
+        - asset: assets/fonts/WorkSans-BlackItalic.ttf
+          weight: 900
+          style: italic
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
+          style: italic
+
     - family: HindSiliguri
       fonts:
         - asset: assets/fonts/HindSiliguri-Regular.ttf
+          weight: 400
         - asset: assets/fonts/HindSiliguri-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/HindSiliguri-Bold.ttf
