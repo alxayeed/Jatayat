@@ -31,42 +31,20 @@ class FareCard extends StatelessWidget {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: .spaceBetween,
             children: [
-              // Route and Name Info
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildRouteBadge(fare.route.routeCode),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            fare.route.nameBn,
-                            style: AppTextStyles.banglaName,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const Text(
-                            'NON-AC SERVICE',
-                            style: AppTextStyles.caption,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+              _buildRouteBadge(fare.route.routeCode),
+              Text(
+                fare.route.nameBn,
+                style: AppTextStyles.banglaName,
+                overflow: TextOverflow.ellipsis,
               ),
-              // Price Info
-              _buildPriceSection(fare.officialFare, fare.calculatedFare),
             ],
           ),
+          Center(child: _buildPriceSection(fare.officialFare, fare.calculatedFare)),
           const SizedBox(height: 16),
           // Status/Metadata Bar
-          _buildStatusBar(),
+          // _buildStatusBar(),
         ],
       ),
     );

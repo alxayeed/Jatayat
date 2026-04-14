@@ -24,7 +24,9 @@ mixin _$FareResultModel {
   @JsonKey(name: 'fare_amount')
   double get officialFare => throw _privateConstructorUsedError;
   @JsonKey(name: 'calculated_amount')
-  double get calculatedFare => throw _privateConstructorUsedError;
+  double get calculatedFare => throw _privateConstructorUsedError; // Added distance field. Using defaultValue prevents crashes if it's missing in DB
+  @JsonKey(name: 'distance', defaultValue: 0.0)
+  double get distance => throw _privateConstructorUsedError;
   @JsonKey(name: 'routes')
   RouteModel get route => throw _privateConstructorUsedError;
 
@@ -48,6 +50,7 @@ abstract class $FareResultModelCopyWith<$Res> {
   $Res call({
     @JsonKey(name: 'fare_amount') double officialFare,
     @JsonKey(name: 'calculated_amount') double calculatedFare,
+    @JsonKey(name: 'distance', defaultValue: 0.0) double distance,
     @JsonKey(name: 'routes') RouteModel route,
   });
 
@@ -71,6 +74,7 @@ class _$FareResultModelCopyWithImpl<$Res, $Val extends FareResultModel>
   $Res call({
     Object? officialFare = null,
     Object? calculatedFare = null,
+    Object? distance = null,
     Object? route = null,
   }) {
     return _then(
@@ -82,6 +86,10 @@ class _$FareResultModelCopyWithImpl<$Res, $Val extends FareResultModel>
             calculatedFare: null == calculatedFare
                 ? _value.calculatedFare
                 : calculatedFare // ignore: cast_nullable_to_non_nullable
+                      as double,
+            distance: null == distance
+                ? _value.distance
+                : distance // ignore: cast_nullable_to_non_nullable
                       as double,
             route: null == route
                 ? _value.route
@@ -115,6 +123,7 @@ abstract class _$$FareResultModelImplCopyWith<$Res>
   $Res call({
     @JsonKey(name: 'fare_amount') double officialFare,
     @JsonKey(name: 'calculated_amount') double calculatedFare,
+    @JsonKey(name: 'distance', defaultValue: 0.0) double distance,
     @JsonKey(name: 'routes') RouteModel route,
   });
 
@@ -138,6 +147,7 @@ class __$$FareResultModelImplCopyWithImpl<$Res>
   $Res call({
     Object? officialFare = null,
     Object? calculatedFare = null,
+    Object? distance = null,
     Object? route = null,
   }) {
     return _then(
@@ -149,6 +159,10 @@ class __$$FareResultModelImplCopyWithImpl<$Res>
         calculatedFare: null == calculatedFare
             ? _value.calculatedFare
             : calculatedFare // ignore: cast_nullable_to_non_nullable
+                  as double,
+        distance: null == distance
+            ? _value.distance
+            : distance // ignore: cast_nullable_to_non_nullable
                   as double,
         route: null == route
             ? _value.route
@@ -165,6 +179,7 @@ class _$FareResultModelImpl extends _FareResultModel {
   const _$FareResultModelImpl({
     @JsonKey(name: 'fare_amount') required this.officialFare,
     @JsonKey(name: 'calculated_amount') required this.calculatedFare,
+    @JsonKey(name: 'distance', defaultValue: 0.0) required this.distance,
     @JsonKey(name: 'routes') required this.route,
   }) : super._();
 
@@ -177,13 +192,17 @@ class _$FareResultModelImpl extends _FareResultModel {
   @override
   @JsonKey(name: 'calculated_amount')
   final double calculatedFare;
+  // Added distance field. Using defaultValue prevents crashes if it's missing in DB
+  @override
+  @JsonKey(name: 'distance', defaultValue: 0.0)
+  final double distance;
   @override
   @JsonKey(name: 'routes')
   final RouteModel route;
 
   @override
   String toString() {
-    return 'FareResultModel(officialFare: $officialFare, calculatedFare: $calculatedFare, route: $route)';
+    return 'FareResultModel(officialFare: $officialFare, calculatedFare: $calculatedFare, distance: $distance, route: $route)';
   }
 
   @override
@@ -195,13 +214,15 @@ class _$FareResultModelImpl extends _FareResultModel {
                 other.officialFare == officialFare) &&
             (identical(other.calculatedFare, calculatedFare) ||
                 other.calculatedFare == calculatedFare) &&
+            (identical(other.distance, distance) ||
+                other.distance == distance) &&
             (identical(other.route, route) || other.route == route));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, officialFare, calculatedFare, route);
+      Object.hash(runtimeType, officialFare, calculatedFare, distance, route);
 
   /// Create a copy of FareResultModel
   /// with the given fields replaced by the non-null parameter values.
@@ -224,6 +245,8 @@ abstract class _FareResultModel extends FareResultModel {
   const factory _FareResultModel({
     @JsonKey(name: 'fare_amount') required final double officialFare,
     @JsonKey(name: 'calculated_amount') required final double calculatedFare,
+    @JsonKey(name: 'distance', defaultValue: 0.0)
+    required final double distance,
     @JsonKey(name: 'routes') required final RouteModel route,
   }) = _$FareResultModelImpl;
   const _FareResultModel._() : super._();
@@ -236,7 +259,10 @@ abstract class _FareResultModel extends FareResultModel {
   double get officialFare;
   @override
   @JsonKey(name: 'calculated_amount')
-  double get calculatedFare;
+  double get calculatedFare; // Added distance field. Using defaultValue prevents crashes if it's missing in DB
+  @override
+  @JsonKey(name: 'distance', defaultValue: 0.0)
+  double get distance;
   @override
   @JsonKey(name: 'routes')
   RouteModel get route;

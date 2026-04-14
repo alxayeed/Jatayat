@@ -19,7 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$StopEntity {
   String get id => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
-  String get nameEn => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
 
   /// Create a copy of StopEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -35,7 +35,7 @@ abstract class $StopEntityCopyWith<$Res> {
     $Res Function(StopEntity) then,
   ) = _$StopEntityCopyWithImpl<$Res, StopEntity>;
   @useResult
-  $Res call({String id, String nameBn, String nameEn});
+  $Res call({String id, String nameBn, String? nameEn});
 }
 
 /// @nodoc
@@ -52,7 +52,11 @@ class _$StopEntityCopyWithImpl<$Res, $Val extends StopEntity>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? nameBn = null, Object? nameEn = null}) {
+  $Res call({
+    Object? id = null,
+    Object? nameBn = null,
+    Object? nameEn = freezed,
+  }) {
     return _then(
       _value.copyWith(
             id: null == id
@@ -63,10 +67,10 @@ class _$StopEntityCopyWithImpl<$Res, $Val extends StopEntity>
                 ? _value.nameBn
                 : nameBn // ignore: cast_nullable_to_non_nullable
                       as String,
-            nameEn: null == nameEn
+            nameEn: freezed == nameEn
                 ? _value.nameEn
                 : nameEn // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
           )
           as $Val,
     );
@@ -82,7 +86,7 @@ abstract class _$$StopEntityImplCopyWith<$Res>
   ) = __$$StopEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String nameBn, String nameEn});
+  $Res call({String id, String nameBn, String? nameEn});
 }
 
 /// @nodoc
@@ -98,7 +102,11 @@ class __$$StopEntityImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? nameBn = null, Object? nameEn = null}) {
+  $Res call({
+    Object? id = null,
+    Object? nameBn = null,
+    Object? nameEn = freezed,
+  }) {
     return _then(
       _$StopEntityImpl(
         id: null == id
@@ -109,10 +117,10 @@ class __$$StopEntityImplCopyWithImpl<$Res>
             ? _value.nameBn
             : nameBn // ignore: cast_nullable_to_non_nullable
                   as String,
-        nameEn: null == nameEn
+        nameEn: freezed == nameEn
             ? _value.nameEn
             : nameEn // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
       ),
     );
   }
@@ -121,18 +129,14 @@ class __$$StopEntityImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$StopEntityImpl implements _StopEntity {
-  const _$StopEntityImpl({
-    required this.id,
-    required this.nameBn,
-    required this.nameEn,
-  });
+  const _$StopEntityImpl({required this.id, required this.nameBn, this.nameEn});
 
   @override
   final String id;
   @override
   final String nameBn;
   @override
-  final String nameEn;
+  final String? nameEn;
 
   @override
   String toString() {
@@ -165,7 +169,7 @@ abstract class _StopEntity implements StopEntity {
   const factory _StopEntity({
     required final String id,
     required final String nameBn,
-    required final String nameEn,
+    final String? nameEn,
   }) = _$StopEntityImpl;
 
   @override
@@ -173,7 +177,7 @@ abstract class _StopEntity implements StopEntity {
   @override
   String get nameBn;
   @override
-  String get nameEn;
+  String? get nameEn;
 
   /// Create a copy of StopEntity
   /// with the given fields replaced by the non-null parameter values.

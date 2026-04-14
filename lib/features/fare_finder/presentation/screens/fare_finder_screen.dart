@@ -1,15 +1,16 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
 import '../widgets/fare_card.dart';
 import '../widgets/swap_button.dart';
-
+import '../widgets/app_suggestion_list.dart';
 
 class FareFinderScreen extends ConsumerStatefulWidget {
   const FareFinderScreen({super.key});
@@ -39,7 +40,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
         children: [
           CustomScrollView(
             slivers: [
-              CustomAppBar(),
+              const CustomAppBar(),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -72,8 +73,9 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-
   Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier) {
+    final isSearching = state.originSuggestions.isNotEmpty || state.destinationSuggestions.isNotEmpty;
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -86,6 +88,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             children: [
               Column(
                 children: [
+                  // --- FROM FIELD ---
                   AppTextField(
                     label: 'From',
                     hintText: 'Search starting point...',
@@ -93,28 +96,80 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     controller: originController,
                     onChanged: notifier.searchOrigin,
                   ),
+                  if (state.originSuggestions.isNotEmpty)
+                    AppSuggestionList(
+                      suggestions: state.originSuggestions,
+                      onSelected: (stop) {
+                        originController.text = stop.nameBn;
+                        notifier.selectOrigin(stop);
+                        FocusScope.of(context).unfocus(); // Dismiss keyboard
+                      },
+                    ),
+
                   const SizedBox(height: 12),
+
+                  // --- TO FIELD ---
                   AppTextField(
                     label: 'To',
                     hintText: 'Search destination...',
                     prefixIcon: Icons.location_on,
                     controller: destinationController,
+                    onChanged: notifier.searchDestination,
                     readOnly: state.selectedOrigin == null,
                   ),
+                  if (state.destinationSuggestions.isNotEmpty)
+                    AppSuggestionList(
+                      suggestions: state.destinationSuggestions,
+                      onSelected: (stop) {
+                        destinationController.text = stop.nameBn;
+                        notifier.selectDestination(stop);
+                        FocusScope.of(context).unfocus();
+                      },
+                    ),
                 ],
               ),
-              // The Pixel-Perfect Overlap Swap Button
-              Positioned(
-                top: 85, // Adjust this based on your field height
-                right: 20,
-                child: SwapButton(onPressed: () {}),
-              ),
+
+              // Hide SwapButton seamlessly while actively typing/searching
+              if (!isSearching)
+                Positioned(
+                  top: 85, // Optical center between the two fields
+                  right: 20,
+                  child: SwapButton(
+                    onPressed: () {
+                      notifier.swapStations();
+                      // Swap the physical text in the controllers
+                      final temp = originController.text;
+                      originController.text = destinationController.text;
+                      destinationController.text = temp;
+                    },
+                  ),
+                ),
             ],
           ),
+
           const SizedBox(height: 24),
+
+          // --- ERROR MESSAGE ---
+          if (state.errorMessage != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 12.0),
+              child: Text(
+                state.errorMessage!,
+                style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ),
+
+          // --- CALCULATE BUTTON ---
           ElevatedButton(
-            onPressed: () {}, // Trigger GetFares logic
-            child: const Row(
+            onPressed: state.isLoading ? null : notifier.calculateFare,
+            child: state.isLoading
+                ? const SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+            )
+                : const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.search, size: 20),
@@ -151,17 +206,10 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   }
 
   Widget _buildFAB() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 80.0),
-      child: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.tertiaryFixed,
-        child: const Icon(Icons.bolt, color: AppColors.onTertiaryFixed),
-      ),
+    return FloatingActionButton(
+      onPressed: () {},
+      backgroundColor: AppColors.tertiaryFixed,
+      child: const Icon(Icons.bolt, color: AppColors.onTertiaryFixed),
     );
   }
-
 }
-
-
-

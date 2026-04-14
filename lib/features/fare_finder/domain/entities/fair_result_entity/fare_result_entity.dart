@@ -8,6 +8,7 @@ class FareResultEntity with _$FareResultEntity {
   const factory FareResultEntity({
     required double officialFare,
     required double calculatedFare,
+    required double distance,
     required RouteEntity route,
   }) = _FareResultEntity;
 }

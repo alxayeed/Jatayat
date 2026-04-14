@@ -11,6 +11,7 @@ _$FareResultModelImpl _$$FareResultModelImplFromJson(
 ) => _$FareResultModelImpl(
   officialFare: (json['fare_amount'] as num).toDouble(),
   calculatedFare: (json['calculated_amount'] as num).toDouble(),
+  distance: (json['distance'] as num?)?.toDouble() ?? 0.0,
   route: RouteModel.fromJson(json['routes'] as Map<String, dynamic>),
 );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$$FareResultModelImplToJson(
 ) => <String, dynamic>{
   'fare_amount': instance.officialFare,
   'calculated_amount': instance.calculatedFare,
+  'distance': instance.distance,
   'routes': instance.route,
 };

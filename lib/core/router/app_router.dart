@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // Theme & Styles
-import '../../features/fare_finder/presentation/screens/fare_finder_page.dart';
+import '../../features/fare_finder/presentation/screens/fare_finder_screen.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 

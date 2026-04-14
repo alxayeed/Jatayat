@@ -12,6 +12,8 @@ class FareResultModel with _$FareResultModel {
   const factory FareResultModel({
     @JsonKey(name: 'fare_amount') required double officialFare,
     @JsonKey(name: 'calculated_amount') required double calculatedFare,
+    // Added distance field. Using defaultValue prevents crashes if it's missing in DB
+    @JsonKey(name: 'distance', defaultValue: 0.0) required double distance,
     @JsonKey(name: 'routes') required RouteModel route,
   }) = _FareResultModel;
 
@@ -20,12 +22,14 @@ class FareResultModel with _$FareResultModel {
   FareResultEntity toEntity() => FareResultEntity(
     officialFare: officialFare,
     calculatedFare: calculatedFare,
-    route: route.toEntity(), // Recursive conversion
+    distance: distance,
+    route: route.toEntity(),
   );
 
   factory FareResultModel.fromEntity(FareResultEntity entity) => FareResultModel(
     officialFare: entity.officialFare,
     calculatedFare: entity.calculatedFare,
+    distance: entity.distance,
     route: RouteModel.fromEntity(entity.route),
   );
 }

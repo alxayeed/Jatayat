@@ -10,7 +10,7 @@ _$StopModelImpl _$$StopModelImplFromJson(Map<String, dynamic> json) =>
     _$StopModelImpl(
       id: json['id'] as String,
       nameBn: json['name_bn'] as String,
-      nameEn: json['name_en'] as String,
+      nameEn: json['name_en'] as String?,
     );
 
 Map<String, dynamic> _$$StopModelImplToJson(_$StopModelImpl instance) =>

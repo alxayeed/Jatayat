@@ -19,6 +19,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$FareResultEntity {
   double get officialFare => throw _privateConstructorUsedError;
   double get calculatedFare => throw _privateConstructorUsedError;
+  double get distance => throw _privateConstructorUsedError;
   RouteEntity get route => throw _privateConstructorUsedError;
 
   /// Create a copy of FareResultEntity
@@ -35,7 +36,12 @@ abstract class $FareResultEntityCopyWith<$Res> {
     $Res Function(FareResultEntity) then,
   ) = _$FareResultEntityCopyWithImpl<$Res, FareResultEntity>;
   @useResult
-  $Res call({double officialFare, double calculatedFare, RouteEntity route});
+  $Res call({
+    double officialFare,
+    double calculatedFare,
+    double distance,
+    RouteEntity route,
+  });
 
   $RouteEntityCopyWith<$Res> get route;
 }
@@ -57,6 +63,7 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
   $Res call({
     Object? officialFare = null,
     Object? calculatedFare = null,
+    Object? distance = null,
     Object? route = null,
   }) {
     return _then(
@@ -68,6 +75,10 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
             calculatedFare: null == calculatedFare
                 ? _value.calculatedFare
                 : calculatedFare // ignore: cast_nullable_to_non_nullable
+                      as double,
+            distance: null == distance
+                ? _value.distance
+                : distance // ignore: cast_nullable_to_non_nullable
                       as double,
             route: null == route
                 ? _value.route
@@ -98,7 +109,12 @@ abstract class _$$FareResultEntityImplCopyWith<$Res>
   ) = __$$FareResultEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({double officialFare, double calculatedFare, RouteEntity route});
+  $Res call({
+    double officialFare,
+    double calculatedFare,
+    double distance,
+    RouteEntity route,
+  });
 
   @override
   $RouteEntityCopyWith<$Res> get route;
@@ -120,6 +136,7 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? officialFare = null,
     Object? calculatedFare = null,
+    Object? distance = null,
     Object? route = null,
   }) {
     return _then(
@@ -131,6 +148,10 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
         calculatedFare: null == calculatedFare
             ? _value.calculatedFare
             : calculatedFare // ignore: cast_nullable_to_non_nullable
+                  as double,
+        distance: null == distance
+            ? _value.distance
+            : distance // ignore: cast_nullable_to_non_nullable
                   as double,
         route: null == route
             ? _value.route
@@ -147,6 +168,7 @@ class _$FareResultEntityImpl implements _FareResultEntity {
   const _$FareResultEntityImpl({
     required this.officialFare,
     required this.calculatedFare,
+    required this.distance,
     required this.route,
   });
 
@@ -155,11 +177,13 @@ class _$FareResultEntityImpl implements _FareResultEntity {
   @override
   final double calculatedFare;
   @override
+  final double distance;
+  @override
   final RouteEntity route;
 
   @override
   String toString() {
-    return 'FareResultEntity(officialFare: $officialFare, calculatedFare: $calculatedFare, route: $route)';
+    return 'FareResultEntity(officialFare: $officialFare, calculatedFare: $calculatedFare, distance: $distance, route: $route)';
   }
 
   @override
@@ -171,12 +195,14 @@ class _$FareResultEntityImpl implements _FareResultEntity {
                 other.officialFare == officialFare) &&
             (identical(other.calculatedFare, calculatedFare) ||
                 other.calculatedFare == calculatedFare) &&
+            (identical(other.distance, distance) ||
+                other.distance == distance) &&
             (identical(other.route, route) || other.route == route));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, officialFare, calculatedFare, route);
+      Object.hash(runtimeType, officialFare, calculatedFare, distance, route);
 
   /// Create a copy of FareResultEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -194,6 +220,7 @@ abstract class _FareResultEntity implements FareResultEntity {
   const factory _FareResultEntity({
     required final double officialFare,
     required final double calculatedFare,
+    required final double distance,
     required final RouteEntity route,
   }) = _$FareResultEntityImpl;
 
@@ -201,6 +228,8 @@ abstract class _FareResultEntity implements FareResultEntity {
   double get officialFare;
   @override
   double get calculatedFare;
+  @override
+  double get distance;
   @override
   RouteEntity get route;
 
