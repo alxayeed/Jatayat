@@ -1,0 +1,53 @@
+name: jatra
+description: "A bus transport utility app for Dhaka."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.6.1
+  
+  # Navigation
+  go_router: ^14.7.2
+  
+  # Backend - Supabase
+  supabase_flutter: ^2.8.2
+  
+  # Data Modeling & JSON
+  freezed_annotation: ^2.4.4
+  json_annotation: ^4.9.0
+  
+  # Utilities
+  flutter_svg: ^2.0.17
+  intl: ^0.20.2
+  google_fonts: ^6.2.1
+  flutter_dotenv: ^5.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  
+  # Code Generation
+  build_runner: ^2.4.15
+  freezed: ^2.5.7
+  json_serializable: ^6.9.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - .env
+  fonts:
+    - family: HindSiliguri
+      fonts:
+        - asset: assets/fonts/HindSiliguri-Regular.ttf
+        - asset: assets/fonts/HindSiliguri-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/HindSiliguri-Bold.ttf
+          weight: 700
