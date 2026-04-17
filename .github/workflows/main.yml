@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Send Request
         run: |
-          curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/your_table_name?select=*" \
+          curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/stops?select=*" \
           -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
           -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
           -H "Range: 0-0"
