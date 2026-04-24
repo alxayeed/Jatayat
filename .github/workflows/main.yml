@@ -2,8 +2,8 @@ name: Supabase Keep Alive
 
 on:
   schedule:
-
-    - cron: '0 */12 * * *'
+    # Runs at 00:00, 06:00, 12:00, and 18:00 UTC
+    - cron: '0 0,6,12,18 * * *'
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,20 @@ jobs:
     steps:
       - name: Send Request
         run: |
-          curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/stops?select=*" \
-          -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Range: 0-0"
+          HOUR=$(date -u +%H)
+          
+          if [ "$HOUR" == "00" ] || [ "$HOUR" == "12" ]; then
+            echo "Performing GET request..."
+            curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/keep_alive_logs?select=*" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Range: 0-0"
+            
+          elif [ "$HOUR" == "06" ] || [ "$HOUR" == "18" ]; then
+            echo "Performing POST request..."
+            curl -i -X POST "${{ secrets.SUPABASE_URL }}/rest/v1/keep_alive_logs" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"request_type": "POST"}'
+          fi
