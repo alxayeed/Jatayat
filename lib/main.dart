@@ -5,7 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/constants/app_strings.dart';
 import 'core/router/app_router.dart';
-import 'core/styles/app_theme.dart';
+import 'core/styles/app_theme.dart';import 'core/utils/supabase_logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +17,7 @@ void main() async {
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
       debug: true,
+      httpClient: SupabaseLoggingClient(),
     );
   } catch (e) {
     debugPrint('Initialization failed: $e');

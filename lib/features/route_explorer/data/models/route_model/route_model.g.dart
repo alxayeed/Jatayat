@@ -14,6 +14,7 @@ _$RouteModelImpl _$$RouteModelImplFromJson(Map<String, dynamic> json) =>
       totalDistanceKm: (json['total_distance_km'] as num).toDouble(),
       documentId: json['document_id'] as String,
       pdfPageNumber: (json['pdf_page_number'] as num).toInt(),
+      documents: json['documents'] as Map<String, dynamic>,
     );
 
 Map<String, dynamic> _$$RouteModelImplToJson(_$RouteModelImpl instance) =>
@@ -24,4 +25,5 @@ Map<String, dynamic> _$$RouteModelImplToJson(_$RouteModelImpl instance) =>
       'total_distance_km': instance.totalDistanceKm,
       'document_id': instance.documentId,
       'pdf_page_number': instance.pdfPageNumber,
+      'documents': instance.documents,
     };

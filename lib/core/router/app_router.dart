@@ -2,48 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// Theme & Styles
+import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
+import '../../features/fare_finder/presentation/screens/fare_details_screen.dart';
 import '../../features/fare_finder/presentation/screens/fare_finder_screen.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
+import '../widgets/app_pdf_viewer.dart';
 
-// Feature Screens
+class AppRoutes {
+  static const String fareSearch = '/fare-search';
+  static const String routeExplorer = '/route-explorer';
+  static const String history = '/history';
+  static const String fareDetails = '/fare-details';
+  static const String pdfViewer = '/pdf-viewer';
+}
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/fare-search',
+    initialLocation: AppRoutes.fareSearch,
     navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) {
-          return MainScreen(child: child);
-        },
+        builder: (context, state, child) => MainScreen(child: child),
         routes: [
           GoRoute(
-            path: '/fare-search',
+            path: AppRoutes.fareSearch,
             builder: (context, state) => const FareFinderScreen(),
           ),
           GoRoute(
-            path: '/route-explorer',
+            path: AppRoutes.routeExplorer,
             builder: (context, state) => const Scaffold(body: Center(child: Text('Routes Coming Soon'))),
           ),
           GoRoute(
-            path: '/history',
+            path: AppRoutes.history,
             builder: (context, state) => const Scaffold(body: Center(child: Text('History Coming Soon'))),
           ),
         ],
       ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutes.fareDetails,
+        builder: (context, state) {
+          final fare = state.extra as FareResultEntity;
+          return FareDetailsScreen(fare: fare);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutes.pdfViewer,
+        builder: (context, state) {
+          final data = state.extra as Map<String, dynamic>;
+          return AppPdfViewer(
+            pdfUrl: data['url'],
+            initialPage: data['page'],
+            title: data['title'] ?? 'Document',
+          );
+        },
+      ),
     ],
   );
 });
-
-// ==========================================
-// PIXEL-PERFECT APP SHELL
-// ==========================================
 
 class MainScreen extends StatelessWidget {
   final Widget child;
@@ -80,20 +102,20 @@ class MainScreen extends StatelessWidget {
             AppNavItem(
               label: 'Home',
               icon: Icons.home_rounded,
-              isActive: location == '/fare-search',
-              onTap: () => context.go('/fare-search'),
+              isActive: location == AppRoutes.fareSearch,
+              onTap: () => context.go(AppRoutes.fareSearch),
             ),
             AppNavItem(
               label: 'Routes',
               icon: Icons.directions_bus_rounded,
-              isActive: location == '/route-explorer',
-              onTap: () => context.go('/route-explorer'),
+              isActive: location == AppRoutes.routeExplorer,
+              onTap: () => context.go(AppRoutes.routeExplorer),
             ),
             AppNavItem(
               label: 'History',
               icon: Icons.history_rounded,
-              isActive: location == '/history',
-              onTap: () => context.go('/history'),
+              isActive: location == AppRoutes.history,
+              onTap: () => context.go(AppRoutes.history),
             ),
           ],
         ),

@@ -23,6 +23,9 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   final originController = TextEditingController();
   final destinationController = TextEditingController();
 
+  // Local state to toggle between form and summary
+  bool _isCollapsed = false;
+
   @override
   void dispose() {
     originController.dispose();
@@ -34,6 +37,13 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
+
+    // Auto-collapse when results arrive and loading finishes
+    if (state.fareResults.isNotEmpty && !_isCollapsed && !state.isLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() => _isCollapsed = true);
+      });
+    }
 
     return Scaffold(
       body: Stack(
@@ -56,7 +66,21 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      _buildSearchCard(state, notifier),
+
+                      // AnimatedSwitcher handles the transition between search and summary
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 350),
+                        transitionBuilder: (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SizeTransition(sizeFactor: animation, child: child),
+                          );
+                        },
+                        child: _isCollapsed
+                            ? _buildCollapsedSummary(state)
+                            : _buildSearchCard(state, notifier),
+                      ),
+
                       const SizedBox(height: 32),
                       if (state.fareResults.isNotEmpty) _buildResultHeader(state),
                     ],
@@ -73,10 +97,48 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
+  // --- 1. COLLAPSED SUMMARY VIEW ---
+  Widget _buildCollapsedSummary(FareSearchState state) {
+    return Container(
+      key: const ValueKey('summary_view'),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.directions_bus_filled_outlined, color: AppColors.primary, size: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              '${state.selectedOrigin?.nameBn ?? ""} হতে ${state.selectedDestination?.nameBn ?? ""}',
+              style: AppTextStyles.label.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          TextButton.icon(
+            onPressed: () => setState(() => _isCollapsed = false),
+            icon: const Icon(Icons.edit_note_rounded, size: 20),
+            label: const Text('পরিবর্তন'),
+            style: TextButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              foregroundColor: AppColors.primary,
+              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // --- 2. FULL SEARCH CARD ---
   Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier) {
     final isSearching = state.originSuggestions.isNotEmpty || state.destinationSuggestions.isNotEmpty;
 
     return Container(
+      key: const ValueKey('search_card_view'),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerLow,
@@ -88,7 +150,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             children: [
               Column(
                 children: [
-                  // --- FROM FIELD ---
                   AppTextField(
                     label: 'From',
                     hintText: 'Search starting point...',
@@ -102,13 +163,10 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                       onSelected: (stop) {
                         originController.text = stop.nameBn;
                         notifier.selectOrigin(stop);
-                        FocusScope.of(context).unfocus(); // Dismiss keyboard
+                        FocusScope.of(context).unfocus();
                       },
                     ),
-
                   const SizedBox(height: 12),
-
-                  // --- TO FIELD ---
                   AppTextField(
                     label: 'To',
                     hintText: 'Search destination...',
@@ -128,16 +186,13 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     ),
                 ],
               ),
-
-              // Hide SwapButton seamlessly while actively typing/searching
               if (!isSearching)
                 Positioned(
-                  top: 85, // Optical center between the two fields
+                  top: 85,
                   right: 20,
                   child: SwapButton(
                     onPressed: () {
                       notifier.swapStations();
-                      // Swap the physical text in the controllers
                       final temp = originController.text;
                       originController.text = destinationController.text;
                       destinationController.text = temp;
@@ -146,10 +201,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 ),
             ],
           ),
-
           const SizedBox(height: 24),
-
-          // --- ERROR MESSAGE ---
           if (state.errorMessage != null)
             Padding(
               padding: const EdgeInsets.only(bottom: 12.0),
@@ -159,8 +211,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 textAlign: TextAlign.center,
               ),
             ),
-
-          // --- CALCULATE BUTTON ---
           ElevatedButton(
             onPressed: state.isLoading ? null : notifier.calculateFare,
             child: state.isLoading
@@ -188,7 +238,8 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text('Available Routes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Text('${state.fareResults.length} Results', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+        Text('${state.fareResults.length} Results',
+            style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
       ],
     );
   }

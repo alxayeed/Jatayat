@@ -24,10 +24,10 @@ mixin _$RouteModel {
   String get id => throw _privateConstructorUsedError;
   String get routeCode => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
-  double get totalDistanceKm =>
-      throw _privateConstructorUsedError; // Matching Supabase column name
+  double get totalDistanceKm => throw _privateConstructorUsedError;
   String get documentId => throw _privateConstructorUsedError;
   int get pdfPageNumber => throw _privateConstructorUsedError;
+  Map<String, dynamic> get documents => throw _privateConstructorUsedError;
 
   /// Serializes this RouteModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,6 +53,7 @@ abstract class $RouteModelCopyWith<$Res> {
     double totalDistanceKm,
     String documentId,
     int pdfPageNumber,
+    Map<String, dynamic> documents,
   });
 }
 
@@ -77,6 +78,7 @@ class _$RouteModelCopyWithImpl<$Res, $Val extends RouteModel>
     Object? totalDistanceKm = null,
     Object? documentId = null,
     Object? pdfPageNumber = null,
+    Object? documents = null,
   }) {
     return _then(
       _value.copyWith(
@@ -104,6 +106,10 @@ class _$RouteModelCopyWithImpl<$Res, $Val extends RouteModel>
                 ? _value.pdfPageNumber
                 : pdfPageNumber // ignore: cast_nullable_to_non_nullable
                       as int,
+            documents: null == documents
+                ? _value.documents
+                : documents // ignore: cast_nullable_to_non_nullable
+                      as Map<String, dynamic>,
           )
           as $Val,
     );
@@ -126,6 +132,7 @@ abstract class _$$RouteModelImplCopyWith<$Res>
     double totalDistanceKm,
     String documentId,
     int pdfPageNumber,
+    Map<String, dynamic> documents,
   });
 }
 
@@ -149,6 +156,7 @@ class __$$RouteModelImplCopyWithImpl<$Res>
     Object? totalDistanceKm = null,
     Object? documentId = null,
     Object? pdfPageNumber = null,
+    Object? documents = null,
   }) {
     return _then(
       _$RouteModelImpl(
@@ -176,6 +184,10 @@ class __$$RouteModelImplCopyWithImpl<$Res>
             ? _value.pdfPageNumber
             : pdfPageNumber // ignore: cast_nullable_to_non_nullable
                   as int,
+        documents: null == documents
+            ? _value._documents
+            : documents // ignore: cast_nullable_to_non_nullable
+                  as Map<String, dynamic>,
       ),
     );
   }
@@ -183,7 +195,7 @@ class __$$RouteModelImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-@JsonSerializable(fieldRename: FieldRename.snake)
+@JsonSerializable(fieldRename: FieldRename.snake, explicitToJson: true)
 class _$RouteModelImpl extends _RouteModel {
   const _$RouteModelImpl({
     required this.id,
@@ -192,7 +204,9 @@ class _$RouteModelImpl extends _RouteModel {
     required this.totalDistanceKm,
     required this.documentId,
     required this.pdfPageNumber,
-  }) : super._();
+    required final Map<String, dynamic> documents,
+  }) : _documents = documents,
+       super._();
 
   factory _$RouteModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$RouteModelImplFromJson(json);
@@ -205,15 +219,21 @@ class _$RouteModelImpl extends _RouteModel {
   final String nameBn;
   @override
   final double totalDistanceKm;
-  // Matching Supabase column name
   @override
   final String documentId;
   @override
   final int pdfPageNumber;
+  final Map<String, dynamic> _documents;
+  @override
+  Map<String, dynamic> get documents {
+    if (_documents is EqualUnmodifiableMapView) return _documents;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_documents);
+  }
 
   @override
   String toString() {
-    return 'RouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, documentId: $documentId, pdfPageNumber: $pdfPageNumber)';
+    return 'RouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, documentId: $documentId, pdfPageNumber: $pdfPageNumber, documents: $documents)';
   }
 
   @override
@@ -230,7 +250,11 @@ class _$RouteModelImpl extends _RouteModel {
             (identical(other.documentId, documentId) ||
                 other.documentId == documentId) &&
             (identical(other.pdfPageNumber, pdfPageNumber) ||
-                other.pdfPageNumber == pdfPageNumber));
+                other.pdfPageNumber == pdfPageNumber) &&
+            const DeepCollectionEquality().equals(
+              other._documents,
+              _documents,
+            ));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -243,6 +267,7 @@ class _$RouteModelImpl extends _RouteModel {
     totalDistanceKm,
     documentId,
     pdfPageNumber,
+    const DeepCollectionEquality().hash(_documents),
   );
 
   /// Create a copy of RouteModel
@@ -267,6 +292,7 @@ abstract class _RouteModel extends RouteModel {
     required final double totalDistanceKm,
     required final String documentId,
     required final int pdfPageNumber,
+    required final Map<String, dynamic> documents,
   }) = _$RouteModelImpl;
   const _RouteModel._() : super._();
 
@@ -280,11 +306,13 @@ abstract class _RouteModel extends RouteModel {
   @override
   String get nameBn;
   @override
-  double get totalDistanceKm; // Matching Supabase column name
+  double get totalDistanceKm;
   @override
   String get documentId;
   @override
   int get pdfPageNumber;
+  @override
+  Map<String, dynamic> get documents;
 
   /// Create a copy of RouteModel
   /// with the given fields replaced by the non-null parameter values.

@@ -66,36 +66,33 @@ class FareRemoteDataSourceImpl implements FareRemoteDataSource {
 
   @override
   Future<List<FareResultModel>> getFares(String originId, String destinationId) async {
-    final stopwatch = Stopwatch()..start();
-    developer.log('🔼 Req: [getFares] origin: "$originId", destination: "$destinationId"', name: 'Supabase');
-
     try {
       final response = await supabase
           .from('fares')
           .select('''
-            fare_amount,
-            calculated_amount,
-            routes (
-              id,
-              route_code,
-              name_bn,
-              total_distance_km,
-              document_id,
-              pdf_page_number
+          fare_amount,
+          calculated_amount,
+          routes (
+            id,
+            route_code,
+            name_bn,
+            total_distance_km,
+            pdf_page_number,
+            document_id,
+            documents!inner (
+              pdf_url,
+              btrc_url,
+              issued_date,
+              base_fare_per_km,
+              minimum_fare,
+              notes
             )
-          ''')
-          .eq('from_stop_id', originId)
-          .eq('to_stop_id', destinationId);
+          )
+        ''')
+          .or('and(from_stop_id.eq.$originId,to_stop_id.eq.$destinationId),and(from_stop_id.eq.$destinationId,to_stop_id.eq.$originId)');
 
-      final results = (response as List).map((json) => FareResultModel.fromJson(json)).toList();
-
-      stopwatch.stop();
-      developer.log('✅ Res: [getFares] (${stopwatch.elapsedMilliseconds}ms) found ${results.length} routes', name: 'Supabase');
-
-      return results;
-    } catch (e, stackTrace) {
-      stopwatch.stop();
-      developer.log('❌ Err: [getFares] (${stopwatch.elapsedMilliseconds}ms)', name: 'Supabase', error: e, stackTrace: stackTrace);
+      return (response as List).map((json) => FareResultModel.fromJson(json)).toList();
+    } catch (e) {
       rethrow;
     }
   }
