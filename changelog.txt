@@ -1,0 +1,6 @@
+Release 2
+- Fare calculation optimized
+- Duplicate routes combined
+- Fare search and fare card updated
+- Fare details added
+- Pdf view added
