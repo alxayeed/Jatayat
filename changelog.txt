@@ -1,4 +1,2 @@
-Release 2
-- Details and pdf UI updated
-- PDF downloading option added
-- Fare search box not expanding issue fixed
+Release 4
+- Bus route feature added
