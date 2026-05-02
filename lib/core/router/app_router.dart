@@ -5,6 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
 import '../../features/fare_finder/presentation/screens/fare_details_screen.dart';
 import '../../features/fare_finder/presentation/screens/fare_finder_screen.dart';
+// Added Route Explorer imports
+import '../../features/route_explorer/domain/entities/bus_route/bus_route.dart';
+
+import '../../features/route_explorer/presentation/screens/route_list_screen.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 import '../widgets/app_pdf_viewer.dart';
@@ -14,6 +18,7 @@ class AppRoutes {
   static const String routeExplorer = '/route-explorer';
   static const String history = '/history';
   static const String fareDetails = '/fare-details';
+  static const String routeDetails = '/route-details'; // New Detail route
   static const String pdfViewer = '/pdf-viewer';
 }
 
@@ -35,7 +40,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: AppRoutes.routeExplorer,
-            builder: (context, state) => const Scaffold(body: Center(child: Text('Routes Coming Soon'))),
+            // Updated: Using the new List Screen
+            builder: (context, state) => const RouteListScreen(),
           ),
           GoRoute(
             path: AppRoutes.history,
@@ -49,6 +55,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final fare = state.extra as FareResultEntity;
           return FareDetailsScreen(fare: fare);
+        },
+      ),
+      // New Route for Route Details
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutes.routeDetails,
+        builder: (context, state) {
+          final route = state.extra as BusRoute;
+          return Scaffold(
+            appBar: AppBar(title: Text(route.routeCode)),
+            body: Center(child: Text('Details for ${route.nameBn}')),
+          );
         },
       ),
       GoRoute(
