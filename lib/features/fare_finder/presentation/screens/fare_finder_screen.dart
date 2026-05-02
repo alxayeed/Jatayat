@@ -23,8 +23,9 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   final originController = TextEditingController();
   final destinationController = TextEditingController();
 
-  // Local state to toggle between form and summary
   bool _isCollapsed = false;
+  // Track if user manually requested to see the search boxes again
+  bool _manuallyExpanded = false;
 
   @override
   void dispose() {
@@ -38,11 +39,19 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
 
-    // Auto-collapse when results arrive and loading finishes
-    if (state.fareResults.isNotEmpty && !_isCollapsed && !state.isLoading) {
+    // Only auto-collapse if results exist AND user hasn't manually expanded the view
+    if (state.fareResults.isNotEmpty && !_isCollapsed && !state.isLoading && !_manuallyExpanded) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        setState(() => _isCollapsed = true);
+        if (mounted) setState(() => _isCollapsed = true);
       });
+    }
+
+    // Reset the manual override if a new search starts (isLoading)
+    // or if the results are cleared
+    if (state.isLoading || state.fareResults.isEmpty) {
+      if (_manuallyExpanded) {
+        _manuallyExpanded = false;
+      }
     }
 
     return Scaffold(
@@ -67,7 +76,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                       ),
                       const SizedBox(height: 24),
 
-                      // AnimatedSwitcher handles the transition between search and summary
                       AnimatedSwitcher(
                         duration: const Duration(milliseconds: 350),
                         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -97,7 +105,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  // --- 1. COLLAPSED SUMMARY VIEW ---
   Widget _buildCollapsedSummary(FareSearchState state) {
     return Container(
       key: const ValueKey('summary_view'),
@@ -119,7 +126,12 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             ),
           ),
           TextButton.icon(
-            onPressed: () => setState(() => _isCollapsed = false),
+            onPressed: () {
+              setState(() {
+                _isCollapsed = false;
+                _manuallyExpanded = true; // Block auto-collapse
+              });
+            },
             icon: const Icon(Icons.edit_note_rounded, size: 20),
             label: const Text('পরিবর্তন'),
             style: TextButton.styleFrom(
@@ -133,7 +145,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  // --- 2. FULL SEARCH CARD ---
   Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier) {
     final isSearching = state.originSuggestions.isNotEmpty || state.destinationSuggestions.isNotEmpty;
 
@@ -212,7 +223,11 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               ),
             ),
           ElevatedButton(
-            onPressed: state.isLoading ? null : notifier.calculateFare,
+            onPressed: () {
+              // When user clicks calculate, we allow auto-collapse again
+              setState(() => _manuallyExpanded = false);
+              notifier.calculateFare();
+            },
             child: state.isLoading
                 ? const SizedBox(
               height: 20,

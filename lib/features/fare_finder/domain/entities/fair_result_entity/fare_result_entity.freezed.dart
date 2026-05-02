@@ -20,6 +20,8 @@ mixin _$FareResultEntity {
   double get officialFare => throw _privateConstructorUsedError;
   double get calculatedFare => throw _privateConstructorUsedError;
   double get distance => throw _privateConstructorUsedError;
+  String get originName => throw _privateConstructorUsedError;
+  String get destinationName => throw _privateConstructorUsedError;
   RouteEntity get route => throw _privateConstructorUsedError;
 
   /// Create a copy of FareResultEntity
@@ -40,6 +42,8 @@ abstract class $FareResultEntityCopyWith<$Res> {
     double officialFare,
     double calculatedFare,
     double distance,
+    String originName,
+    String destinationName,
     RouteEntity route,
   });
 
@@ -64,6 +68,8 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
     Object? officialFare = null,
     Object? calculatedFare = null,
     Object? distance = null,
+    Object? originName = null,
+    Object? destinationName = null,
     Object? route = null,
   }) {
     return _then(
@@ -80,6 +86,14 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
                 ? _value.distance
                 : distance // ignore: cast_nullable_to_non_nullable
                       as double,
+            originName: null == originName
+                ? _value.originName
+                : originName // ignore: cast_nullable_to_non_nullable
+                      as String,
+            destinationName: null == destinationName
+                ? _value.destinationName
+                : destinationName // ignore: cast_nullable_to_non_nullable
+                      as String,
             route: null == route
                 ? _value.route
                 : route // ignore: cast_nullable_to_non_nullable
@@ -113,6 +127,8 @@ abstract class _$$FareResultEntityImplCopyWith<$Res>
     double officialFare,
     double calculatedFare,
     double distance,
+    String originName,
+    String destinationName,
     RouteEntity route,
   });
 
@@ -137,6 +153,8 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
     Object? officialFare = null,
     Object? calculatedFare = null,
     Object? distance = null,
+    Object? originName = null,
+    Object? destinationName = null,
     Object? route = null,
   }) {
     return _then(
@@ -153,6 +171,14 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
             ? _value.distance
             : distance // ignore: cast_nullable_to_non_nullable
                   as double,
+        originName: null == originName
+            ? _value.originName
+            : originName // ignore: cast_nullable_to_non_nullable
+                  as String,
+        destinationName: null == destinationName
+            ? _value.destinationName
+            : destinationName // ignore: cast_nullable_to_non_nullable
+                  as String,
         route: null == route
             ? _value.route
             : route // ignore: cast_nullable_to_non_nullable
@@ -169,6 +195,8 @@ class _$FareResultEntityImpl implements _FareResultEntity {
     required this.officialFare,
     required this.calculatedFare,
     required this.distance,
+    required this.originName,
+    required this.destinationName,
     required this.route,
   });
 
@@ -179,11 +207,15 @@ class _$FareResultEntityImpl implements _FareResultEntity {
   @override
   final double distance;
   @override
+  final String originName;
+  @override
+  final String destinationName;
+  @override
   final RouteEntity route;
 
   @override
   String toString() {
-    return 'FareResultEntity(officialFare: $officialFare, calculatedFare: $calculatedFare, distance: $distance, route: $route)';
+    return 'FareResultEntity(officialFare: $officialFare, calculatedFare: $calculatedFare, distance: $distance, originName: $originName, destinationName: $destinationName, route: $route)';
   }
 
   @override
@@ -197,12 +229,23 @@ class _$FareResultEntityImpl implements _FareResultEntity {
                 other.calculatedFare == calculatedFare) &&
             (identical(other.distance, distance) ||
                 other.distance == distance) &&
+            (identical(other.originName, originName) ||
+                other.originName == originName) &&
+            (identical(other.destinationName, destinationName) ||
+                other.destinationName == destinationName) &&
             (identical(other.route, route) || other.route == route));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, officialFare, calculatedFare, distance, route);
+  int get hashCode => Object.hash(
+    runtimeType,
+    officialFare,
+    calculatedFare,
+    distance,
+    originName,
+    destinationName,
+    route,
+  );
 
   /// Create a copy of FareResultEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -221,6 +264,8 @@ abstract class _FareResultEntity implements FareResultEntity {
     required final double officialFare,
     required final double calculatedFare,
     required final double distance,
+    required final String originName,
+    required final String destinationName,
     required final RouteEntity route,
   }) = _$FareResultEntityImpl;
 
@@ -230,6 +275,10 @@ abstract class _FareResultEntity implements FareResultEntity {
   double get calculatedFare;
   @override
   double get distance;
+  @override
+  String get originName;
+  @override
+  String get destinationName;
   @override
   RouteEntity get route;
 

@@ -1,7 +1,7 @@
 class AppStrings {
   // General
-  static const String appName = 'Jatra';
-  static const String appNameBn = 'যাত্রা';
+  static const String appName = 'Jatri';
+  static const String appNameBn = 'যাত্রী';
 
   // Home / Search
   static const String searchFares = 'ভাড়া খুঁজুন';

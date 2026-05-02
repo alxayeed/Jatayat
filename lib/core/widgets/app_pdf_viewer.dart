@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../core/styles/app_colors.dart';
+import '../../../../core/styles/app_colors.dart';
 
 class AppPdfViewer extends StatefulWidget {
   final String pdfUrl;
@@ -20,92 +19,60 @@ class AppPdfViewer extends StatefulWidget {
 }
 
 class _AppPdfViewerState extends State<AppPdfViewer> {
-  late PdfViewerController _pdfViewerController;
-  final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
-  double _zoomLevel = 1.0;
-
   @override
   void initState() {
     super.initState();
-    _pdfViewerController = PdfViewerController();
+    // We trigger the launch after the first frame to avoid UI collisions
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _handleExternalLaunch();
+    });
   }
 
-  Future<void> _downloadPdf() async {
-    final Uri url = Uri.parse(widget.pdfUrl);
-    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+  Future<void> _handleExternalLaunch() async {
+    // Construct the URL with the #page fragment
+    final String urlWithPage = '${widget.pdfUrl}#page=${widget.initialPage}';
+    final Uri url = Uri.parse(urlWithPage);
+
+    try {
+      if (await canLaunchUrl(url)) {
+        await launchUrl(
+          url,
+          mode: LaunchMode.externalApplication,
+        );
+      } else {
+        throw 'Could not launch $urlWithPage';
+      }
+    } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not trigger download')),
+          SnackBar(content: Text('Error opening PDF: $e')),
         );
       }
+    } finally {
+      // Go back to the previous screen (FareDetails)
+      // so the user doesn't stay on a blank screen
+      if (mounted) Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title, style: const TextStyle(fontSize: 14)),
-        backgroundColor: AppColors.surfaceContainerLowest,
-        actions: [
-          // Zoom Out
-          IconButton(
-            icon: const Icon(Icons.zoom_out_rounded),
-            onPressed: () {
-              setState(() {
-                _zoomLevel = (_zoomLevel - 0.25).clamp(1.0, 3.0);
-                _pdfViewerController.zoomLevel = _zoomLevel;
-              });
-            },
-          ),
-          // Zoom In
-          IconButton(
-            icon: const Icon(Icons.zoom_in_rounded),
-            onPressed: () {
-              setState(() {
-                _zoomLevel = (_zoomLevel + 0.25).clamp(1.0, 3.0);
-                _pdfViewerController.zoomLevel = _zoomLevel;
-              });
-            },
-          ),
-          const VerticalDivider(width: 1, indent: 15, endIndent: 15),
-          // Download
-          IconButton(
-            icon: const Icon(Icons.file_download_outlined),
-            onPressed: _downloadPdf,
-            tooltip: 'Download PDF',
-          ),
-        ],
-      ),
-      body: SfPdfViewer.network(
-        widget.pdfUrl,
-        controller: _pdfViewerController,
-        key: _pdfViewerKey,
-        onDocumentLoaded: (PdfDocumentLoadedDetails details) {
-          _pdfViewerController.jumpToPage(widget.initialPage);
-        },
-        onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to load PDF: ${details.error}')),
-          );
-        },
-      ),
-      // Floating Navigation Controls for easier one-handed use
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton.small(
-            heroTag: 'prevPage',
-            onPressed: () => _pdfViewerController.previousPage(),
-            child: const Icon(Icons.keyboard_arrow_up),
-          ),
-          const SizedBox(height: 8),
-          FloatingActionButton.small(
-            heroTag: 'nextPage',
-            onPressed: () => _pdfViewerController.nextPage(),
-            child: const Icon(Icons.keyboard_arrow_down),
-          ),
-        ],
+    // This screen is now just a bridge.
+    // We show a simple loader in case the OS takes a second to switch apps.
+    return const Scaffold(
+      backgroundColor: AppColors.background,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(color: AppColors.primary),
+            SizedBox(height: 16),
+            Text(
+              'গ্যাজেট রেফারেন্স ওপেন হচ্ছে...',
+              style: TextStyle(color: AppColors.onSurfaceVariant),
+            ),
+          ],
+        ),
       ),
     );
   }

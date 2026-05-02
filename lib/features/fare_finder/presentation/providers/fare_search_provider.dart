@@ -19,7 +19,6 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
   final GetConnectedStopsUseCase _getConnectedStops;
   final GetFaresUseCase _getFares;
 
-  // Cache to make destination searching instant and avoid unnecessary API calls
   List<StopEntity> _connectedStopsCache = [];
 
   FareSearchNotifier({
@@ -31,7 +30,6 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
         _getFares = getFares,
         super(const FareSearchState());
 
-  /// 1. Handle Search Suggestions for Origin (API Call)
   Future<void> searchOrigin(String query) async {
     if (query.length < 2) {
       state = state.copyWith(originSuggestions: []);
@@ -46,9 +44,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
   }
 
-  /// 2. Select Origin and Fetch Connected Destinations
   Future<void> selectOrigin(StopEntity stop) async {
-    // Update state to selected stop and clear previous results/destinations
     state = state.copyWith(
       selectedOrigin: stop,
       selectedDestination: null,
@@ -64,7 +60,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     result.fold(
           (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
           (destinations) {
-        _connectedStopsCache = destinations; // Save to cache
+        _connectedStopsCache = destinations;
         state = state.copyWith(
           isLoading: false,
           destinationSuggestions: destinations,
@@ -73,7 +69,6 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
   }
 
-  /// 3. Search Destination (Instant Local Filter)
   void searchDestination(String query) {
     if (state.selectedOrigin == null) return;
 
@@ -82,29 +77,25 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       return;
     }
 
-    // Filter the cached connected stops based on the user's typing
     final filtered = _connectedStopsCache.where((stop) {
-      return stop.nameBn.contains(query) ;
+      return stop.nameBn.contains(query);
     }).toList();
 
     state = state.copyWith(destinationSuggestions: filtered);
   }
 
-  /// 4. Select Destination (No longer calculates automatically)
   void selectDestination(StopEntity stop) {
     state = state.copyWith(
       selectedDestination: stop,
-      destinationSuggestions: [], // Hide the overlay
+      destinationSuggestions: [],
       errorMessage: null,
     );
   }
 
-  /// 5. Swap Origin and Destination
   void swapStations() {
     final currentOrigin = state.selectedOrigin;
     final currentDestination = state.selectedDestination;
 
-    // We only swap if there is at least an origin to swap with
     if (currentOrigin == null) return;
 
     state = state.copyWith(
@@ -112,16 +103,14 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       selectedDestination: currentOrigin,
       originSuggestions: [],
       destinationSuggestions: [],
-      fareResults: [], // Clear results on swap to prevent invalid data
+      fareResults: [],
     );
 
-    // Refresh connected stops for the new origin
     if (currentDestination != null) {
       selectOrigin(currentDestination);
     }
   }
 
-  /// 6. Trigger Final API Call (Called by the Calculate Button)
   Future<void> calculateFare() async {
     if (state.selectedOrigin == null || state.selectedDestination == null) {
       state = state.copyWith(errorMessage: "Please select both Origin and Destination");
@@ -137,11 +126,22 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
 
     result.fold(
           (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
-          (fares) => state = state.copyWith(isLoading: false, fareResults: fares),
+          (fares) {
+        final updatedResults = fares.map((fare) {
+          return fare.copyWith(
+            originName: state.selectedOrigin?.nameBn ?? "",
+            destinationName: state.selectedDestination?.nameBn ?? "",
+          );
+        }).toList();
+
+        state = state.copyWith(
+          isLoading: false,
+          fareResults: updatedResults,
+        );
+      },
     );
   }
 
-  /// Clear everything to start over
   void resetSearch() {
     _connectedStopsCache = [];
     state = const FareSearchState();

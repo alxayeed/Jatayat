@@ -9,6 +9,8 @@ class FareResultEntity with _$FareResultEntity {
     required double officialFare,
     required double calculatedFare,
     required double distance,
+    required String originName,
+    required String destinationName,
     required RouteEntity route,
   }) = _FareResultEntity;
 }

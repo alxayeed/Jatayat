@@ -1,4 +1,4 @@
-package com.paperplane.jatra
+package com.paperplane.jatri
 
 import io.flutter.embedding.android.FlutterActivity
 

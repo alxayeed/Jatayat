@@ -35,7 +35,6 @@ class FareRemoteDataSourceImpl implements FareRemoteDataSource {
     } catch (e, stackTrace) {
       stopwatch.stop();
       developer.log('❌ Err: [searchStops] (${stopwatch.elapsedMilliseconds}ms)', name: 'Supabase', error: e, stackTrace: stackTrace);
-      // Rethrow so the Repository layer can catch it and map it to a Failure entity
       rethrow;
     }
   }
@@ -72,27 +71,36 @@ class FareRemoteDataSourceImpl implements FareRemoteDataSource {
           .select('''
           fare_amount,
           calculated_amount,
-          routes (
+          document_id,
+          documents!inner (
+            id,
+            pdf_url,
+            btrc_url,
+            issued_date,
+            base_fare_per_km,
+            minimum_fare,
+            notes,
+            is_active
+          ),
+          routes!inner (
             id,
             route_code,
             name_bn,
             total_distance_km,
-            pdf_page_number,
-            document_id,
-            documents!inner (
-              pdf_url,
-              btrc_url,
-              issued_date,
-              base_fare_per_km,
-              minimum_fare,
-              notes
+            route_documents (
+              document_id,
+              pdf_page_number
             )
           )
         ''')
+      // 1. Ensure we only fetch the currently active document (the 2024 one right now)
+          .eq('documents.is_active', true)
+      // 2. Your original bidirectional logic
           .or('and(from_stop_id.eq.$originId,to_stop_id.eq.$destinationId),and(from_stop_id.eq.$destinationId,to_stop_id.eq.$originId)');
 
       return (response as List).map((json) => FareResultModel.fromJson(json)).toList();
     } catch (e) {
+      developer.log('❌ Err: [getFares]', name: 'Supabase', error: e);
       rethrow;
     }
   }

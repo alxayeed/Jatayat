@@ -24,6 +24,8 @@ class FareResultModel with _$FareResultModel {
     calculatedFare: calculatedFare,
     distance: distance,
     route: route.toEntity(),
+    originName: '',
+    destinationName: '',
   );
 
   factory FareResultModel.fromEntity(FareResultEntity entity) => FareResultModel(

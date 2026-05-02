@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCzwTJQN15-IVHHSaAEXlf-GKUsmEqXn58',
-    appId: '1:625883222595:android:998b62847f0fb9e1e6faf6',
+    appId: '1:625883222595:android:00efda0d5a167f3de6faf6',
     messagingSenderId: '625883222595',
     projectId: 'jatraa',
     storageBucket: 'jatraa.firebasestorage.app',
@@ -59,10 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAC4x7sMfrXaDzA3nWYWcFNkB5QoonG6N4',
-    appId: '1:625883222595:ios:fe6484c5559f628be6faf6',
+    appId: '1:625883222595:ios:f89ef67dd2ac13b1e6faf6',
     messagingSenderId: '625883222595',
     projectId: 'jatraa',
     storageBucket: 'jatraa.firebasestorage.app',
-    iosBundleId: 'com.paperplane.jatra',
+    iosBundleId: 'com.paperplane.jatri',
   );
+
 }

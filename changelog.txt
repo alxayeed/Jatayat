@@ -1,6 +1,4 @@
 Release 2
-- Fare calculation optimized
-- Duplicate routes combined
-- Fare search and fare card updated
-- Fare details added
-- Pdf view added
+- Details and pdf UI updated
+- PDF downloading option added
+- Fare search box not expanding issue fixed
