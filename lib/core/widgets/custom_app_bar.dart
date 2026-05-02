@@ -31,8 +31,8 @@ class CustomAppBar extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    title ?? 'Jatra',
-                    style: title != null ? AppTextStyles.headline.copyWith(fontSize: 20) : AppTextStyles.logo,
+                    title ?? 'Jatri',
+                    style: AppTextStyles.logo,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

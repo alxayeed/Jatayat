@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
@@ -59,7 +60,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
         children: [
           CustomScrollView(
             slivers: [
-              const CustomAppBar(),
+              const CustomAppBar(title: AppStrings.appName, showProfile: false,),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -101,7 +102,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
           ),
         ],
       ),
-      floatingActionButton: _buildFAB(),
+      // floatingActionButton: _buildFAB(),
     );
   }
 

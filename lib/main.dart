@@ -46,7 +46,7 @@ class JatraApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: AppStrings.appName,
+      title: "AppStrings.appName",
       debugShowCheckedModeBanner: false,
       routerConfig: router,
 
