@@ -15,44 +15,37 @@ class RouteRepositoryImpl implements RouteRepository {
   @override
   Future<Either<Failure, List<BusRoute>>> getAllRoutes() async {
     try {
-      // Logic: In the future, check localDataSource first.
-      // If empty, fetch from Supabase and save to local.
-
+      // Logic: Check localDataSource first. If empty, fetch from Supabase.
       final models = await supabaseDataSource.getAllRoutes();
-
       final entities = models.map((model) => model.toEntity()).toList();
-
       return Right(entities);
     } catch (e) {
-      // You can refine this to return specific failures (ServerFailure, CacheFailure, etc.)
-      return Left(ServerFailure('Could not fetch routes from server'));
+      return const Left(ServerFailure('Could not fetch routes from server'));
     }
   }
 
   @override
   Future<Either<Failure, List<BusRoute>>> searchRoutes(String query) async {
     try {
+      // Logic: Search localDataSource natively
       final models = await supabaseDataSource.searchRoutes(query);
-
       return Right(models.map((model) => model.toEntity()).toList());
     } catch (e) {
       return const Left(ServerFailure('Search failed'));
     }
   }
 
+  // NEW: Deep fetch utilizing the specific route ID
   @override
-  Future<Either<Failure, BusRoute>> getRouteByCode(String routeCode) async {
+  Future<Either<Failure, BusRoute>> getRouteDetails(String routeId) async {
     try {
-      // We can reuse the search logic or create a specific fetch
-      final models = await supabaseDataSource.searchRoutes(routeCode);
+      // Logic: Fetch the joined/deep data from local DB or Supabase
+      final model = await supabaseDataSource.getRouteDetails(routeId);
 
-      if (models.isNotEmpty) {
-        return Right(models.first.toEntity());
-      } else {
-        return const Left(ServerFailure('Route not found'));
-      }
+      return Right(model.toEntity());
     } catch (e) {
-      return const Left(ServerFailure('Error fetching route details'));
+      // Optional: Add developer.log(e.toString()) here to debug specific errors
+      return const Left(ServerFailure('Error fetching route details and stops'));
     }
   }
 }

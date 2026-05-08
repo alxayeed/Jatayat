@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:go_router/go_router.dart';
+import 'dart:developer' as developer;
 import '../../../../core/styles/app_colors.dart';
 
 class AppPdfViewer extends StatefulWidget {
@@ -22,43 +24,52 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
   @override
   void initState() {
     super.initState();
-    // We trigger the launch after the first frame to avoid UI collisions
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _handleExternalLaunch();
     });
   }
 
   Future<void> _handleExternalLaunch() async {
-    // Construct the URL with the #page fragment
     final String urlWithPage = '${widget.pdfUrl}#page=${widget.initialPage}';
     final Uri url = Uri.parse(urlWithPage);
 
     try {
-      if (await canLaunchUrl(url)) {
-        await launchUrl(
-          url,
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        throw 'Could not launch $urlWithPage';
+      final bool launched = await launchUrl(
+        url,
+        mode: LaunchMode.externalApplication,
+      );
+
+      if (!launched) {
+        throw 'OS rejected the launch request.';
       }
-    } catch (e) {
+
+      if (mounted) context.pop();
+    } catch (e, stackTrace) {
+      developer.log(
+        '❌ Err: [PDF Launch Failed]',
+        name: 'PdfViewer',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error opening PDF: $e')),
+          SnackBar(
+            content: Text('Error opening PDF: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
         );
+
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted) context.pop();
+        });
       }
-    } finally {
-      // Go back to the previous screen (FareDetails)
-      // so the user doesn't stay on a blank screen
-      if (mounted) Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This screen is now just a bridge.
-    // We show a simple loader in case the OS takes a second to switch apps.
     return const Scaffold(
       backgroundColor: AppColors.background,
       body: Center(

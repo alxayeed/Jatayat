@@ -4,6 +4,7 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../providers/route_explorer_provider.dart';
 import '../widgets/route_card.dart';
+import '../widgets/route_card_shimmer.dart';
 
 class RouteListScreen extends ConsumerWidget {
   const RouteListScreen({super.key});
@@ -63,8 +64,10 @@ class RouteListScreen extends ConsumerWidget {
                   ),
                 );
               },
-              loading: () => const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+              loading: () => ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: 5,
+                itemBuilder: (context, index) => const RouteCardShimmer(),
               ),
               error: (error, stack) => _buildErrorState(error.toString(), ref),
             ),

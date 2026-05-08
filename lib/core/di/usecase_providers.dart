@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/route_explorer/domain/usecases/get_all_routes.dart';
+import '../../features/route_explorer/domain/usecases/get_route_details.dart';
 import '../../features/route_explorer/domain/usecases/search_routes_use_case.dart';
 import 'repository_providers.dart';
 
@@ -40,4 +41,9 @@ final getAllRoutesUseCaseProvider = Provider<GetAllRoutesUseCase>((ref) {
 final searchRoutesUseCaseProvider = Provider<SearchRoutesUseCase>((ref) {
   final repository = ref.watch(routeRepositoryProvider);
   return SearchRoutesUseCase(repository);
+});
+
+final getRouteDetailsUseCaseProvider = Provider<GetRouteDetails>((ref) {
+  final repository = ref.watch(routeRepositoryProvider);
+  return GetRouteDetails(repository);
 });

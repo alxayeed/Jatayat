@@ -7,15 +7,22 @@ import '../../domain/entities/bus_route/bus_route.dart';
 
 class RouteCard extends StatelessWidget {
   final BusRoute route;
-  const RouteCard({super.key, required this.route});
+  final bool isClickable;
+
+  const RouteCard({
+    super.key,
+    required this.route,
+    this.isClickable = true, // Defaults to true for the List Screen
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // We will define this route in the AppRouter later
-        // context.push(AppRoutes.routeDetails, extra: route);
-      },
+      onTap: isClickable
+          ? () {
+        context.push('${AppRoutes.routeDetails}/${route.id}?code=${route.routeCode}');
+      }
+          : null,
       borderRadius: BorderRadius.circular(24),
       child: Container(
         margin: const EdgeInsets.only(bottom: 16),
@@ -35,7 +42,7 @@ class RouteCard extends StatelessWidget {
                 const Icon(Icons.picture_as_pdf,
                     size: 14, color: AppColors.onSurfaceVariant),
                 const SizedBox(width: 4),
-                Text('Gazette: Pg ${route.pdfPageNumber}',
+                Text('Gazette: Pg ${route.pdfPageNumber ?? '-'}',
                     style: AppTextStyles.caption),
               ],
             ),
@@ -64,7 +71,7 @@ class RouteCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                 ),
                 _buildInfoColumn(
-                  '৳${route.minimumFare}',
+                  '৳${route.minimumFare ?? 10}',
                   'MIN FARE',
                   crossAxisAlignment: CrossAxisAlignment.end,
                   isPrice: true,

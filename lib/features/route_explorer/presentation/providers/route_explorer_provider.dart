@@ -1,65 +1,74 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/di/usecase_providers.dart';
+import '../../../../core/di/usecase_providers.dart'; // Assume you added the new use case here
 import '../../domain/entities/bus_route/bus_route.dart';
 import '../../domain/usecases/get_all_routes.dart';
 import '../../domain/usecases/search_routes_use_case.dart';
+import '../../domain/usecases/get_route_details.dart'; // Import the new use case
 
+// --- 1. The Master List Provider (Unchanged, it's already great) ---
 final routeExplorerProvider = AsyncNotifierProvider<RouteExplorerNotifier, List<BusRoute>>(() {
   return RouteExplorerNotifier();
 });
 
 class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
   late final GetAllRoutesUseCase _getAllRoutes;
-  late final SearchRoutesUseCase _searchRoutes;
+  late final SearchRoutesUseCase _searchRoutes; // Kept in case you want server-search later
 
   // We keep a full list in memory for instant local filtering
   List<BusRoute> _allRoutesCache = [];
 
   @override
   FutureOr<List<BusRoute>> build() async {
-    // Initialize UseCases from ref
     _getAllRoutes = ref.watch(getAllRoutesUseCaseProvider);
     _searchRoutes = ref.watch(searchRoutesUseCaseProvider);
-
     return _fetchInitialRoutes();
   }
 
-  /// Initial data fetch from Supabase
   Future<List<BusRoute>> _fetchInitialRoutes() async {
-    // This automatically sets state to AsyncLoading
     final result = await _getAllRoutes();
-
     return result.fold(
-          (failure) => throw failure.message, // Caught by AsyncValue.error
+          (failure) => throw failure.message,
           (routes) {
         _allRoutesCache = routes;
-        return routes; // Becomes AsyncData(routes)
+        return routes;
       },
     );
   }
 
-  /// Search logic
   Future<void> search(String query) async {
     if (query.isEmpty) {
       state = AsyncData(_allRoutesCache);
       return;
     }
-
-    // Optional: Use local filtering for instant UI response
-    // or call the _searchRoutes use case for server-side search
     final filtered = _allRoutesCache.where((route) {
       final codeMatch = route.routeCode.toLowerCase().contains(query.toLowerCase());
       final nameMatch = route.nameBn.contains(query);
       return codeMatch || nameMatch;
     }).toList();
-
     state = AsyncData(filtered);
   }
 
-  /// Refresh data manually (e.g. Pull to refresh)
   Future<void> refresh() async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => _fetchInitialRoutes());
   }
 }
+
+// --- 2. NEW: The Detail Provider (Lazy Loading via Family) ---
+// We use autoDispose so it clears memory when the user closes the detail screen,
+// but you can remove autoDispose if you want it to cache the stops permanently during the session.
+
+final routeDetailsProvider = FutureProvider.autoDispose.family<BusRoute, String>((ref, routeId) async {
+  // 1. Get the UseCase
+  final getRouteDetails = ref.watch(getRouteDetailsUseCaseProvider);
+
+  // 2. Execute the deep fetch
+  final result = await getRouteDetails(GetRouteDetailsParams(routeId: routeId));
+
+  // 3. Return the fully populated entity, or throw to trigger AsyncError in the UI
+  return result.fold(
+        (failure) => throw Exception(failure.message),
+        (detailedRoute) => detailedRoute,
+  );
+});
