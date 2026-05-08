@@ -1,40 +1,21 @@
 {
   "project_info": {
-    "project_number": "625883222595",
-    "project_id": "jatraa",
-    "storage_bucket": "jatraa.firebasestorage.app"
+    "project_number": "631464687902",
+    "project_id": "jatriii",
+    "storage_bucket": "jatriii.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:625883222595:android:998b62847f0fb9e1e6faf6",
+        "mobilesdk_app_id": "1:631464687902:android:ea02d229ba9af30c98b10f",
         "android_client_info": {
-          "package_name": "com.paperplane.jatra"
+          "package_name": "com.raindropstudio.jatri"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCzwTJQN15-IVHHSaAEXlf-GKUsmEqXn58"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:625883222595:android:00efda0d5a167f3de6faf6",
-        "android_client_info": {
-          "package_name": "com.paperplane.jatri"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCzwTJQN15-IVHHSaAEXlf-GKUsmEqXn58"
+          "current_key": "AIzaSyD9JHQ-VK9ppuJvDioGC-hFyvZyd5KQ4jc"
         }
       ],
       "services": {

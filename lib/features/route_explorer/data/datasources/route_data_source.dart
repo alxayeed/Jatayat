@@ -7,4 +7,7 @@ abstract class RouteDataSource {
 
   /// Search routes by code or name
   Future<List<BusRouteModel>> searchRoutes(String query);
+
+  /// Deep fetch for a specific route (Returns full model WITH stops list)
+  Future<BusRouteModel> getRouteDetails(String routeId);
 }

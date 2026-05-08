@@ -15,33 +15,326 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
+RouteStopModel _$RouteStopModelFromJson(Map<String, dynamic> json) {
+  return _RouteStopModel.fromJson(json);
+}
+
+/// @nodoc
+mixin _$RouteStopModel {
+  String get stopId => throw _privateConstructorUsedError;
+  String get nameBn => throw _privateConstructorUsedError;
+  int get sequenceOrder => throw _privateConstructorUsedError;
+  double get cumulativeDistanceKm => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
+  double? get lat => throw _privateConstructorUsedError;
+  double? get lng => throw _privateConstructorUsedError;
+
+  /// Serializes this RouteStopModel to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of RouteStopModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $RouteStopModelCopyWith<RouteStopModel> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $RouteStopModelCopyWith<$Res> {
+  factory $RouteStopModelCopyWith(
+    RouteStopModel value,
+    $Res Function(RouteStopModel) then,
+  ) = _$RouteStopModelCopyWithImpl<$Res, RouteStopModel>;
+  @useResult
+  $Res call({
+    String stopId,
+    String nameBn,
+    int sequenceOrder,
+    double cumulativeDistanceKm,
+    String? nameEn,
+    double? lat,
+    double? lng,
+  });
+}
+
+/// @nodoc
+class _$RouteStopModelCopyWithImpl<$Res, $Val extends RouteStopModel>
+    implements $RouteStopModelCopyWith<$Res> {
+  _$RouteStopModelCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of RouteStopModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? stopId = null,
+    Object? nameBn = null,
+    Object? sequenceOrder = null,
+    Object? cumulativeDistanceKm = null,
+    Object? nameEn = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+  }) {
+    return _then(
+      _value.copyWith(
+            stopId: null == stopId
+                ? _value.stopId
+                : stopId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            nameBn: null == nameBn
+                ? _value.nameBn
+                : nameBn // ignore: cast_nullable_to_non_nullable
+                      as String,
+            sequenceOrder: null == sequenceOrder
+                ? _value.sequenceOrder
+                : sequenceOrder // ignore: cast_nullable_to_non_nullable
+                      as int,
+            cumulativeDistanceKm: null == cumulativeDistanceKm
+                ? _value.cumulativeDistanceKm
+                : cumulativeDistanceKm // ignore: cast_nullable_to_non_nullable
+                      as double,
+            nameEn: freezed == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            lat: freezed == lat
+                ? _value.lat
+                : lat // ignore: cast_nullable_to_non_nullable
+                      as double?,
+            lng: freezed == lng
+                ? _value.lng
+                : lng // ignore: cast_nullable_to_non_nullable
+                      as double?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$RouteStopModelImplCopyWith<$Res>
+    implements $RouteStopModelCopyWith<$Res> {
+  factory _$$RouteStopModelImplCopyWith(
+    _$RouteStopModelImpl value,
+    $Res Function(_$RouteStopModelImpl) then,
+  ) = __$$RouteStopModelImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String stopId,
+    String nameBn,
+    int sequenceOrder,
+    double cumulativeDistanceKm,
+    String? nameEn,
+    double? lat,
+    double? lng,
+  });
+}
+
+/// @nodoc
+class __$$RouteStopModelImplCopyWithImpl<$Res>
+    extends _$RouteStopModelCopyWithImpl<$Res, _$RouteStopModelImpl>
+    implements _$$RouteStopModelImplCopyWith<$Res> {
+  __$$RouteStopModelImplCopyWithImpl(
+    _$RouteStopModelImpl _value,
+    $Res Function(_$RouteStopModelImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of RouteStopModel
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? stopId = null,
+    Object? nameBn = null,
+    Object? sequenceOrder = null,
+    Object? cumulativeDistanceKm = null,
+    Object? nameEn = freezed,
+    Object? lat = freezed,
+    Object? lng = freezed,
+  }) {
+    return _then(
+      _$RouteStopModelImpl(
+        stopId: null == stopId
+            ? _value.stopId
+            : stopId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        nameBn: null == nameBn
+            ? _value.nameBn
+            : nameBn // ignore: cast_nullable_to_non_nullable
+                  as String,
+        sequenceOrder: null == sequenceOrder
+            ? _value.sequenceOrder
+            : sequenceOrder // ignore: cast_nullable_to_non_nullable
+                  as int,
+        cumulativeDistanceKm: null == cumulativeDistanceKm
+            ? _value.cumulativeDistanceKm
+            : cumulativeDistanceKm // ignore: cast_nullable_to_non_nullable
+                  as double,
+        nameEn: freezed == nameEn
+            ? _value.nameEn
+            : nameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        lat: freezed == lat
+            ? _value.lat
+            : lat // ignore: cast_nullable_to_non_nullable
+                  as double?,
+        lng: freezed == lng
+            ? _value.lng
+            : lng // ignore: cast_nullable_to_non_nullable
+                  as double?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class _$RouteStopModelImpl extends _RouteStopModel {
+  const _$RouteStopModelImpl({
+    required this.stopId,
+    required this.nameBn,
+    required this.sequenceOrder,
+    required this.cumulativeDistanceKm,
+    this.nameEn,
+    this.lat,
+    this.lng,
+  }) : super._();
+
+  factory _$RouteStopModelImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RouteStopModelImplFromJson(json);
+
+  @override
+  final String stopId;
+  @override
+  final String nameBn;
+  @override
+  final int sequenceOrder;
+  @override
+  final double cumulativeDistanceKm;
+  @override
+  final String? nameEn;
+  @override
+  final double? lat;
+  @override
+  final double? lng;
+
+  @override
+  String toString() {
+    return 'RouteStopModel(stopId: $stopId, nameBn: $nameBn, sequenceOrder: $sequenceOrder, cumulativeDistanceKm: $cumulativeDistanceKm, nameEn: $nameEn, lat: $lat, lng: $lng)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$RouteStopModelImpl &&
+            (identical(other.stopId, stopId) || other.stopId == stopId) &&
+            (identical(other.nameBn, nameBn) || other.nameBn == nameBn) &&
+            (identical(other.sequenceOrder, sequenceOrder) ||
+                other.sequenceOrder == sequenceOrder) &&
+            (identical(other.cumulativeDistanceKm, cumulativeDistanceKm) ||
+                other.cumulativeDistanceKm == cumulativeDistanceKm) &&
+            (identical(other.nameEn, nameEn) || other.nameEn == nameEn) &&
+            (identical(other.lat, lat) || other.lat == lat) &&
+            (identical(other.lng, lng) || other.lng == lng));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    stopId,
+    nameBn,
+    sequenceOrder,
+    cumulativeDistanceKm,
+    nameEn,
+    lat,
+    lng,
+  );
+
+  /// Create a copy of RouteStopModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$RouteStopModelImplCopyWith<_$RouteStopModelImpl> get copyWith =>
+      __$$RouteStopModelImplCopyWithImpl<_$RouteStopModelImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$RouteStopModelImplToJson(this);
+  }
+}
+
+abstract class _RouteStopModel extends RouteStopModel {
+  const factory _RouteStopModel({
+    required final String stopId,
+    required final String nameBn,
+    required final int sequenceOrder,
+    required final double cumulativeDistanceKm,
+    final String? nameEn,
+    final double? lat,
+    final double? lng,
+  }) = _$RouteStopModelImpl;
+  const _RouteStopModel._() : super._();
+
+  factory _RouteStopModel.fromJson(Map<String, dynamic> json) =
+      _$RouteStopModelImpl.fromJson;
+
+  @override
+  String get stopId;
+  @override
+  String get nameBn;
+  @override
+  int get sequenceOrder;
+  @override
+  double get cumulativeDistanceKm;
+  @override
+  String? get nameEn;
+  @override
+  double? get lat;
+  @override
+  double? get lng;
+
+  /// Create a copy of RouteStopModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$RouteStopModelImplCopyWith<_$RouteStopModelImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 BusRouteModel _$BusRouteModelFromJson(Map<String, dynamic> json) {
   return _BusRouteModel.fromJson(json);
 }
 
 /// @nodoc
 mixin _$BusRouteModel {
-  @JsonKey(name: 'route_code')
+  String get id => throw _privateConstructorUsedError; // Added Primary Key
   String get routeCode => throw _privateConstructorUsedError;
-  @JsonKey(name: 'name_bn')
   String get nameBn => throw _privateConstructorUsedError;
-  @JsonKey(name: 'total_distance_km')
   double get totalDistanceKm => throw _privateConstructorUsedError;
-  @JsonKey(name: 'total_stops')
   int get totalStops => throw _privateConstructorUsedError;
-  @JsonKey(name: 'pdf_page_number')
-  int get pdfPageNumber => throw _privateConstructorUsedError;
-  String get region => throw _privateConstructorUsedError;
-  @JsonKey(name: 'pdf_url')
-  String get pdfUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'btrc_url')
-  String get btrcUrl => throw _privateConstructorUsedError;
-  @JsonKey(name: 'base_fare_per_km')
-  double get baseFarePerKm => throw _privateConstructorUsedError;
-  @JsonKey(name: 'minimum_fare')
-  int get minimumFare => throw _privateConstructorUsedError;
-  @JsonKey(name: 'issued_date')
-  DateTime get issuedDate => throw _privateConstructorUsedError;
+  String get region =>
+      throw _privateConstructorUsedError; // Nullable fields matching DB schema
+  int? get pdfPageNumber => throw _privateConstructorUsedError;
+  String? get pdfUrl => throw _privateConstructorUsedError;
+  String? get btrcUrl => throw _privateConstructorUsedError;
+  double? get baseFarePerKm => throw _privateConstructorUsedError;
+  int? get minimumFare => throw _privateConstructorUsedError;
+  DateTime? get issuedDate =>
+      throw _privateConstructorUsedError; // The list of stops (defaults to empty for the "Lazy Loading" list view)
+  List<RouteStopModel> get stops => throw _privateConstructorUsedError;
 
   /// Serializes this BusRouteModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -61,17 +354,19 @@ abstract class $BusRouteModelCopyWith<$Res> {
   ) = _$BusRouteModelCopyWithImpl<$Res, BusRouteModel>;
   @useResult
   $Res call({
-    @JsonKey(name: 'route_code') String routeCode,
-    @JsonKey(name: 'name_bn') String nameBn,
-    @JsonKey(name: 'total_distance_km') double totalDistanceKm,
-    @JsonKey(name: 'total_stops') int totalStops,
-    @JsonKey(name: 'pdf_page_number') int pdfPageNumber,
+    String id,
+    String routeCode,
+    String nameBn,
+    double totalDistanceKm,
+    int totalStops,
     String region,
-    @JsonKey(name: 'pdf_url') String pdfUrl,
-    @JsonKey(name: 'btrc_url') String btrcUrl,
-    @JsonKey(name: 'base_fare_per_km') double baseFarePerKm,
-    @JsonKey(name: 'minimum_fare') int minimumFare,
-    @JsonKey(name: 'issued_date') DateTime issuedDate,
+    int? pdfPageNumber,
+    String? pdfUrl,
+    String? btrcUrl,
+    double? baseFarePerKm,
+    int? minimumFare,
+    DateTime? issuedDate,
+    List<RouteStopModel> stops,
   });
 }
 
@@ -90,20 +385,26 @@ class _$BusRouteModelCopyWithImpl<$Res, $Val extends BusRouteModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
     Object? totalDistanceKm = null,
     Object? totalStops = null,
-    Object? pdfPageNumber = null,
     Object? region = null,
-    Object? pdfUrl = null,
-    Object? btrcUrl = null,
-    Object? baseFarePerKm = null,
-    Object? minimumFare = null,
-    Object? issuedDate = null,
+    Object? pdfPageNumber = freezed,
+    Object? pdfUrl = freezed,
+    Object? btrcUrl = freezed,
+    Object? baseFarePerKm = freezed,
+    Object? minimumFare = freezed,
+    Object? issuedDate = freezed,
+    Object? stops = null,
   }) {
     return _then(
       _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
             routeCode: null == routeCode
                 ? _value.routeCode
                 : routeCode // ignore: cast_nullable_to_non_nullable
@@ -120,34 +421,38 @@ class _$BusRouteModelCopyWithImpl<$Res, $Val extends BusRouteModel>
                 ? _value.totalStops
                 : totalStops // ignore: cast_nullable_to_non_nullable
                       as int,
-            pdfPageNumber: null == pdfPageNumber
-                ? _value.pdfPageNumber
-                : pdfPageNumber // ignore: cast_nullable_to_non_nullable
-                      as int,
             region: null == region
                 ? _value.region
                 : region // ignore: cast_nullable_to_non_nullable
                       as String,
-            pdfUrl: null == pdfUrl
+            pdfPageNumber: freezed == pdfPageNumber
+                ? _value.pdfPageNumber
+                : pdfPageNumber // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            pdfUrl: freezed == pdfUrl
                 ? _value.pdfUrl
                 : pdfUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            btrcUrl: null == btrcUrl
+                      as String?,
+            btrcUrl: freezed == btrcUrl
                 ? _value.btrcUrl
                 : btrcUrl // ignore: cast_nullable_to_non_nullable
-                      as String,
-            baseFarePerKm: null == baseFarePerKm
+                      as String?,
+            baseFarePerKm: freezed == baseFarePerKm
                 ? _value.baseFarePerKm
                 : baseFarePerKm // ignore: cast_nullable_to_non_nullable
-                      as double,
-            minimumFare: null == minimumFare
+                      as double?,
+            minimumFare: freezed == minimumFare
                 ? _value.minimumFare
                 : minimumFare // ignore: cast_nullable_to_non_nullable
-                      as int,
-            issuedDate: null == issuedDate
+                      as int?,
+            issuedDate: freezed == issuedDate
                 ? _value.issuedDate
                 : issuedDate // ignore: cast_nullable_to_non_nullable
-                      as DateTime,
+                      as DateTime?,
+            stops: null == stops
+                ? _value.stops
+                : stops // ignore: cast_nullable_to_non_nullable
+                      as List<RouteStopModel>,
           )
           as $Val,
     );
@@ -164,17 +469,19 @@ abstract class _$$BusRouteModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    @JsonKey(name: 'route_code') String routeCode,
-    @JsonKey(name: 'name_bn') String nameBn,
-    @JsonKey(name: 'total_distance_km') double totalDistanceKm,
-    @JsonKey(name: 'total_stops') int totalStops,
-    @JsonKey(name: 'pdf_page_number') int pdfPageNumber,
+    String id,
+    String routeCode,
+    String nameBn,
+    double totalDistanceKm,
+    int totalStops,
     String region,
-    @JsonKey(name: 'pdf_url') String pdfUrl,
-    @JsonKey(name: 'btrc_url') String btrcUrl,
-    @JsonKey(name: 'base_fare_per_km') double baseFarePerKm,
-    @JsonKey(name: 'minimum_fare') int minimumFare,
-    @JsonKey(name: 'issued_date') DateTime issuedDate,
+    int? pdfPageNumber,
+    String? pdfUrl,
+    String? btrcUrl,
+    double? baseFarePerKm,
+    int? minimumFare,
+    DateTime? issuedDate,
+    List<RouteStopModel> stops,
   });
 }
 
@@ -192,20 +499,26 @@ class __$$BusRouteModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
     Object? totalDistanceKm = null,
     Object? totalStops = null,
-    Object? pdfPageNumber = null,
     Object? region = null,
-    Object? pdfUrl = null,
-    Object? btrcUrl = null,
-    Object? baseFarePerKm = null,
-    Object? minimumFare = null,
-    Object? issuedDate = null,
+    Object? pdfPageNumber = freezed,
+    Object? pdfUrl = freezed,
+    Object? btrcUrl = freezed,
+    Object? baseFarePerKm = freezed,
+    Object? minimumFare = freezed,
+    Object? issuedDate = freezed,
+    Object? stops = null,
   }) {
     return _then(
       _$BusRouteModelImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
         routeCode: null == routeCode
             ? _value.routeCode
             : routeCode // ignore: cast_nullable_to_non_nullable
@@ -222,95 +535,107 @@ class __$$BusRouteModelImplCopyWithImpl<$Res>
             ? _value.totalStops
             : totalStops // ignore: cast_nullable_to_non_nullable
                   as int,
-        pdfPageNumber: null == pdfPageNumber
-            ? _value.pdfPageNumber
-            : pdfPageNumber // ignore: cast_nullable_to_non_nullable
-                  as int,
         region: null == region
             ? _value.region
             : region // ignore: cast_nullable_to_non_nullable
                   as String,
-        pdfUrl: null == pdfUrl
+        pdfPageNumber: freezed == pdfPageNumber
+            ? _value.pdfPageNumber
+            : pdfPageNumber // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        pdfUrl: freezed == pdfUrl
             ? _value.pdfUrl
             : pdfUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        btrcUrl: null == btrcUrl
+                  as String?,
+        btrcUrl: freezed == btrcUrl
             ? _value.btrcUrl
             : btrcUrl // ignore: cast_nullable_to_non_nullable
-                  as String,
-        baseFarePerKm: null == baseFarePerKm
+                  as String?,
+        baseFarePerKm: freezed == baseFarePerKm
             ? _value.baseFarePerKm
             : baseFarePerKm // ignore: cast_nullable_to_non_nullable
-                  as double,
-        minimumFare: null == minimumFare
+                  as double?,
+        minimumFare: freezed == minimumFare
             ? _value.minimumFare
             : minimumFare // ignore: cast_nullable_to_non_nullable
-                  as int,
-        issuedDate: null == issuedDate
+                  as int?,
+        issuedDate: freezed == issuedDate
             ? _value.issuedDate
             : issuedDate // ignore: cast_nullable_to_non_nullable
-                  as DateTime,
+                  as DateTime?,
+        stops: null == stops
+            ? _value._stops
+            : stops // ignore: cast_nullable_to_non_nullable
+                  as List<RouteStopModel>,
       ),
     );
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(fieldRename: FieldRename.snake)
 class _$BusRouteModelImpl extends _BusRouteModel {
   const _$BusRouteModelImpl({
-    @JsonKey(name: 'route_code') required this.routeCode,
-    @JsonKey(name: 'name_bn') required this.nameBn,
-    @JsonKey(name: 'total_distance_km') required this.totalDistanceKm,
-    @JsonKey(name: 'total_stops') required this.totalStops,
-    @JsonKey(name: 'pdf_page_number') required this.pdfPageNumber,
+    required this.id,
+    required this.routeCode,
+    required this.nameBn,
+    required this.totalDistanceKm,
+    required this.totalStops,
     required this.region,
-    @JsonKey(name: 'pdf_url') required this.pdfUrl,
-    @JsonKey(name: 'btrc_url') required this.btrcUrl,
-    @JsonKey(name: 'base_fare_per_km') required this.baseFarePerKm,
-    @JsonKey(name: 'minimum_fare') required this.minimumFare,
-    @JsonKey(name: 'issued_date') required this.issuedDate,
-  }) : super._();
+    this.pdfPageNumber,
+    this.pdfUrl,
+    this.btrcUrl,
+    this.baseFarePerKm,
+    this.minimumFare,
+    this.issuedDate,
+    final List<RouteStopModel> stops = const [],
+  }) : _stops = stops,
+       super._();
 
   factory _$BusRouteModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$BusRouteModelImplFromJson(json);
 
   @override
-  @JsonKey(name: 'route_code')
+  final String id;
+  // Added Primary Key
+  @override
   final String routeCode;
   @override
-  @JsonKey(name: 'name_bn')
   final String nameBn;
   @override
-  @JsonKey(name: 'total_distance_km')
   final double totalDistanceKm;
   @override
-  @JsonKey(name: 'total_stops')
   final int totalStops;
   @override
-  @JsonKey(name: 'pdf_page_number')
-  final int pdfPageNumber;
-  @override
   final String region;
+  // Nullable fields matching DB schema
   @override
-  @JsonKey(name: 'pdf_url')
-  final String pdfUrl;
+  final int? pdfPageNumber;
   @override
-  @JsonKey(name: 'btrc_url')
-  final String btrcUrl;
+  final String? pdfUrl;
   @override
-  @JsonKey(name: 'base_fare_per_km')
-  final double baseFarePerKm;
+  final String? btrcUrl;
   @override
-  @JsonKey(name: 'minimum_fare')
-  final int minimumFare;
+  final double? baseFarePerKm;
   @override
-  @JsonKey(name: 'issued_date')
-  final DateTime issuedDate;
+  final int? minimumFare;
+  @override
+  final DateTime? issuedDate;
+  // The list of stops (defaults to empty for the "Lazy Loading" list view)
+  final List<RouteStopModel> _stops;
+  // The list of stops (defaults to empty for the "Lazy Loading" list view)
+  @override
+  @JsonKey()
+  List<RouteStopModel> get stops {
+    if (_stops is EqualUnmodifiableListView) return _stops;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_stops);
+  }
 
   @override
   String toString() {
-    return 'BusRouteModel(routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, totalStops: $totalStops, pdfPageNumber: $pdfPageNumber, region: $region, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseFarePerKm: $baseFarePerKm, minimumFare: $minimumFare, issuedDate: $issuedDate)';
+    return 'BusRouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, totalStops: $totalStops, region: $region, pdfPageNumber: $pdfPageNumber, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseFarePerKm: $baseFarePerKm, minimumFare: $minimumFare, issuedDate: $issuedDate, stops: $stops)';
   }
 
   @override
@@ -318,6 +643,7 @@ class _$BusRouteModelImpl extends _BusRouteModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BusRouteModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.routeCode, routeCode) ||
                 other.routeCode == routeCode) &&
             (identical(other.nameBn, nameBn) || other.nameBn == nameBn) &&
@@ -325,9 +651,9 @@ class _$BusRouteModelImpl extends _BusRouteModel {
                 other.totalDistanceKm == totalDistanceKm) &&
             (identical(other.totalStops, totalStops) ||
                 other.totalStops == totalStops) &&
+            (identical(other.region, region) || other.region == region) &&
             (identical(other.pdfPageNumber, pdfPageNumber) ||
                 other.pdfPageNumber == pdfPageNumber) &&
-            (identical(other.region, region) || other.region == region) &&
             (identical(other.pdfUrl, pdfUrl) || other.pdfUrl == pdfUrl) &&
             (identical(other.btrcUrl, btrcUrl) || other.btrcUrl == btrcUrl) &&
             (identical(other.baseFarePerKm, baseFarePerKm) ||
@@ -335,24 +661,27 @@ class _$BusRouteModelImpl extends _BusRouteModel {
             (identical(other.minimumFare, minimumFare) ||
                 other.minimumFare == minimumFare) &&
             (identical(other.issuedDate, issuedDate) ||
-                other.issuedDate == issuedDate));
+                other.issuedDate == issuedDate) &&
+            const DeepCollectionEquality().equals(other._stops, _stops));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
+    id,
     routeCode,
     nameBn,
     totalDistanceKm,
     totalStops,
-    pdfPageNumber,
     region,
+    pdfPageNumber,
     pdfUrl,
     btrcUrl,
     baseFarePerKm,
     minimumFare,
     issuedDate,
+    const DeepCollectionEquality().hash(_stops),
   );
 
   /// Create a copy of BusRouteModel
@@ -371,17 +700,19 @@ class _$BusRouteModelImpl extends _BusRouteModel {
 
 abstract class _BusRouteModel extends BusRouteModel {
   const factory _BusRouteModel({
-    @JsonKey(name: 'route_code') required final String routeCode,
-    @JsonKey(name: 'name_bn') required final String nameBn,
-    @JsonKey(name: 'total_distance_km') required final double totalDistanceKm,
-    @JsonKey(name: 'total_stops') required final int totalStops,
-    @JsonKey(name: 'pdf_page_number') required final int pdfPageNumber,
+    required final String id,
+    required final String routeCode,
+    required final String nameBn,
+    required final double totalDistanceKm,
+    required final int totalStops,
     required final String region,
-    @JsonKey(name: 'pdf_url') required final String pdfUrl,
-    @JsonKey(name: 'btrc_url') required final String btrcUrl,
-    @JsonKey(name: 'base_fare_per_km') required final double baseFarePerKm,
-    @JsonKey(name: 'minimum_fare') required final int minimumFare,
-    @JsonKey(name: 'issued_date') required final DateTime issuedDate,
+    final int? pdfPageNumber,
+    final String? pdfUrl,
+    final String? btrcUrl,
+    final double? baseFarePerKm,
+    final int? minimumFare,
+    final DateTime? issuedDate,
+    final List<RouteStopModel> stops,
   }) = _$BusRouteModelImpl;
   const _BusRouteModel._() : super._();
 
@@ -389,37 +720,31 @@ abstract class _BusRouteModel extends BusRouteModel {
       _$BusRouteModelImpl.fromJson;
 
   @override
-  @JsonKey(name: 'route_code')
+  String get id; // Added Primary Key
+  @override
   String get routeCode;
   @override
-  @JsonKey(name: 'name_bn')
   String get nameBn;
   @override
-  @JsonKey(name: 'total_distance_km')
   double get totalDistanceKm;
   @override
-  @JsonKey(name: 'total_stops')
   int get totalStops;
   @override
-  @JsonKey(name: 'pdf_page_number')
-  int get pdfPageNumber;
+  String get region; // Nullable fields matching DB schema
   @override
-  String get region;
+  int? get pdfPageNumber;
   @override
-  @JsonKey(name: 'pdf_url')
-  String get pdfUrl;
+  String? get pdfUrl;
   @override
-  @JsonKey(name: 'btrc_url')
-  String get btrcUrl;
+  String? get btrcUrl;
   @override
-  @JsonKey(name: 'base_fare_per_km')
-  double get baseFarePerKm;
+  double? get baseFarePerKm;
   @override
-  @JsonKey(name: 'minimum_fare')
-  int get minimumFare;
+  int? get minimumFare;
   @override
-  @JsonKey(name: 'issued_date')
-  DateTime get issuedDate;
+  DateTime? get issuedDate; // The list of stops (defaults to empty for the "Lazy Loading" list view)
+  @override
+  List<RouteStopModel> get stops;
 
   /// Create a copy of BusRouteModel
   /// with the given fields replaced by the non-null parameter values.

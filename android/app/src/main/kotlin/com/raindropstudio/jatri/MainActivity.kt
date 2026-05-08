@@ -1,4 +1,4 @@
-package com.paperplane.jatri
+package com.raindropstudio.jatri
 
 import io.flutter.embedding.android.FlutterActivity
 

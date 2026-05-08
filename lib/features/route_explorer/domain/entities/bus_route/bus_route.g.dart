@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bus_route_model.dart';
+part of 'bus_route.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RouteStopModelImpl _$$RouteStopModelImplFromJson(Map<String, dynamic> json) =>
-    _$RouteStopModelImpl(
+_$RouteStopImpl _$$RouteStopImplFromJson(Map<String, dynamic> json) =>
+    _$RouteStopImpl(
       stopId: json['stop_id'] as String,
       nameBn: json['name_bn'] as String,
       sequenceOrder: (json['sequence_order'] as num).toInt(),
@@ -17,20 +17,19 @@ _$RouteStopModelImpl _$$RouteStopModelImplFromJson(Map<String, dynamic> json) =>
       lng: (json['lng'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$RouteStopModelImplToJson(
-  _$RouteStopModelImpl instance,
-) => <String, dynamic>{
-  'stop_id': instance.stopId,
-  'name_bn': instance.nameBn,
-  'sequence_order': instance.sequenceOrder,
-  'cumulative_distance_km': instance.cumulativeDistanceKm,
-  'name_en': instance.nameEn,
-  'lat': instance.lat,
-  'lng': instance.lng,
-};
+Map<String, dynamic> _$$RouteStopImplToJson(_$RouteStopImpl instance) =>
+    <String, dynamic>{
+      'stop_id': instance.stopId,
+      'name_bn': instance.nameBn,
+      'sequence_order': instance.sequenceOrder,
+      'cumulative_distance_km': instance.cumulativeDistanceKm,
+      'name_en': instance.nameEn,
+      'lat': instance.lat,
+      'lng': instance.lng,
+    };
 
-_$BusRouteModelImpl _$$BusRouteModelImplFromJson(Map<String, dynamic> json) =>
-    _$BusRouteModelImpl(
+_$BusRouteImpl _$$BusRouteImplFromJson(Map<String, dynamic> json) =>
+    _$BusRouteImpl(
       id: json['id'] as String,
       routeCode: json['route_code'] as String,
       nameBn: json['name_bn'] as String,
@@ -47,12 +46,12 @@ _$BusRouteModelImpl _$$BusRouteModelImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['issued_date'] as String),
       stops:
           (json['stops'] as List<dynamic>?)
-              ?.map((e) => RouteStopModel.fromJson(e as Map<String, dynamic>))
+              ?.map((e) => RouteStop.fromJson(e as Map<String, dynamic>))
               .toList() ??
           const [],
     );
 
-Map<String, dynamic> _$$BusRouteModelImplToJson(_$BusRouteModelImpl instance) =>
+Map<String, dynamic> _$$BusRouteImplToJson(_$BusRouteImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'route_code': instance.routeCode,
