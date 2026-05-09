@@ -7,6 +7,7 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 
+import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
 import '../widgets/fare_card.dart';
@@ -40,15 +41,19 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
 
-    // Only auto-collapse if results exist AND user hasn't manually expanded the view
+    ref.listen<FareSearchState>(fareSearchProvider, (previous, next) {
+      if (previous?.selectedDestination != null && next.selectedDestination == null) {
+        destinationController.clear();
+      }
+    });
+
     if (state.fareResults.isNotEmpty && !_isCollapsed && !state.isLoading && !_manuallyExpanded) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) setState(() => _isCollapsed = true);
       });
     }
 
-    // Reset the manual override if a new search starts (isLoading)
-    // or if the results are cleared
+
     if (state.isLoading || state.fareResults.isEmpty) {
       if (_manuallyExpanded) {
         _manuallyExpanded = false;
@@ -67,7 +72,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Where to?', style: AppTextStyles.headline),
+                      const Text('Where to?', style: AppTextStyles.priceHero),
                       const Text(
                         'Find fares across Dhaka City',
                         style: TextStyle(
@@ -184,8 +189,30 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     hintText: 'Search destination...',
                     prefixIcon: Icons.location_on,
                     controller: destinationController,
-                    onChanged: notifier.searchDestination,
                     readOnly: state.selectedOrigin == null,
+
+                    // 1. Trigger search when they type
+                    onChanged: notifier.searchDestination,
+
+                    // 2. Trigger the list to reappear when they just tap the box
+                    onTap: () {
+                      if (state.selectedOrigin != null) {
+                        // Pass the current text to bring back the list based on what's already typed
+                        notifier.searchDestination(destinationController.text);
+                      }
+                    },
+
+                    // Optional but highly recommended UX: A clear button
+                    suffixIcon: destinationController.text.isNotEmpty
+                        ? IconButton(
+                      icon: const Icon(Icons.clear, size: 20),
+                      onPressed: () {
+                        destinationController.clear();
+                        notifier.searchDestination(''); // Reset the list
+                        notifier.selectDestination(StopEntity(id: '', nameBn: '')); // Clear selected state if needed
+                      },
+                    )
+                        : null,
                   ),
                   if (state.destinationSuggestions.isNotEmpty)
                     AppSuggestionList(
@@ -272,11 +299,4 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  Widget _buildFAB() {
-    return FloatingActionButton(
-      onPressed: () {},
-      backgroundColor: AppColors.tertiaryFixed,
-      child: const Icon(Icons.bolt, color: AppColors.onTertiaryFixed),
-    );
-  }
 }

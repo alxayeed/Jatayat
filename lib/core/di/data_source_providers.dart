@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/fare_finder/data/data_sources/fare_data_source.dart';
 import '../../features/route_explorer/data/datasources/route_data_source.dart';
 import '../../features/route_explorer/data/datasources/supabase_route_data_source_impl.dart';
 import 'core_providers.dart';

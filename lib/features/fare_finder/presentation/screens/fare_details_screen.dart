@@ -1,26 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../route_explorer/presentation/providers/route_explorer_provider.dart';
+import '../../../route_explorer/presentation/widgets/route_stop_item.dart';
 import '../../domain/entities/fair_result_entity/fare_result_entity.dart';
+import '../providers/fare_search_provider.dart';
 
-class FareDetailsScreen extends StatelessWidget {
+class FareDetailsScreen extends ConsumerWidget {
   final FareResultEntity fare;
 
   const FareDetailsScreen({super.key, required this.fare});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final routeDetailsAsync = ref.watch(routeDetailsProvider(fare.routeId));
+    final searchState = ref.read(fareSearchProvider);
+
+    final bool isFlipped = searchState.selectedOrigin?.id == fare.toStopId;
+
+    final String displayOriginName = isFlipped ? fare.destinationName : fare.originName;
+    final String displayDestName = isFlipped ? fare.originName : fare.destinationName;
+    final String displayOriginId = isFlipped ? fare.toStopId : fare.fromStopId;
+    final String displayDestId = isFlipped ? fare.fromStopId : fare.toStopId;
+
+    final calculatedFare = (fare.travelDistanceKm * fare.baseRate).toStringAsFixed(2);
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          const CustomAppBar(
-            title: 'ভাড়ার বিস্তারিত',
-            showProfile: false,
-          ),
+          const CustomAppBar(title: AppStrings.fareDetailsTitle, showProfile: false),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -40,23 +55,91 @@ class FareDetailsScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _buildJourneyTimeline(),
+                        _buildJourneyTimeline(displayOriginName, displayDestName),
                         const Divider(height: 40, thickness: 0.5),
-                        _buildCompactRow(
-                          'নির্ধারিত ভাড়া',
-                          '৳${fare.officialFare.toInt()}',
-                          isPrimary: true,
-                        ),
-                        const SizedBox(height: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            _buildMiniStat('ভ্রমণ দূরত্ব', '${fare.distance.toStringAsFixed(1)} কি.মি.'),
-                            _buildMiniStat('রুট কোড', fare.route.routeCode),
-                            _buildMiniStat('রেফারেন্স', 'পৃষ্ঠা ${fare.route.pdfPage}'),
+                            _buildMiniStat(
+                              AppStrings.travelDistance,
+                              '${fare.travelDistanceKm} ${AppStrings.km}',
+                            ),
+                            _buildMiniStat(AppStrings.routeCode, fare.routeCode),
+                            _buildMiniStat(
+                              AppStrings.reference,
+                              '${AppStrings.page} ${fare.pdfPage ?? '-'}',
+                            ),
                           ],
                         ),
+                        const SizedBox(height: 24),
+                        _buildCompactRow(
+                          AppStrings.officialFare,
+                          '${AppStrings.currencySign}${fare.fareAmount.toInt()}',
+                          isPrimary: true,
+                        ),
+                        _buildCompactRow(
+                          AppStrings.calculatedFare,
+                          '${AppStrings.currencySign}$calculatedFare',
+                          isPrimary: false,
+                        ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(AppStrings.routeStoppages, style: AppTextStyles.label),
+                  const SizedBox(height: 12),
+                  routeDetailsAsync.when(
+                    data: (route) {
+                      final startIndex = route.stops.indexWhere(
+                            (s) => s.stopId == displayOriginId,
+                      );
+                      final endIndex = route.stops.indexWhere(
+                            (s) => s.stopId == displayDestId,
+                      );
+
+                      final bool isReversed = startIndex > endIndex && startIndex != -1 && endIndex != -1;
+                      final displayStops = isReversed ? route.stops.reversed.toList() : route.stops;
+
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.surfaceContainerLowest,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: displayStops.length,
+                          itemBuilder: (context, index) {
+                            final stop = displayStops[index];
+                            bool isSelected = false;
+
+                            if (startIndex != -1 && endIndex != -1) {
+                              final displayStartIndex = displayStops.indexWhere((s) => s.stopId == displayOriginId);
+                              final displayEndIndex = displayStops.indexWhere((s) => s.stopId == displayDestId);
+                              isSelected = index >= displayStartIndex && index <= displayEndIndex;
+                            }
+
+                            return RouteStopItem(
+                              stopName: stop.nameBn,
+                              isFirst: index == 0,
+                              isLast: index == displayStops.length - 1,
+                              isSelected: isSelected,
+                              isSpecial: stop.stopId == displayOriginId || stop.stopId == displayDestId,
+                            );
+                          },
+                        ),
+                      );
+                    },
+                    loading: () => const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    error: (_, __) => const Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(AppStrings.failedToLoadStops),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -66,23 +149,36 @@ class FareDetailsScreen extends StatelessWidget {
                     children: [
                       Expanded(
                         child: _buildActionButton(
-                          'প্রমাণ দেখুন',
+                          AppStrings.viewProof,
                           Icons.picture_as_pdf_rounded,
                           AppColors.primary,
-                              () => context.push(AppRoutes.pdfViewer, extra: {
-                            'url': fare.route.pdfUrl,
-                            'page': fare.route.pdfPage,
-                            'title': '${fare.route.routeCode} - ভাড়ার তালিকা',
-                          }),
+                              () => context.push(
+                            AppRoutes.pdfViewer,
+                            extra: {
+                              'url': fare.pdfUrl,
+                              'page': fare.pdfPage,
+                              'title': '${fare.routeCode} - ${AppStrings.fareList}',
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: _buildActionButton(
-                          'বিআরটিএ লিঙ্ক',
+                          AppStrings.brtaLink,
                           Icons.open_in_new_rounded,
                           AppColors.onSurfaceVariant,
-                              () {},
+                              () async {
+                            if (fare.btrcUrl != null) {
+                              final uri = Uri.parse(fare.btrcUrl!);
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(
+                                  uri,
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              }
+                            }
+                          },
                         ),
                       ),
                     ],
@@ -102,7 +198,7 @@ class FareDetailsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'ভাড়ার হার : প্রতি যাত্রী প্রতি কিলোমিটার ${fare.route.baseRate} টাকা',
+          '${AppStrings.fareRatePrefix} ${fare.baseRate} ${AppStrings.taka}',
           style: AppTextStyles.label.copyWith(
             fontSize: 14,
             color: AppColors.primary,
@@ -110,12 +206,12 @@ class FareDetailsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          'রুটের মোট দূরত্ব ${fare.route.totalDistance} কিলোমিটার।',
+          '${AppStrings.routeDistancePrefix} ${fare.routeTotalDistance} ${AppStrings.kilometerSuffix}',
           style: AppTextStyles.label.copyWith(fontSize: 14),
         ),
         const SizedBox(height: 12),
         Text(
-          fare.route.nameBn,
+          fare.routeNameBn,
           style: AppTextStyles.banglaName.copyWith(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -125,18 +221,25 @@ class FareDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildJourneyTimeline() {
+  Widget _buildJourneyTimeline(String originName, String destinationName) {
     return Row(
       children: [
-        const Icon(Icons.radio_button_checked, size: 20, color: AppColors.primary),
+        const Icon(
+          Icons.radio_button_checked,
+          size: 20,
+          color: AppColors.primary,
+        ),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('যাত্রা শুরু', style: AppTextStyles.caption.copyWith(fontSize: 10)),
               Text(
-                fare.originName,
+                AppStrings.journeyStart,
+                style: AppTextStyles.caption.copyWith(fontSize: 10),
+              ),
+              Text(
+                originName,
                 style: AppTextStyles.label.copyWith(fontSize: 15),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -151,9 +254,12 @@ class FareDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('গন্তব্য', style: AppTextStyles.caption.copyWith(fontSize: 10)),
               Text(
-                fare.destinationName,
+                AppStrings.destination,
+                style: AppTextStyles.caption.copyWith(fontSize: 10),
+              ),
+              Text(
+                destinationName,
                 style: AppTextStyles.label.copyWith(fontSize: 15),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -166,7 +272,11 @@ class FareDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCompactRow(String label, String value, {bool isPrimary = false}) {
+  Widget _buildCompactRow(
+      String label,
+      String value, {
+        bool isPrimary = false,
+      }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -205,20 +315,33 @@ class FareDetailsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'বিঃ দ্রঃ (০১) সর্বনিম্ন ভাড়া ${fare.route.minFare}.০০ টাকা হিসাব করে অত্র চার্ট প্রস্তুত করা হয়েছে। তাই উপরোক্ত ভাড়ার সাথে আর কোন অর্থ যোগ করে ভাড়া দাবী করা যাবে না।',
-            style: const TextStyle(fontSize: 12, height: 1.5, fontWeight: FontWeight.w500),
+            '${AppStrings.noteMinFarePrefix} ${fare.minFare.toInt()}${AppStrings.noteMinFareSuffix}',
+            style: const TextStyle(
+              fontSize: 12,
+              height: 1.5,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 12),
-          Text(
-            '(০২) এ ভাড়ার হার গ্যাস চালিত যানবাহনের ক্ষেত্রে প্রযোজ্য হবে না।',
-            style: const TextStyle(fontSize: 12, height: 1.5, fontWeight: FontWeight.w500),
+          const Text(
+            AppStrings.noteGas,
+            style: TextStyle(
+              fontSize: 12,
+              height: 1.5,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildActionButton(String label, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildActionButton(
+      String label,
+      IconData icon,
+      Color color,
+      VoidCallback onTap,
+      ) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -233,7 +356,14 @@ class FareDetailsScreen extends StatelessWidget {
           children: [
             Icon(icon, color: color, size: 22),
             const SizedBox(height: 4),
-            Text(label, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 11)),
+            Text(
+              label,
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+                fontSize: 11,
+              ),
+            ),
           ],
         ),
       ),

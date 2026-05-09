@@ -3,8 +3,8 @@ import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/app_shimmer.dart'; // Update path as needed
 
-class FareDetailsShimmer extends StatelessWidget {
-  const FareDetailsShimmer({super.key});
+class RouteDetailsShimmer extends StatelessWidget {
+  const RouteDetailsShimmer({super.key});
 
   @override
   Widget build(BuildContext context) {

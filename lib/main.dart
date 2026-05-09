@@ -4,7 +4,6 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/constants/app_strings.dart';
 import 'core/router/app_router.dart';
 import 'core/styles/app_theme.dart';import 'core/utils/supabase_logger.dart';
 

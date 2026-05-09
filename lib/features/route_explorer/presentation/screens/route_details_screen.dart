@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../domain/entities/bus_route/bus_route.dart';
-import '../providers/route_explorer_provider.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/widgets/reference_action_button.dart';
-import '../widgets/fare_details_shimmer.dart';
+import '../../domain/entities/bus_route/bus_route.dart';
+import '../providers/route_explorer_provider.dart';
 import '../widgets/route_card.dart';
-
+import '../widgets/route_details_shimmer.dart';
+import '../widgets/route_stop_item.dart'; // Reusing the shared widget
 
 class RouteDetailsScreen extends ConsumerWidget {
   final String routeId;
@@ -35,7 +34,7 @@ class RouteDetailsScreen extends ConsumerWidget {
         elevation: 0,
       ),
       body: asyncDetailedRoute.when(
-        loading: () => const FareDetailsShimmer(),
+        loading: () => const RouteDetailsShimmer(),
         error: (error, stackTrace) => _buildErrorView(ref, error),
         data: (route) => _buildRouteContent(context, route),
       ),
@@ -104,7 +103,7 @@ class RouteDetailsScreen extends ConsumerWidget {
           ),
         ),
 
-        // 3. The Timeline of Stops
+        // 3. The Timeline of Stops using the shared RouteStopItem
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           sliver: SliverList(
@@ -114,16 +113,19 @@ class RouteDetailsScreen extends ConsumerWidget {
                 final isFirst = index == 0;
                 final isLast = index == route.stops.length - 1;
 
-                return _TimelineStopTile(
-                  stop: stop,
+                return RouteStopItem(
+                  stopName: stop.nameBn,
                   isFirst: isFirst,
                   isLast: isLast,
+                  isSelected: true, // Entire route is active in explorer view
+                  isSpecial: isFirst || isLast, // Mark start/end nodes prominently
                 );
               },
               childCount: route.stops.length,
             ),
           ),
         ),
+        const SliverToBoxAdapter(child: SizedBox(height: 40)),
       ],
     );
   }
@@ -145,94 +147,6 @@ class RouteDetailsScreen extends ConsumerWidget {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-
-class _TimelineStopTile extends StatelessWidget {
-  final RouteStop stop;
-  final bool isFirst;
-  final bool isLast;
-
-  const _TimelineStopTile({
-    required this.stop,
-    required this.isFirst,
-    required this.isLast,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final lineColor = theme.colorScheme.primary.withValues(alpha: 0.5);
-
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Timeline Visuals
-          SizedBox(
-            width: 40,
-            child: Column(
-              children: [
-                // Top line (Hide if first stop)
-                Expanded(
-                  child: Container(
-                    width: 3,
-                    color: isFirst ? Colors.transparent : lineColor,
-                  ),
-                ),
-                // The Node/Dot
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: isFirst || isLast
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.surface,
-                    border: Border.all(
-                      color: theme.colorScheme.primary,
-                      width: 3,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                // Bottom line (Hide if last stop)
-                Expanded(
-                  child: Container(
-                    width: 3,
-                    color: isLast ? Colors.transparent : lineColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Stop Information
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    stop.nameBn,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: isFirst || isLast ? FontWeight.bold : FontWeight.normal,
-                    ),
-                  ),
-                  if (stop.cumulativeDistanceKm > 0)
-                    Text(
-                      '${stop.cumulativeDistanceKm} km from start',
-                      style: theme.textTheme.bodySmall?.copyWith(color: Colors.grey),
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

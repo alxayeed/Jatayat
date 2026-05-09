@@ -31,6 +31,22 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
         super(const FareSearchState());
 
   Future<void> searchOrigin(String query) async {
+    // UX FIX 1: If the user types in the Origin box, invalidate the current selections.
+    // They are changing the starting point, so the destination and fares are no longer valid.
+    if (state.selectedOrigin != null) {
+      _connectedStopsCache = [];
+
+      // *Note: This assumes your FareSearchState.copyWith supports setting fields to null.
+      // (If you are using Freezed, it handles this automatically).
+      state = state.copyWith(
+        selectedOrigin: null,
+        selectedDestination: null,
+        destinationSuggestions: [],
+        fareResults: [],
+        errorMessage: null,
+      );
+    }
+
     if (query.length < 2) {
       state = state.copyWith(originSuggestions: []);
       return;
@@ -40,7 +56,12 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
 
     result.fold(
           (failure) => state = state.copyWith(errorMessage: failure.message),
-          (stops) => state = state.copyWith(originSuggestions: stops, errorMessage: null),
+          (stops) {
+        final sortedOrigins = List<StopEntity>.from(stops)
+          ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
+
+        state = state.copyWith(originSuggestions: sortedOrigins, errorMessage: null);
+      },
     );
   }
 
@@ -60,11 +81,21 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     result.fold(
           (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
           (destinations) {
-        _connectedStopsCache = destinations;
-        state = state.copyWith(
-          isLoading: false,
-          destinationSuggestions: destinations,
-        );
+        if (destinations.isEmpty) {
+          state = state.copyWith(
+              isLoading: false,
+              errorMessage: "দুঃখিত, এই স্টপেজের কোনো রুটের তথ্য ডাটাবেসে নেই।"
+          );
+        } else {
+          final sortedDestinations = List<StopEntity>.from(destinations)
+            ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
+
+          _connectedStopsCache = sortedDestinations;
+          state = state.copyWith(
+            isLoading: false,
+            destinationSuggestions: sortedDestinations,
+          );
+        }
       },
     );
   }
@@ -72,13 +103,17 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
   void searchDestination(String query) {
     if (state.selectedOrigin == null) return;
 
-    if (query.isEmpty) {
+    final cleanQuery = query.trim().toLowerCase();
+
+    if (cleanQuery.isEmpty) {
       state = state.copyWith(destinationSuggestions: _connectedStopsCache);
       return;
     }
 
     final filtered = _connectedStopsCache.where((stop) {
-      return stop.nameBn.contains(query);
+      final nameBnMatch = stop.nameBn.contains(cleanQuery);
+      final nameEnMatch = stop.nameEn?.toLowerCase().contains(cleanQuery) ?? false;
+      return nameBnMatch || nameEnMatch;
     }).toList();
 
     state = state.copyWith(destinationSuggestions: filtered);
@@ -92,32 +127,50 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
   }
 
-  void swapStations() {
-    final currentOrigin = state.selectedOrigin;
-    final currentDestination = state.selectedDestination;
+  // UX FIX 2: Re-wrote swapStations so it doesn't accidentally delete the destination.
+  Future<void> swapStations() async {
+    final oldOrigin = state.selectedOrigin;
+    final oldDestination = state.selectedDestination;
 
-    if (currentOrigin == null) return;
+    // We can only swap if both are selected
+    if (oldOrigin == null || oldDestination == null) return;
 
+    // 1. Swap the selections in state and trigger loading, BUT keep both selected
     state = state.copyWith(
-      selectedOrigin: currentDestination,
-      selectedDestination: currentOrigin,
+      selectedOrigin: oldDestination,
+      selectedDestination: oldOrigin,
       originSuggestions: [],
       destinationSuggestions: [],
       fareResults: [],
+      isLoading: true,
     );
 
-    if (currentDestination != null) {
-      selectOrigin(currentDestination);
-    }
+    // 2. Fetch the new connected stops for the NEW origin (which was the old destination)
+    final result = await _getConnectedStops(oldDestination.id);
+
+    result.fold(
+          (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
+          (destinations) {
+        final sortedDestinations = List<StopEntity>.from(destinations)
+          ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
+
+        _connectedStopsCache = sortedDestinations;
+        state = state.copyWith(
+          isLoading: false,
+          destinationSuggestions: sortedDestinations,
+          // We DO NOT clear the selectedDestination here, preserving the swap!
+        );
+      },
+    );
   }
 
   Future<void> calculateFare() async {
     if (state.selectedOrigin == null || state.selectedDestination == null) {
-      state = state.copyWith(errorMessage: "Please select both Origin and Destination");
+      state = state.copyWith(errorMessage: "প্রথমে যাত্রা শুরু এবং গন্তব্যস্থান নির্বাচন করুন");
       return;
     }
 
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    state = state.copyWith(isLoading: true, fareResults: [], errorMessage: null);
 
     final result = await _getFares(
       originId: state.selectedOrigin!.id,
@@ -125,20 +178,20 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
 
     result.fold(
-          (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
-          (fares) {
-        final updatedResults = fares.map((fare) {
-          return fare.copyWith(
-            originName: state.selectedOrigin?.nameBn ?? "",
-            destinationName: state.selectedDestination?.nameBn ?? "",
-          );
-        }).toList();
-
-        state = state.copyWith(
-          isLoading: false,
-          fareResults: updatedResults,
-        );
-      },
+            (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
+            (fares) {
+          if(fares.isEmpty){
+            state = state.copyWith(
+                isLoading: false,
+                errorMessage: "দুঃখিত, এই তথ্য ডাটাবেসে নেই।"
+            );
+          } else{
+            state = state.copyWith(
+              isLoading: false,
+              fareResults: fares,
+            );
+          }
+        }
     );
   }
 

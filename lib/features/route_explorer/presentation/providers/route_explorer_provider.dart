@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/usecase_providers.dart'; // Assume you added the new use case here
 import '../../domain/entities/bus_route/bus_route.dart';
 import '../../domain/usecases/get_all_routes.dart';
-import '../../domain/usecases/search_routes_use_case.dart';
 import '../../domain/usecases/get_route_details.dart'; // Import the new use case
 
 // --- 1. The Master List Provider (Unchanged, it's already great) ---
@@ -13,7 +12,7 @@ final routeExplorerProvider = AsyncNotifierProvider<RouteExplorerNotifier, List<
 
 class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
   late final GetAllRoutesUseCase _getAllRoutes;
-  late final SearchRoutesUseCase _searchRoutes; // Kept in case you want server-search later
+// Kept in case you want server-search later
 
   // We keep a full list in memory for instant local filtering
   List<BusRoute> _allRoutesCache = [];
@@ -21,7 +20,6 @@ class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
   @override
   FutureOr<List<BusRoute>> build() async {
     _getAllRoutes = ref.watch(getAllRoutesUseCaseProvider);
-    _searchRoutes = ref.watch(searchRoutesUseCaseProvider);
     return _fetchInitialRoutes();
   }
 

@@ -17,12 +17,25 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FareResultEntity {
-  double get officialFare => throw _privateConstructorUsedError;
-  double get calculatedFare => throw _privateConstructorUsedError;
-  double get distance => throw _privateConstructorUsedError;
+  String get fareId => throw _privateConstructorUsedError;
+  double get fareAmount => throw _privateConstructorUsedError;
+  double get travelDistanceKm =>
+      throw _privateConstructorUsedError; // Origin/Destination IDs to help highlight the timeline
+  String get fromStopId => throw _privateConstructorUsedError;
+  String get toStopId =>
+      throw _privateConstructorUsedError; // Names for the header/timeline
   String get originName => throw _privateConstructorUsedError;
-  String get destinationName => throw _privateConstructorUsedError;
-  RouteEntity get route => throw _privateConstructorUsedError;
+  String get destinationName =>
+      throw _privateConstructorUsedError; // Nested Route Info
+  String get routeId => throw _privateConstructorUsedError;
+  String get routeCode => throw _privateConstructorUsedError;
+  String get routeNameBn => throw _privateConstructorUsedError;
+  double get routeTotalDistance => throw _privateConstructorUsedError;
+  int? get pdfPage => throw _privateConstructorUsedError;
+  String? get pdfUrl => throw _privateConstructorUsedError;
+  String? get btrcUrl => throw _privateConstructorUsedError;
+  double get baseRate => throw _privateConstructorUsedError;
+  double get minFare => throw _privateConstructorUsedError;
 
   /// Create a copy of FareResultEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -39,15 +52,23 @@ abstract class $FareResultEntityCopyWith<$Res> {
   ) = _$FareResultEntityCopyWithImpl<$Res, FareResultEntity>;
   @useResult
   $Res call({
-    double officialFare,
-    double calculatedFare,
-    double distance,
+    String fareId,
+    double fareAmount,
+    double travelDistanceKm,
+    String fromStopId,
+    String toStopId,
     String originName,
     String destinationName,
-    RouteEntity route,
+    String routeId,
+    String routeCode,
+    String routeNameBn,
+    double routeTotalDistance,
+    int? pdfPage,
+    String? pdfUrl,
+    String? btrcUrl,
+    double baseRate,
+    double minFare,
   });
-
-  $RouteEntityCopyWith<$Res> get route;
 }
 
 /// @nodoc
@@ -65,27 +86,45 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? officialFare = null,
-    Object? calculatedFare = null,
-    Object? distance = null,
+    Object? fareId = null,
+    Object? fareAmount = null,
+    Object? travelDistanceKm = null,
+    Object? fromStopId = null,
+    Object? toStopId = null,
     Object? originName = null,
     Object? destinationName = null,
-    Object? route = null,
+    Object? routeId = null,
+    Object? routeCode = null,
+    Object? routeNameBn = null,
+    Object? routeTotalDistance = null,
+    Object? pdfPage = freezed,
+    Object? pdfUrl = freezed,
+    Object? btrcUrl = freezed,
+    Object? baseRate = null,
+    Object? minFare = null,
   }) {
     return _then(
       _value.copyWith(
-            officialFare: null == officialFare
-                ? _value.officialFare
-                : officialFare // ignore: cast_nullable_to_non_nullable
+            fareId: null == fareId
+                ? _value.fareId
+                : fareId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            fareAmount: null == fareAmount
+                ? _value.fareAmount
+                : fareAmount // ignore: cast_nullable_to_non_nullable
                       as double,
-            calculatedFare: null == calculatedFare
-                ? _value.calculatedFare
-                : calculatedFare // ignore: cast_nullable_to_non_nullable
+            travelDistanceKm: null == travelDistanceKm
+                ? _value.travelDistanceKm
+                : travelDistanceKm // ignore: cast_nullable_to_non_nullable
                       as double,
-            distance: null == distance
-                ? _value.distance
-                : distance // ignore: cast_nullable_to_non_nullable
-                      as double,
+            fromStopId: null == fromStopId
+                ? _value.fromStopId
+                : fromStopId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            toStopId: null == toStopId
+                ? _value.toStopId
+                : toStopId // ignore: cast_nullable_to_non_nullable
+                      as String,
             originName: null == originName
                 ? _value.originName
                 : originName // ignore: cast_nullable_to_non_nullable
@@ -94,23 +133,45 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
                 ? _value.destinationName
                 : destinationName // ignore: cast_nullable_to_non_nullable
                       as String,
-            route: null == route
-                ? _value.route
-                : route // ignore: cast_nullable_to_non_nullable
-                      as RouteEntity,
+            routeId: null == routeId
+                ? _value.routeId
+                : routeId // ignore: cast_nullable_to_non_nullable
+                      as String,
+            routeCode: null == routeCode
+                ? _value.routeCode
+                : routeCode // ignore: cast_nullable_to_non_nullable
+                      as String,
+            routeNameBn: null == routeNameBn
+                ? _value.routeNameBn
+                : routeNameBn // ignore: cast_nullable_to_non_nullable
+                      as String,
+            routeTotalDistance: null == routeTotalDistance
+                ? _value.routeTotalDistance
+                : routeTotalDistance // ignore: cast_nullable_to_non_nullable
+                      as double,
+            pdfPage: freezed == pdfPage
+                ? _value.pdfPage
+                : pdfPage // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            pdfUrl: freezed == pdfUrl
+                ? _value.pdfUrl
+                : pdfUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            btrcUrl: freezed == btrcUrl
+                ? _value.btrcUrl
+                : btrcUrl // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            baseRate: null == baseRate
+                ? _value.baseRate
+                : baseRate // ignore: cast_nullable_to_non_nullable
+                      as double,
+            minFare: null == minFare
+                ? _value.minFare
+                : minFare // ignore: cast_nullable_to_non_nullable
+                      as double,
           )
           as $Val,
     );
-  }
-
-  /// Create a copy of FareResultEntity
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $RouteEntityCopyWith<$Res> get route {
-    return $RouteEntityCopyWith<$Res>(_value.route, (value) {
-      return _then(_value.copyWith(route: value) as $Val);
-    });
   }
 }
 
@@ -124,16 +185,23 @@ abstract class _$$FareResultEntityImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    double officialFare,
-    double calculatedFare,
-    double distance,
+    String fareId,
+    double fareAmount,
+    double travelDistanceKm,
+    String fromStopId,
+    String toStopId,
     String originName,
     String destinationName,
-    RouteEntity route,
+    String routeId,
+    String routeCode,
+    String routeNameBn,
+    double routeTotalDistance,
+    int? pdfPage,
+    String? pdfUrl,
+    String? btrcUrl,
+    double baseRate,
+    double minFare,
   });
-
-  @override
-  $RouteEntityCopyWith<$Res> get route;
 }
 
 /// @nodoc
@@ -150,27 +218,45 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? officialFare = null,
-    Object? calculatedFare = null,
-    Object? distance = null,
+    Object? fareId = null,
+    Object? fareAmount = null,
+    Object? travelDistanceKm = null,
+    Object? fromStopId = null,
+    Object? toStopId = null,
     Object? originName = null,
     Object? destinationName = null,
-    Object? route = null,
+    Object? routeId = null,
+    Object? routeCode = null,
+    Object? routeNameBn = null,
+    Object? routeTotalDistance = null,
+    Object? pdfPage = freezed,
+    Object? pdfUrl = freezed,
+    Object? btrcUrl = freezed,
+    Object? baseRate = null,
+    Object? minFare = null,
   }) {
     return _then(
       _$FareResultEntityImpl(
-        officialFare: null == officialFare
-            ? _value.officialFare
-            : officialFare // ignore: cast_nullable_to_non_nullable
+        fareId: null == fareId
+            ? _value.fareId
+            : fareId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        fareAmount: null == fareAmount
+            ? _value.fareAmount
+            : fareAmount // ignore: cast_nullable_to_non_nullable
                   as double,
-        calculatedFare: null == calculatedFare
-            ? _value.calculatedFare
-            : calculatedFare // ignore: cast_nullable_to_non_nullable
+        travelDistanceKm: null == travelDistanceKm
+            ? _value.travelDistanceKm
+            : travelDistanceKm // ignore: cast_nullable_to_non_nullable
                   as double,
-        distance: null == distance
-            ? _value.distance
-            : distance // ignore: cast_nullable_to_non_nullable
-                  as double,
+        fromStopId: null == fromStopId
+            ? _value.fromStopId
+            : fromStopId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        toStopId: null == toStopId
+            ? _value.toStopId
+            : toStopId // ignore: cast_nullable_to_non_nullable
+                  as String,
         originName: null == originName
             ? _value.originName
             : originName // ignore: cast_nullable_to_non_nullable
@@ -179,10 +265,42 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
             ? _value.destinationName
             : destinationName // ignore: cast_nullable_to_non_nullable
                   as String,
-        route: null == route
-            ? _value.route
-            : route // ignore: cast_nullable_to_non_nullable
-                  as RouteEntity,
+        routeId: null == routeId
+            ? _value.routeId
+            : routeId // ignore: cast_nullable_to_non_nullable
+                  as String,
+        routeCode: null == routeCode
+            ? _value.routeCode
+            : routeCode // ignore: cast_nullable_to_non_nullable
+                  as String,
+        routeNameBn: null == routeNameBn
+            ? _value.routeNameBn
+            : routeNameBn // ignore: cast_nullable_to_non_nullable
+                  as String,
+        routeTotalDistance: null == routeTotalDistance
+            ? _value.routeTotalDistance
+            : routeTotalDistance // ignore: cast_nullable_to_non_nullable
+                  as double,
+        pdfPage: freezed == pdfPage
+            ? _value.pdfPage
+            : pdfPage // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        pdfUrl: freezed == pdfUrl
+            ? _value.pdfUrl
+            : pdfUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        btrcUrl: freezed == btrcUrl
+            ? _value.btrcUrl
+            : btrcUrl // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        baseRate: null == baseRate
+            ? _value.baseRate
+            : baseRate // ignore: cast_nullable_to_non_nullable
+                  as double,
+        minFare: null == minFare
+            ? _value.minFare
+            : minFare // ignore: cast_nullable_to_non_nullable
+                  as double,
       ),
     );
   }
@@ -192,30 +310,63 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
 
 class _$FareResultEntityImpl implements _FareResultEntity {
   const _$FareResultEntityImpl({
-    required this.officialFare,
-    required this.calculatedFare,
-    required this.distance,
+    required this.fareId,
+    required this.fareAmount,
+    required this.travelDistanceKm,
+    required this.fromStopId,
+    required this.toStopId,
     required this.originName,
     required this.destinationName,
-    required this.route,
+    required this.routeId,
+    required this.routeCode,
+    required this.routeNameBn,
+    required this.routeTotalDistance,
+    required this.pdfPage,
+    required this.pdfUrl,
+    required this.btrcUrl,
+    required this.baseRate,
+    required this.minFare,
   });
 
   @override
-  final double officialFare;
+  final String fareId;
   @override
-  final double calculatedFare;
+  final double fareAmount;
   @override
-  final double distance;
+  final double travelDistanceKm;
+  // Origin/Destination IDs to help highlight the timeline
+  @override
+  final String fromStopId;
+  @override
+  final String toStopId;
+  // Names for the header/timeline
   @override
   final String originName;
   @override
   final String destinationName;
+  // Nested Route Info
   @override
-  final RouteEntity route;
+  final String routeId;
+  @override
+  final String routeCode;
+  @override
+  final String routeNameBn;
+  @override
+  final double routeTotalDistance;
+  @override
+  final int? pdfPage;
+  @override
+  final String? pdfUrl;
+  @override
+  final String? btrcUrl;
+  @override
+  final double baseRate;
+  @override
+  final double minFare;
 
   @override
   String toString() {
-    return 'FareResultEntity(officialFare: $officialFare, calculatedFare: $calculatedFare, distance: $distance, originName: $originName, destinationName: $destinationName, route: $route)';
+    return 'FareResultEntity(fareId: $fareId, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, fromStopId: $fromStopId, toStopId: $toStopId, originName: $originName, destinationName: $destinationName, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
   }
 
   @override
@@ -223,28 +374,53 @@ class _$FareResultEntityImpl implements _FareResultEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$FareResultEntityImpl &&
-            (identical(other.officialFare, officialFare) ||
-                other.officialFare == officialFare) &&
-            (identical(other.calculatedFare, calculatedFare) ||
-                other.calculatedFare == calculatedFare) &&
-            (identical(other.distance, distance) ||
-                other.distance == distance) &&
+            (identical(other.fareId, fareId) || other.fareId == fareId) &&
+            (identical(other.fareAmount, fareAmount) ||
+                other.fareAmount == fareAmount) &&
+            (identical(other.travelDistanceKm, travelDistanceKm) ||
+                other.travelDistanceKm == travelDistanceKm) &&
+            (identical(other.fromStopId, fromStopId) ||
+                other.fromStopId == fromStopId) &&
+            (identical(other.toStopId, toStopId) ||
+                other.toStopId == toStopId) &&
             (identical(other.originName, originName) ||
                 other.originName == originName) &&
             (identical(other.destinationName, destinationName) ||
                 other.destinationName == destinationName) &&
-            (identical(other.route, route) || other.route == route));
+            (identical(other.routeId, routeId) || other.routeId == routeId) &&
+            (identical(other.routeCode, routeCode) ||
+                other.routeCode == routeCode) &&
+            (identical(other.routeNameBn, routeNameBn) ||
+                other.routeNameBn == routeNameBn) &&
+            (identical(other.routeTotalDistance, routeTotalDistance) ||
+                other.routeTotalDistance == routeTotalDistance) &&
+            (identical(other.pdfPage, pdfPage) || other.pdfPage == pdfPage) &&
+            (identical(other.pdfUrl, pdfUrl) || other.pdfUrl == pdfUrl) &&
+            (identical(other.btrcUrl, btrcUrl) || other.btrcUrl == btrcUrl) &&
+            (identical(other.baseRate, baseRate) ||
+                other.baseRate == baseRate) &&
+            (identical(other.minFare, minFare) || other.minFare == minFare));
   }
 
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    officialFare,
-    calculatedFare,
-    distance,
+    fareId,
+    fareAmount,
+    travelDistanceKm,
+    fromStopId,
+    toStopId,
     originName,
     destinationName,
-    route,
+    routeId,
+    routeCode,
+    routeNameBn,
+    routeTotalDistance,
+    pdfPage,
+    pdfUrl,
+    btrcUrl,
+    baseRate,
+    minFare,
   );
 
   /// Create a copy of FareResultEntity
@@ -261,26 +437,56 @@ class _$FareResultEntityImpl implements _FareResultEntity {
 
 abstract class _FareResultEntity implements FareResultEntity {
   const factory _FareResultEntity({
-    required final double officialFare,
-    required final double calculatedFare,
-    required final double distance,
+    required final String fareId,
+    required final double fareAmount,
+    required final double travelDistanceKm,
+    required final String fromStopId,
+    required final String toStopId,
     required final String originName,
     required final String destinationName,
-    required final RouteEntity route,
+    required final String routeId,
+    required final String routeCode,
+    required final String routeNameBn,
+    required final double routeTotalDistance,
+    required final int? pdfPage,
+    required final String? pdfUrl,
+    required final String? btrcUrl,
+    required final double baseRate,
+    required final double minFare,
   }) = _$FareResultEntityImpl;
 
   @override
-  double get officialFare;
+  String get fareId;
   @override
-  double get calculatedFare;
+  double get fareAmount;
   @override
-  double get distance;
+  double get travelDistanceKm; // Origin/Destination IDs to help highlight the timeline
+  @override
+  String get fromStopId;
+  @override
+  String get toStopId; // Names for the header/timeline
   @override
   String get originName;
   @override
-  String get destinationName;
+  String get destinationName; // Nested Route Info
   @override
-  RouteEntity get route;
+  String get routeId;
+  @override
+  String get routeCode;
+  @override
+  String get routeNameBn;
+  @override
+  double get routeTotalDistance;
+  @override
+  int? get pdfPage;
+  @override
+  String? get pdfUrl;
+  @override
+  String? get btrcUrl;
+  @override
+  double get baseRate;
+  @override
+  double get minFare;
 
   /// Create a copy of FareResultEntity
   /// with the given fields replaced by the non-null parameter values.

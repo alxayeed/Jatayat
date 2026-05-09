@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../styles/app_colors.dart';
 import '../styles/app_text_styles.dart';
 
-
 class AppTextField extends StatelessWidget {
   final String label;
   final String hintText;
@@ -12,6 +11,7 @@ class AppTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
+  final Widget? suffixIcon; // Added optional Widget for the suffix
 
   const AppTextField({
     super.key,
@@ -22,6 +22,7 @@ class AppTextField extends StatelessWidget {
     this.onChanged,
     this.onTap,
     this.readOnly = false,
+    this.suffixIcon, // Added to constructor
   });
 
   @override
@@ -55,7 +56,7 @@ class AppTextField extends StatelessWidget {
             onTap: onTap,
             readOnly: readOnly,
             style: AppTextStyles.bodyMain.copyWith(
-              fontFamily: 'HindSiliguri', // Ensure Bangla text looks native
+              fontFamily: 'HindSiliguri',
               fontWeight: FontWeight.w600,
             ),
             decoration: InputDecoration(
@@ -65,6 +66,7 @@ class AppTextField extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
               prefixIcon: Icon(prefixIcon, color: AppColors.outline, size: 22),
+              suffixIcon: suffixIcon, // Passed to InputDecoration
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,

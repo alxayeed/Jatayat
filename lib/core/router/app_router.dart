@@ -7,7 +7,6 @@ import '../../features/fare_finder/presentation/screens/fare_details_screen.dart
 import '../../features/fare_finder/presentation/screens/fare_finder_screen.dart';
 
 // Route Explorer imports
-import '../../features/route_explorer/domain/entities/bus_route/bus_route.dart';
 import '../../features/route_explorer/presentation/screens/route_list_screen.dart';
 // NEW: Import the RouteDetailsScreen
 import '../../features/route_explorer/presentation/screens/route_details_screen.dart';
