@@ -5,6 +5,7 @@ class AppStrings {
   static const String currencySign = '৳';
   static const String km = 'কি.মি.';
   static const String taka = 'টাকা';
+  static const String gazzette = '';
 
   // Home / Search
   static const String searchFares = 'ভাড়া খুঁজুন';
@@ -19,6 +20,15 @@ class AppStrings {
   static const String totalStops = 'মোট স্টপেজ';
   static const String totalDistance = 'মোট দূরত্ব';
   static const String viewSource = 'অফিসিয়াল ডকুমেন্ট দেখুন';
+  
+  // Fare search
+  static const String stopsSearchErrorMessage = "দুঃখিত, এই স্টপেজের কোনো রুটের তথ্য ডাটাবেসে নেই।";
+  static const String fareSearchErrorMessage = "দুঃখিত, এই তথ্য ডাটাবেসে নেই।";
+  static const String  calculatedFareErrorMessage = "প্রথমে যাত্রা শুরু এবং গন্তব্যস্থান নির্বাচন করুন";
+  static const String  fareSearchChange = "";
+  static const String  fromAndTo = "";
+
+
 
   // Fare Details
   static const String fareDetailsTitle = 'ভাড়ার বিস্তারিত';

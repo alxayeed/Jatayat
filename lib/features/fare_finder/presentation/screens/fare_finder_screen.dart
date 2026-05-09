@@ -178,7 +178,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     AppSuggestionList(
                       suggestions: state.originSuggestions,
                       onSelected: (stop) {
-                        originController.text = stop.nameBn;
+                        originController.text = stop.nameEn ?? "Unknown for ${stop.nameBn}";
                         notifier.selectOrigin(stop);
                         FocusScope.of(context).unfocus();
                       },
@@ -218,7 +218,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     AppSuggestionList(
                       suggestions: state.destinationSuggestions,
                       onSelected: (stop) {
-                        destinationController.text = stop.nameBn;
+                        destinationController.text = stop.nameEn ?? "Unknown for ${stop.nameBn}";
                         notifier.selectDestination(stop);
                         FocusScope.of(context).unfocus();
                       },

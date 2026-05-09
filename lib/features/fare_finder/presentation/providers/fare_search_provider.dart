@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jatra/core/constants/app_strings.dart';
 import '../../../../core/di/usecase_providers.dart';
 import '../../domain/usecases/get_connected_stops_usecase.dart';
 import '../../domain/usecases/get_fares_usecase.dart';
@@ -84,7 +85,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
         if (destinations.isEmpty) {
           state = state.copyWith(
               isLoading: false,
-              errorMessage: "দুঃখিত, এই স্টপেজের কোনো রুটের তথ্য ডাটাবেসে নেই।"
+              errorMessage: AppStrings.stopsSearchErrorMessage
           );
         } else {
           final sortedDestinations = List<StopEntity>.from(destinations)
@@ -166,7 +167,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
 
   Future<void> calculateFare() async {
     if (state.selectedOrigin == null || state.selectedDestination == null) {
-      state = state.copyWith(errorMessage: "প্রথমে যাত্রা শুরু এবং গন্তব্যস্থান নির্বাচন করুন");
+      state = state.copyWith(errorMessage: AppStrings.calculatedFareErrorMessage);
       return;
     }
 
@@ -183,7 +184,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
           if(fares.isEmpty){
             state = state.copyWith(
                 isLoading: false,
-                errorMessage: "দুঃখিত, এই তথ্য ডাটাবেসে নেই।"
+                errorMessage: AppStrings.fareSearchErrorMessage
             );
           } else{
             state = state.copyWith(
