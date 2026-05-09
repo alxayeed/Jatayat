@@ -23,6 +23,13 @@ mixin _$RouteEntity {
   double get totalDistance => throw _privateConstructorUsedError;
   String get documentId => throw _privateConstructorUsedError;
   int get pdfPage => throw _privateConstructorUsedError;
+  String get pdfUrl => throw _privateConstructorUsedError;
+  String get btrcUrl =>
+      throw _privateConstructorUsedError; // --- New Verification & Analytical Fields ---
+  String get issuedDate => throw _privateConstructorUsedError;
+  double get baseRate => throw _privateConstructorUsedError;
+  int get minFare => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
 
   /// Create a copy of RouteEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -45,6 +52,12 @@ abstract class $RouteEntityCopyWith<$Res> {
     double totalDistance,
     String documentId,
     int pdfPage,
+    String pdfUrl,
+    String btrcUrl,
+    String issuedDate,
+    double baseRate,
+    int minFare,
+    String? notes,
   });
 }
 
@@ -69,6 +82,12 @@ class _$RouteEntityCopyWithImpl<$Res, $Val extends RouteEntity>
     Object? totalDistance = null,
     Object? documentId = null,
     Object? pdfPage = null,
+    Object? pdfUrl = null,
+    Object? btrcUrl = null,
+    Object? issuedDate = null,
+    Object? baseRate = null,
+    Object? minFare = null,
+    Object? notes = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -96,6 +115,30 @@ class _$RouteEntityCopyWithImpl<$Res, $Val extends RouteEntity>
                 ? _value.pdfPage
                 : pdfPage // ignore: cast_nullable_to_non_nullable
                       as int,
+            pdfUrl: null == pdfUrl
+                ? _value.pdfUrl
+                : pdfUrl // ignore: cast_nullable_to_non_nullable
+                      as String,
+            btrcUrl: null == btrcUrl
+                ? _value.btrcUrl
+                : btrcUrl // ignore: cast_nullable_to_non_nullable
+                      as String,
+            issuedDate: null == issuedDate
+                ? _value.issuedDate
+                : issuedDate // ignore: cast_nullable_to_non_nullable
+                      as String,
+            baseRate: null == baseRate
+                ? _value.baseRate
+                : baseRate // ignore: cast_nullable_to_non_nullable
+                      as double,
+            minFare: null == minFare
+                ? _value.minFare
+                : minFare // ignore: cast_nullable_to_non_nullable
+                      as int,
+            notes: freezed == notes
+                ? _value.notes
+                : notes // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -118,6 +161,12 @@ abstract class _$$RouteEntityImplCopyWith<$Res>
     double totalDistance,
     String documentId,
     int pdfPage,
+    String pdfUrl,
+    String btrcUrl,
+    String issuedDate,
+    double baseRate,
+    int minFare,
+    String? notes,
   });
 }
 
@@ -141,6 +190,12 @@ class __$$RouteEntityImplCopyWithImpl<$Res>
     Object? totalDistance = null,
     Object? documentId = null,
     Object? pdfPage = null,
+    Object? pdfUrl = null,
+    Object? btrcUrl = null,
+    Object? issuedDate = null,
+    Object? baseRate = null,
+    Object? minFare = null,
+    Object? notes = freezed,
   }) {
     return _then(
       _$RouteEntityImpl(
@@ -168,6 +223,30 @@ class __$$RouteEntityImplCopyWithImpl<$Res>
             ? _value.pdfPage
             : pdfPage // ignore: cast_nullable_to_non_nullable
                   as int,
+        pdfUrl: null == pdfUrl
+            ? _value.pdfUrl
+            : pdfUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        btrcUrl: null == btrcUrl
+            ? _value.btrcUrl
+            : btrcUrl // ignore: cast_nullable_to_non_nullable
+                  as String,
+        issuedDate: null == issuedDate
+            ? _value.issuedDate
+            : issuedDate // ignore: cast_nullable_to_non_nullable
+                  as String,
+        baseRate: null == baseRate
+            ? _value.baseRate
+            : baseRate // ignore: cast_nullable_to_non_nullable
+                  as double,
+        minFare: null == minFare
+            ? _value.minFare
+            : minFare // ignore: cast_nullable_to_non_nullable
+                  as int,
+        notes: freezed == notes
+            ? _value.notes
+            : notes // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -183,6 +262,12 @@ class _$RouteEntityImpl implements _RouteEntity {
     required this.totalDistance,
     required this.documentId,
     required this.pdfPage,
+    required this.pdfUrl,
+    required this.btrcUrl,
+    required this.issuedDate,
+    required this.baseRate,
+    required this.minFare,
+    this.notes,
   });
 
   @override
@@ -197,10 +282,23 @@ class _$RouteEntityImpl implements _RouteEntity {
   final String documentId;
   @override
   final int pdfPage;
+  @override
+  final String pdfUrl;
+  @override
+  final String btrcUrl;
+  // --- New Verification & Analytical Fields ---
+  @override
+  final String issuedDate;
+  @override
+  final double baseRate;
+  @override
+  final int minFare;
+  @override
+  final String? notes;
 
   @override
   String toString() {
-    return 'RouteEntity(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistance: $totalDistance, documentId: $documentId, pdfPage: $pdfPage)';
+    return 'RouteEntity(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistance: $totalDistance, documentId: $documentId, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, issuedDate: $issuedDate, baseRate: $baseRate, minFare: $minFare, notes: $notes)';
   }
 
   @override
@@ -216,7 +314,15 @@ class _$RouteEntityImpl implements _RouteEntity {
                 other.totalDistance == totalDistance) &&
             (identical(other.documentId, documentId) ||
                 other.documentId == documentId) &&
-            (identical(other.pdfPage, pdfPage) || other.pdfPage == pdfPage));
+            (identical(other.pdfPage, pdfPage) || other.pdfPage == pdfPage) &&
+            (identical(other.pdfUrl, pdfUrl) || other.pdfUrl == pdfUrl) &&
+            (identical(other.btrcUrl, btrcUrl) || other.btrcUrl == btrcUrl) &&
+            (identical(other.issuedDate, issuedDate) ||
+                other.issuedDate == issuedDate) &&
+            (identical(other.baseRate, baseRate) ||
+                other.baseRate == baseRate) &&
+            (identical(other.minFare, minFare) || other.minFare == minFare) &&
+            (identical(other.notes, notes) || other.notes == notes));
   }
 
   @override
@@ -228,6 +334,12 @@ class _$RouteEntityImpl implements _RouteEntity {
     totalDistance,
     documentId,
     pdfPage,
+    pdfUrl,
+    btrcUrl,
+    issuedDate,
+    baseRate,
+    minFare,
+    notes,
   );
 
   /// Create a copy of RouteEntity
@@ -247,6 +359,12 @@ abstract class _RouteEntity implements RouteEntity {
     required final double totalDistance,
     required final String documentId,
     required final int pdfPage,
+    required final String pdfUrl,
+    required final String btrcUrl,
+    required final String issuedDate,
+    required final double baseRate,
+    required final int minFare,
+    final String? notes,
   }) = _$RouteEntityImpl;
 
   @override
@@ -261,6 +379,18 @@ abstract class _RouteEntity implements RouteEntity {
   String get documentId;
   @override
   int get pdfPage;
+  @override
+  String get pdfUrl;
+  @override
+  String get btrcUrl; // --- New Verification & Analytical Fields ---
+  @override
+  String get issuedDate;
+  @override
+  double get baseRate;
+  @override
+  int get minFare;
+  @override
+  String? get notes;
 
   /// Create a copy of RouteEntity
   /// with the given fields replaced by the non-null parameter values.

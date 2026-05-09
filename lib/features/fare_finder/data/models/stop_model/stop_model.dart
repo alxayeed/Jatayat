@@ -12,11 +12,10 @@ class StopModel with _$StopModel {
   const factory StopModel({
     required String id,
     required String nameBn,
-    required String nameEn,
+    String? nameEn,
   }) = _StopModel;
 
   factory StopModel.fromJson(Map<String, dynamic> json) => _$StopModelFromJson(json);
-
 
   /// Converts Model (Data Layer) to Entity (Domain Layer)
   StopEntity toEntity() => StopEntity(

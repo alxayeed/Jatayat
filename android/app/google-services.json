@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "631464687902",
+    "project_id": "jatriii",
+    "storage_bucket": "jatriii.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:631464687902:android:ea02d229ba9af30c98b10f",
+        "android_client_info": {
+          "package_name": "com.raindropstudio.jatri"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9JHQ-VK9ppuJvDioGC-hFyvZyd5KQ4jc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,6 @@ class StopEntity with _$StopEntity {
   const factory StopEntity({
     required String id,
     required String nameBn,
-    required String nameEn,
+    String? nameEn,
   }) = _StopEntity;
 }
