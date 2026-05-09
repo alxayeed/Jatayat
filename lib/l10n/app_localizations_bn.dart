@@ -173,4 +173,53 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get brtaDocument => 'বিআরটিএ ডকুমেন্ট';
+
+  @override
+  String get settings => 'সেটিংস';
+
+  @override
+  String get appearance => 'পরিদর্শন';
+
+  @override
+  String get theme => 'থিম';
+
+  @override
+  String get themeLight => 'লাইট';
+
+  @override
+  String get themeDark => 'ডার্ক';
+
+  @override
+  String get themeSystem => 'সিস্টেম ডিফল্ট';
+
+  @override
+  String get language => 'ভাষা';
+
+  @override
+  String get langEnglish => 'English';
+
+  @override
+  String get langBangla => 'বাংলা';
+
+  @override
+  String get general => 'সাধারণ';
+
+  @override
+  String get privacyPolicy => 'গোপনীয়তা নীতি';
+
+  @override
+  String get checkForUpdates => 'আপডেট চেক করুন';
+
+  @override
+  String get about => 'সম্পর্কে';
+
+  @override
+  String get version => 'ভার্সন';
+
+  @override
+  String get upToDate => 'আপনার অ্যাপ আপ টু ডেট!';
+
+  @override
+  String get appDescription =>
+      'যাতায়াত আপনাকে ঢাকা শহরের বাসের সরকারি ভাড়া জানতে সাহায্য করে।';
 }

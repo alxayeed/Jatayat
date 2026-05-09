@@ -174,4 +174,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get brtaDocument => 'BRTA Document';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSystem => 'System Default';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get langEnglish => 'English';
+
+  @override
+  String get langBangla => 'বাংলা';
+
+  @override
+  String get general => 'General';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get checkForUpdates => 'Check for Updates';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get upToDate => 'You\'re up to date!';
+
+  @override
+  String get appDescription =>
+      'Jatayat helps you find official bus fares across Dhaka city.';
 }

@@ -55,5 +55,22 @@
   "noPdfAvailable": "No PDF available for this route.",
   "noBrtaLink": "No BRTA link available for this route.",
   "failedToLoadRouteDetails": "Failed to load route details.",
-  "brtaDocument": "BRTA Document"
+  "brtaDocument": "BRTA Document",
+
+  "settings": "Settings",
+  "appearance": "Appearance",
+  "theme": "Theme",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "themeSystem": "System Default",
+  "language": "Language",
+  "langEnglish": "English",
+  "langBangla": "বাংলা",
+  "general": "General",
+  "privacyPolicy": "Privacy Policy",
+  "checkForUpdates": "Check for Updates",
+  "about": "About",
+  "version": "Version",
+  "upToDate": "You're up to date!",
+  "appDescription": "Jatayat helps you find official bus fares across Dhaka city."
 }

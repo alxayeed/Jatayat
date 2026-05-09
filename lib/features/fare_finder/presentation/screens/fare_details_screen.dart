@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
+import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../route_explorer/presentation/providers/route_explorer_provider.dart';
 import '../../../route_explorer/presentation/widgets/route_stop_item.dart';
@@ -36,7 +36,7 @@ class FareDetailsScreen extends ConsumerWidget {
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          CustomAppBar(title: l10n.fareDetailsTitle, showProfile: false),
+          CustomAppBar(title: l10n.fareDetailsTitle),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),

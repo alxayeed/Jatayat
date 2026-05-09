@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../styles/app_colors.dart';
-import '../styles/app_text_styles.dart';
+import '../../styles/app_colors.dart';
+import '../../styles/app_text_styles.dart';
 
 class AppTextField extends StatelessWidget {
   final String label;
