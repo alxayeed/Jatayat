@@ -421,6 +421,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'BRTA Document'**
   String get brtaDocument;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @appearance.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @themeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// No description provided for @themeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// No description provided for @themeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System Default'**
+  String get themeSystem;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @langEnglish.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get langEnglish;
+
+  /// No description provided for @langBangla.
+  ///
+  /// In en, this message translates to:
+  /// **'বাংলা'**
+  String get langBangla;
+
+  /// No description provided for @general.
+  ///
+  /// In en, this message translates to:
+  /// **'General'**
+  String get general;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @checkForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for Updates'**
+  String get checkForUpdates;
+
+  /// No description provided for @about.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// No description provided for @upToDate.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re up to date!'**
+  String get upToDate;
+
+  /// No description provided for @appDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Jatayat helps you find official bus fares across Dhaka city.'**
+  String get appDescription;
 }
 
 class _AppLocalizationsDelegate

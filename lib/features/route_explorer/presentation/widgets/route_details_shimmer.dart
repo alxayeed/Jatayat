@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/app_shimmer.dart'; // Update path as needed
+import '../../../../core/ui/widgets/app_shimmer.dart';
+import '../../../../core/ui/widgets/custom_app_bar.dart';
+
 
 class RouteDetailsShimmer extends StatelessWidget {
   const RouteDetailsShimmer({super.key});
@@ -13,7 +14,7 @@ class RouteDetailsShimmer extends StatelessWidget {
       body: CustomScrollView(
         physics: const NeverScrollableScrollPhysics(), // Prevent scrolling while loading
         slivers: [
-          const CustomAppBar(title: 'Loading...', showProfile: false),
+          const CustomAppBar(title: 'Loading...'),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),

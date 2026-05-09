@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/widgets/reference_action_button.dart';
+import '../../../../core/ui/widgets/reference_action_button.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/bus_route/bus_route.dart';
 import '../providers/route_explorer_provider.dart';

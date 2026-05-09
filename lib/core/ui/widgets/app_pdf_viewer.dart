@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:go_router/go_router.dart';
 import 'dart:developer' as developer;
-import '../../../../core/styles/app_colors.dart';
+import '../../../../../core/styles/app_colors.dart';
 
 class AppPdfViewer extends StatefulWidget {
   final String pdfUrl;

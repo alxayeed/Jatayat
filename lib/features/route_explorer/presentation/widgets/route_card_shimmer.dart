@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/styles/app_colors.dart';
-import '../../../../core/widgets/app_shimmer.dart'; // Update path as needed
+import '../../../../core/ui/widgets/app_shimmer.dart';
 
 class RouteCardShimmer extends StatelessWidget {
   const RouteCardShimmer({super.key});

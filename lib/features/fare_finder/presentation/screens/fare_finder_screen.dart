@@ -4,9 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
-import '../../../../core/widgets/app_text_field.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 
+
+import '../../../../core/ui/widgets/app_text_field.dart';
+import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
@@ -65,7 +66,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
         children: [
           CustomScrollView(
             slivers: [
-              const CustomAppBar(title: AppStrings.appName, showProfile: false),
+              const CustomAppBar(title: AppStrings.appName),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),

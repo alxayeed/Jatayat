@@ -55,5 +55,22 @@
   "noPdfAvailable": "এই রুটের জন্য কোনো পিডিএফ নেই।",
   "noBrtaLink": "এই রুটের জন্য কোনো বিআরটিএ লিঙ্ক নেই।",
   "failedToLoadRouteDetails": "রুটের তথ্য লোড করা সম্ভব হয়নি।",
-  "brtaDocument": "বিআরটিএ ডকুমেন্ট"
+  "brtaDocument": "বিআরটিএ ডকুমেন্ট",
+
+  "settings": "সেটিংস",
+  "appearance": "পরিদর্শন",
+  "theme": "থিম",
+  "themeLight": "লাইট",
+  "themeDark": "ডার্ক",
+  "themeSystem": "সিস্টেম ডিফল্ট",
+  "language": "ভাষা",
+  "langEnglish": "English",
+  "langBangla": "বাংলা",
+  "general": "সাধারণ",
+  "privacyPolicy": "গোপনীয়তা নীতি",
+  "checkForUpdates": "আপডেট চেক করুন",
+  "about": "সম্পর্কে",
+  "version": "ভার্সন",
+  "upToDate": "আপনার অ্যাপ আপ টু ডেট!",
+  "appDescription": "যাতায়াত আপনাকে ঢাকা শহরের বাসের সরকারি ভাড়া জানতে সাহায্য করে।"
 }
