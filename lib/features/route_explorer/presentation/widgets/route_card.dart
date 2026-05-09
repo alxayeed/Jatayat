@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/bus_route/bus_route.dart';
 
 class RouteCard extends StatelessWidget {
@@ -12,11 +13,13 @@ class RouteCard extends StatelessWidget {
   const RouteCard({
     super.key,
     required this.route,
-    this.isClickable = true, // Defaults to true for the List Screen
+    this.isClickable = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return InkWell(
       onTap: isClickable
           ? () {
@@ -39,11 +42,12 @@ class RouteCard extends StatelessWidget {
               children: [
                 _buildRouteBadge(route.routeCode),
                 const Spacer(),
-                const Icon(Icons.picture_as_pdf,
-                    size: 14, color: AppColors.onSurfaceVariant),
+                const Icon(Icons.picture_as_pdf, size: 14, color: AppColors.onSurfaceVariant),
                 const SizedBox(width: 4),
-                Text('Gazette: Pg ${route.pdfPageNumber ?? '-'}',
-                    style: AppTextStyles.caption),
+                Text(
+                  '${l10n.gazzette}: ${l10n.page} ${route.pdfPageNumber ?? '-'}',
+                  style: AppTextStyles.caption,
+                ),
               ],
             ),
             const SizedBox(height: 12),
@@ -61,18 +65,18 @@ class RouteCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildInfoColumn(
-                  '${route.totalDistanceKm} KM',
-                  'TOTAL DISTANCE',
+                  '${route.totalDistanceKm} ${l10n.km.toUpperCase()}',
+                  l10n.totalDistance.toUpperCase(),
                   crossAxisAlignment: CrossAxisAlignment.start,
                 ),
                 _buildInfoColumn(
                   '${route.totalStops}',
-                  'OFFICIAL STOPS',
+                  l10n.totalStops.toUpperCase(),
                   crossAxisAlignment: CrossAxisAlignment.center,
                 ),
                 _buildInfoColumn(
-                  '৳${route.minimumFare ?? 10}',
-                  'MIN FARE',
+                  '${l10n.currencySign}${route.minimumFare ?? 10}',
+                  l10n.minFare.toUpperCase(),
                   crossAxisAlignment: CrossAxisAlignment.end,
                   isPrice: true,
                 ),
@@ -84,10 +88,12 @@ class RouteCard extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoColumn(String value, String label, {
-    required CrossAxisAlignment crossAxisAlignment,
-    bool isPrice = false,
-  }) {
+  Widget _buildInfoColumn(
+      String value,
+      String label, {
+        required CrossAxisAlignment crossAxisAlignment,
+        bool isPrice = false,
+      }) {
     return Column(
       crossAxisAlignment: crossAxisAlignment,
       children: [

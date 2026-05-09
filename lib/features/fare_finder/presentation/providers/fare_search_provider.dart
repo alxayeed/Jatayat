@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jatra/core/constants/app_strings.dart';
 import '../../../../core/di/usecase_providers.dart';
 import '../../domain/usecases/get_connected_stops_usecase.dart';
 import '../../domain/usecases/get_fares_usecase.dart';
@@ -32,13 +31,8 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
         super(const FareSearchState());
 
   Future<void> searchOrigin(String query) async {
-    // UX FIX 1: If the user types in the Origin box, invalidate the current selections.
-    // They are changing the starting point, so the destination and fares are no longer valid.
     if (state.selectedOrigin != null) {
       _connectedStopsCache = [];
-
-      // *Note: This assumes your FareSearchState.copyWith supports setting fields to null.
-      // (If you are using Freezed, it handles this automatically).
       state = state.copyWith(
         selectedOrigin: null,
         selectedDestination: null,
@@ -60,13 +54,12 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
           (stops) {
         final sortedOrigins = List<StopEntity>.from(stops)
           ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
-
         state = state.copyWith(originSuggestions: sortedOrigins, errorMessage: null);
       },
     );
   }
 
-  Future<void> selectOrigin(StopEntity stop) async {
+  Future<void> selectOrigin(StopEntity stop, {required String noRoutesError}) async {
     state = state.copyWith(
       selectedOrigin: stop,
       selectedDestination: null,
@@ -83,14 +76,10 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
           (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
           (destinations) {
         if (destinations.isEmpty) {
-          state = state.copyWith(
-              isLoading: false,
-              errorMessage: AppStrings.stopsSearchErrorMessage
-          );
+          state = state.copyWith(isLoading: false, errorMessage: noRoutesError);
         } else {
           final sortedDestinations = List<StopEntity>.from(destinations)
             ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
-
           _connectedStopsCache = sortedDestinations;
           state = state.copyWith(
             isLoading: false,
@@ -128,15 +117,12 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
   }
 
-  // UX FIX 2: Re-wrote swapStations so it doesn't accidentally delete the destination.
   Future<void> swapStations() async {
     final oldOrigin = state.selectedOrigin;
     final oldDestination = state.selectedDestination;
 
-    // We can only swap if both are selected
     if (oldOrigin == null || oldDestination == null) return;
 
-    // 1. Swap the selections in state and trigger loading, BUT keep both selected
     state = state.copyWith(
       selectedOrigin: oldDestination,
       selectedDestination: oldOrigin,
@@ -146,7 +132,6 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       isLoading: true,
     );
 
-    // 2. Fetch the new connected stops for the NEW origin (which was the old destination)
     final result = await _getConnectedStops(oldDestination.id);
 
     result.fold(
@@ -154,20 +139,21 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
           (destinations) {
         final sortedDestinations = List<StopEntity>.from(destinations)
           ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
-
         _connectedStopsCache = sortedDestinations;
         state = state.copyWith(
           isLoading: false,
           destinationSuggestions: sortedDestinations,
-          // We DO NOT clear the selectedDestination here, preserving the swap!
         );
       },
     );
   }
 
-  Future<void> calculateFare() async {
+  Future<void> calculateFare({
+    required String noSelectionError,
+    required String noResultsError,
+  }) async {
     if (state.selectedOrigin == null || state.selectedDestination == null) {
-      state = state.copyWith(errorMessage: AppStrings.calculatedFareErrorMessage);
+      state = state.copyWith(errorMessage: noSelectionError);
       return;
     }
 
@@ -179,20 +165,14 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
 
     result.fold(
-            (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
-            (fares) {
-          if(fares.isEmpty){
-            state = state.copyWith(
-                isLoading: false,
-                errorMessage: AppStrings.fareSearchErrorMessage
-            );
-          } else{
-            state = state.copyWith(
-              isLoading: false,
-              fareResults: fares,
-            );
-          }
+          (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
+          (fares) {
+        if (fares.isEmpty) {
+          state = state.copyWith(isLoading: false, errorMessage: noResultsError);
+        } else {
+          state = state.copyWith(isLoading: false, fareResults: fares);
         }
+      },
     );
   }
 
