@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/styles/app_colors.dart';
 import '../../../../core/styles/app_text_styles.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../providers/route_explorer_provider.dart';
 import '../widgets/route_card.dart';
 import '../widgets/route_card_shimmer.dart';
@@ -11,25 +12,25 @@ class RouteListScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final routeState = ref.watch(routeExplorerProvider);
 
     return Scaffold(
       backgroundColor: AppColors.surface,
       appBar: AppBar(
-        title: Text('Route Explorer', style: AppTextStyles.label.copyWith(fontSize: 20)),
+        title: Text(l10n.routeExplorer, style: AppTextStyles.label.copyWith(fontSize: 20)),
         backgroundColor: AppColors.surface,
         elevation: 0,
         centerTitle: false,
       ),
       body: Column(
         children: [
-          // Search Header
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             child: TextField(
               onChanged: (value) => ref.read(routeExplorerProvider.notifier).search(value),
               decoration: InputDecoration(
-                hintText: 'Search by Route Code or Name...',
+                hintText: l10n.searchRoute,
                 hintStyle: AppTextStyles.caption,
                 prefixIcon: const Icon(Icons.search, color: AppColors.primary),
                 filled: true,
@@ -45,13 +46,11 @@ class RouteListScreen extends ConsumerWidget {
               ),
             ),
           ),
-
-          // Main List Content
           Expanded(
             child: routeState.when(
               data: (routes) {
                 if (routes.isEmpty) {
-                  return _buildEmptyState();
+                  return _buildEmptyState(l10n);
                 }
                 return RefreshIndicator(
                   onRefresh: () => ref.read(routeExplorerProvider.notifier).refresh(),
@@ -69,7 +68,7 @@ class RouteListScreen extends ConsumerWidget {
                 itemCount: 5,
                 itemBuilder: (context, index) => const RouteCardShimmer(),
               ),
-              error: (error, stack) => _buildErrorState(error.toString(), ref),
+              error: (error, stack) => _buildErrorState(error.toString(), ref, l10n),
             ),
           ),
         ],
@@ -77,7 +76,7 @@ class RouteListScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(AppLocalizations l10n) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -85,14 +84,14 @@ class RouteListScreen extends ConsumerWidget {
           Icon(Icons.directions_bus_outlined,
               size: 64, color: AppColors.onSurfaceVariant.withValues(alpha: 0.3)),
           const SizedBox(height: 16),
-          Text('No routes found', style: AppTextStyles.label),
-          Text('Try searching for a different code', style: AppTextStyles.caption),
+          Text(l10n.noRoutesFound, style: AppTextStyles.label),
+          Text(l10n.trySearching, style: AppTextStyles.caption),
         ],
       ),
     );
   }
 
-  Widget _buildErrorState(String message, WidgetRef ref) {
+  Widget _buildErrorState(String message, WidgetRef ref, AppLocalizations l10n) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -101,14 +100,14 @@ class RouteListScreen extends ConsumerWidget {
           children: [
             const Icon(Icons.error_outline, color: Colors.red, size: 48),
             const SizedBox(height: 16),
-            Text('Failed to load routes', style: AppTextStyles.label),
+            Text(l10n.failedToLoadRoutes, style: AppTextStyles.label),
             const SizedBox(height: 8),
             Text(message, textAlign: TextAlign.center, style: AppTextStyles.caption),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => ref.read(routeExplorerProvider.notifier).refresh(),
-              child: const Text('Retry'),
-            )
+              child: Text(l10n.retry),
+            ),
           ],
         ),
       ),

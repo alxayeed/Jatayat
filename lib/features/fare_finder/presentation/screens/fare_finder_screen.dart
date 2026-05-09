@@ -7,6 +7,7 @@ import '../../../../core/styles/app_text_styles.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 
+import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
@@ -26,7 +27,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   final destinationController = TextEditingController();
 
   bool _isCollapsed = false;
-  // Track if user manually requested to see the search boxes again
   bool _manuallyExpanded = false;
 
   @override
@@ -38,6 +38,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
 
@@ -53,7 +54,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       });
     }
 
-
     if (state.isLoading || state.fareResults.isEmpty) {
       if (_manuallyExpanded) {
         _manuallyExpanded = false;
@@ -65,17 +65,17 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
         children: [
           CustomScrollView(
             slivers: [
-              const CustomAppBar(title: AppStrings.appName, showProfile: false,),
+              const CustomAppBar(title: AppStrings.appName, showProfile: false),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text('Where to?', style: AppTextStyles.priceHero),
-                      const Text(
-                        'Find fares across Dhaka City',
-                        style: TextStyle(
+                      Text(l10n.homeTitle, style: AppTextStyles.priceHero),
+                      Text(
+                        l10n.homeSubtitle,
+                        style: const TextStyle(
                           color: AppColors.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
                         ),
@@ -91,12 +91,12 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                           );
                         },
                         child: _isCollapsed
-                            ? _buildCollapsedSummary(state)
-                            : _buildSearchCard(state, notifier),
+                            ? _buildCollapsedSummary(state, l10n)
+                            : _buildSearchCard(state, notifier, l10n),
                       ),
 
                       const SizedBox(height: 32),
-                      if (state.fareResults.isNotEmpty) _buildResultHeader(state),
+                      if (state.fareResults.isNotEmpty) _buildResultHeader(state, l10n),
                     ],
                   ),
                 ),
@@ -107,11 +107,10 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
           ),
         ],
       ),
-      // floatingActionButton: _buildFAB(),
     );
   }
 
-  Widget _buildCollapsedSummary(FareSearchState state) {
+  Widget _buildCollapsedSummary(FareSearchState state, AppLocalizations l10n) {
     return Container(
       key: const ValueKey('summary_view'),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -126,7 +125,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              '${state.selectedOrigin?.nameBn ?? ""} হতে ${state.selectedDestination?.nameBn ?? ""}',
+              '${state.selectedOrigin?.nameBn ?? ""} ${l10n.fromStop} ${state.selectedDestination?.nameBn ?? ""}',
               style: AppTextStyles.label.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
               overflow: TextOverflow.ellipsis,
             ),
@@ -135,11 +134,11 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             onPressed: () {
               setState(() {
                 _isCollapsed = false;
-                _manuallyExpanded = true; // Block auto-collapse
+                _manuallyExpanded = true;
               });
             },
             icon: const Icon(Icons.edit_note_rounded, size: 20),
-            label: const Text('পরিবর্তন'),
+            label: Text(l10n.fareSearchChange),
             style: TextButton.styleFrom(
               visualDensity: VisualDensity.compact,
               foregroundColor: AppColors.primary,
@@ -151,7 +150,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier) {
+  Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier, AppLocalizations l10n) {
     final isSearching = state.originSuggestions.isNotEmpty || state.destinationSuggestions.isNotEmpty;
 
     return Container(
@@ -168,8 +167,8 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               Column(
                 children: [
                   AppTextField(
-                    label: 'From',
-                    hintText: 'Search starting point...',
+                    label: l10n.fromStop,
+                    hintText: l10n.fromStop,
                     prefixIcon: Icons.my_location,
                     controller: originController,
                     onChanged: notifier.searchOrigin,
@@ -179,37 +178,30 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                       suggestions: state.originSuggestions,
                       onSelected: (stop) {
                         originController.text = stop.nameEn ?? "Unknown for ${stop.nameBn}";
-                        notifier.selectOrigin(stop);
+                        notifier.selectOrigin(stop, noRoutesError: l10n.stopsSearchErrorMessage);
                         FocusScope.of(context).unfocus();
                       },
                     ),
                   const SizedBox(height: 12),
                   AppTextField(
-                    label: 'To',
-                    hintText: 'Search destination...',
+                    label: l10n.toStop,
+                    hintText: l10n.toStop,
                     prefixIcon: Icons.location_on,
                     controller: destinationController,
                     readOnly: state.selectedOrigin == null,
-
-                    // 1. Trigger search when they type
                     onChanged: notifier.searchDestination,
-
-                    // 2. Trigger the list to reappear when they just tap the box
                     onTap: () {
                       if (state.selectedOrigin != null) {
-                        // Pass the current text to bring back the list based on what's already typed
                         notifier.searchDestination(destinationController.text);
                       }
                     },
-
-                    // Optional but highly recommended UX: A clear button
                     suffixIcon: destinationController.text.isNotEmpty
                         ? IconButton(
                       icon: const Icon(Icons.clear, size: 20),
                       onPressed: () {
                         destinationController.clear();
-                        notifier.searchDestination(''); // Reset the list
-                        notifier.selectDestination(StopEntity(id: '', nameBn: '')); // Clear selected state if needed
+                        notifier.searchDestination('');
+                        notifier.selectDestination(StopEntity(id: '', nameBn: ''));
                       },
                     )
                         : null,
@@ -252,9 +244,11 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             ),
           ElevatedButton(
             onPressed: () {
-              // When user clicks calculate, we allow auto-collapse again
               setState(() => _manuallyExpanded = false);
-              notifier.calculateFare();
+              notifier.calculateFare(
+                noSelectionError: l10n.calculatedFareErrorMessage,
+                noResultsError: l10n.fareSearchErrorMessage,
+              );
             },
             child: state.isLoading
                 ? const SizedBox(
@@ -262,12 +256,12 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               width: 20,
               child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
             )
-                : const Row(
+                : Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.search, size: 20),
-                SizedBox(width: 8),
-                Text('Calculate Fare'),
+                const Icon(Icons.search, size: 20),
+                const SizedBox(width: 8),
+                Text(l10n.findBus),
               ],
             ),
           ),
@@ -276,13 +270,15 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  Widget _buildResultHeader(FareSearchState state) {
+  Widget _buildResultHeader(FareSearchState state, AppLocalizations l10n) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text('Available Routes', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Text('${state.fareResults.length} Results',
-            style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+        Text(l10n.allRoutes, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Text(
+        '${state.fareResults.length} ${l10n.results}',
+          style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }
@@ -298,5 +294,4 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       ),
     );
   }
-
 }
