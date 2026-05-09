@@ -23,7 +23,7 @@ StopModel _$StopModelFromJson(Map<String, dynamic> json) {
 mixin _$StopModel {
   String get id => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
-  String get nameEn => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
 
   /// Serializes this StopModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $StopModelCopyWith<$Res> {
   factory $StopModelCopyWith(StopModel value, $Res Function(StopModel) then) =
       _$StopModelCopyWithImpl<$Res, StopModel>;
   @useResult
-  $Res call({String id, String nameBn, String nameEn});
+  $Res call({String id, String nameBn, String? nameEn});
 }
 
 /// @nodoc
@@ -57,7 +57,11 @@ class _$StopModelCopyWithImpl<$Res, $Val extends StopModel>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? nameBn = null, Object? nameEn = null}) {
+  $Res call({
+    Object? id = null,
+    Object? nameBn = null,
+    Object? nameEn = freezed,
+  }) {
     return _then(
       _value.copyWith(
             id: null == id
@@ -68,10 +72,10 @@ class _$StopModelCopyWithImpl<$Res, $Val extends StopModel>
                 ? _value.nameBn
                 : nameBn // ignore: cast_nullable_to_non_nullable
                       as String,
-            nameEn: null == nameEn
+            nameEn: freezed == nameEn
                 ? _value.nameEn
                 : nameEn // ignore: cast_nullable_to_non_nullable
-                      as String,
+                      as String?,
           )
           as $Val,
     );
@@ -87,7 +91,7 @@ abstract class _$$StopModelImplCopyWith<$Res>
   ) = __$$StopModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String nameBn, String nameEn});
+  $Res call({String id, String nameBn, String? nameEn});
 }
 
 /// @nodoc
@@ -103,7 +107,11 @@ class __$$StopModelImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? id = null, Object? nameBn = null, Object? nameEn = null}) {
+  $Res call({
+    Object? id = null,
+    Object? nameBn = null,
+    Object? nameEn = freezed,
+  }) {
     return _then(
       _$StopModelImpl(
         id: null == id
@@ -114,10 +122,10 @@ class __$$StopModelImplCopyWithImpl<$Res>
             ? _value.nameBn
             : nameBn // ignore: cast_nullable_to_non_nullable
                   as String,
-        nameEn: null == nameEn
+        nameEn: freezed == nameEn
             ? _value.nameEn
             : nameEn // ignore: cast_nullable_to_non_nullable
-                  as String,
+                  as String?,
       ),
     );
   }
@@ -127,11 +135,8 @@ class __$$StopModelImplCopyWithImpl<$Res>
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$StopModelImpl extends _StopModel {
-  const _$StopModelImpl({
-    required this.id,
-    required this.nameBn,
-    required this.nameEn,
-  }) : super._();
+  const _$StopModelImpl({required this.id, required this.nameBn, this.nameEn})
+    : super._();
 
   factory _$StopModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$StopModelImplFromJson(json);
@@ -141,7 +146,7 @@ class _$StopModelImpl extends _StopModel {
   @override
   final String nameBn;
   @override
-  final String nameEn;
+  final String? nameEn;
 
   @override
   String toString() {
@@ -180,7 +185,7 @@ abstract class _StopModel extends StopModel {
   const factory _StopModel({
     required final String id,
     required final String nameBn,
-    required final String nameEn,
+    final String? nameEn,
   }) = _$StopModelImpl;
   const _StopModel._() : super._();
 
@@ -192,7 +197,7 @@ abstract class _StopModel extends StopModel {
   @override
   String get nameBn;
   @override
-  String get nameEn;
+  String? get nameEn;
 
   /// Create a copy of StopModel
   /// with the given fields replaced by the non-null parameter values.

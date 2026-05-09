@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/constants/app_strings.dart';
 import 'core/router/app_router.dart';
-import 'core/styles/app_theme.dart';
+import 'core/styles/app_theme.dart';import 'core/utils/supabase_logger.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,10 +16,19 @@ void main() async {
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+      debug: true,
+      httpClient: SupabaseLoggingClient(),
     );
   } catch (e) {
     debugPrint('Initialization failed: $e');
   }
+
+
+
+  await FlutterDownloader.initialize(
+    debug: true,
+    ignoreSsl: true,
+  );
 
   runApp(
     const ProviderScope(
@@ -36,13 +45,13 @@ class JatraApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: AppStrings.appName,
+      title: "AppStrings.appName",
       debugShowCheckedModeBanner: false,
       routerConfig: router,
 
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
     );
   }
 }

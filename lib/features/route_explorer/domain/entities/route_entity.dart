@@ -11,5 +11,13 @@ class RouteEntity with _$RouteEntity {
     required double totalDistance,
     required String documentId,
     required int pdfPage,
+    required String pdfUrl,
+    required String btrcUrl,
+
+    // --- New Verification & Analytical Fields ---
+    required String issuedDate,
+    required double baseRate,
+    required int minFare,
+    String? notes,
   }) = _RouteEntity;
 }

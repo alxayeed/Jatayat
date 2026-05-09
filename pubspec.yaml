@@ -1,7 +1,7 @@
 name: jatra
 description: "A bus transport utility app for Dhaka."
 publish_to: 'none'
-version: 0.1.0+1
+version: 0.1.0+5
 
 environment:
   sdk: ^3.11.1
@@ -29,6 +29,13 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_dotenv: ^5.2.1
   dartz: ^0.10.1
+  firebase_core: ^4.7.0
+#  syncfusion_flutter_pdfviewer: ^33.2.3
+  flutter_downloader: ^1.11.6
+  path_provider: ^2.1.2
+  permission_handler: ^11.3.1
+  change_app_package_name: ^1.5.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -36,7 +43,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   
   # Code Generation
-  build_runner: ^2.4.15
+  build_runner: ^2.4.15 # dart run build_runner build --delete-conflicting-outputs
   freezed: ^2.5.7
   json_serializable: ^6.9.3
 
@@ -45,9 +52,24 @@ flutter:
   assets:
     - .env
   fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans-Black.ttf
+          weight: 900
+        - asset: assets/fonts/WorkSans-BlackItalic.ttf
+          weight: 900
+          style: italic
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+        - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
+          style: italic
+
     - family: HindSiliguri
       fonts:
         - asset: assets/fonts/HindSiliguri-Regular.ttf
+          weight: 400
         - asset: assets/fonts/HindSiliguri-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/HindSiliguri-Bold.ttf

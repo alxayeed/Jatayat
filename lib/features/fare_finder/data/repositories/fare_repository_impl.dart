@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/fair_result_entity/fare_result_entity.dart';
-import '../../domain/repository/fare_repository.dart';
-import '../data_sources/fare_remote_data_source.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
+import '../../domain/repository/fare_repository.dart';
+import '../data_sources/fare_data_source.dart';
 
 class FareRepositoryImpl implements FareRepository {
   final FareRemoteDataSource remoteDataSource;
