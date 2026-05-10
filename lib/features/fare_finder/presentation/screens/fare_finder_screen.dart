@@ -13,7 +13,6 @@ import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
 import '../widgets/fare_card.dart';
-import '../widgets/swap_button.dart';
 import '../widgets/app_suggestion_list.dart';
 
 class FareFinderScreen extends ConsumerStatefulWidget {
@@ -62,50 +61,46 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     }
 
     return Scaffold(
-      body: Stack(
-        children: [
-          CustomScrollView(
-            slivers: [
-              const CustomAppBar(title: AppStrings.appName),
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(l10n.homeTitle, style: AppTextStyles.priceHero),
-                      Text(
-                        l10n.homeSubtitle,
-                        style: const TextStyle(
-                          color: AppColors.onSurfaceVariant,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 350),
-                        transitionBuilder: (Widget child, Animation<double> animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SizeTransition(sizeFactor: animation, child: child),
-                          );
-                        },
-                        child: _isCollapsed
-                            ? _buildCollapsedSummary(state, l10n)
-                            : _buildSearchCard(state, notifier, l10n),
-                      ),
-
-                      const SizedBox(height: 32),
-                      if (state.fareResults.isNotEmpty) _buildResultHeader(state, l10n),
-                    ],
+      body: CustomScrollView(
+        slivers: [
+          const CustomAppBar(title: AppStrings.appName),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.homeTitle, style: AppTextStyles.priceHero),
+                  Text(
+                    l10n.homeSubtitle,
+                    style: const TextStyle(
+                      color: AppColors.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 12),
+
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 350),
+                    transitionBuilder: (Widget child, Animation<double> animation) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: SizeTransition(sizeFactor: animation, child: child),
+                      );
+                    },
+                    child: _isCollapsed
+                        ? _buildCollapsedSummary(state, l10n)
+                        : _buildSearchCard(state, notifier, l10n),
+                  ),
+
+                  const SizedBox(height: 32),
+                  if (state.fareResults.isNotEmpty) _buildResultHeader(state, l10n),
+                ],
               ),
-              _buildFareResults(state),
-              const SliverToBoxAdapter(child: SizedBox(height: 100)),
-            ],
+            ),
           ),
+          _buildFareResults(state),
+          const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
     );
@@ -152,11 +147,10 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   }
 
   Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier, AppLocalizations l10n) {
-    final isSearching = state.originSuggestions.isNotEmpty || state.destinationSuggestions.isNotEmpty;
 
     return Container(
       key: const ValueKey('search_card_view'),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.surfaceContainerLow,
         borderRadius: BorderRadius.circular(32),
@@ -168,7 +162,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               Column(
                 children: [
                   AppTextField(
-                    label: l10n.fromStop,
+                    // label: l10n.fromStop,
                     hintText: l10n.fromStop,
                     prefixIcon: Icons.my_location,
                     controller: originController,
@@ -185,7 +179,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     ),
                   const SizedBox(height: 12),
                   AppTextField(
-                    label: l10n.toStop,
+                    // label: l10n.toStop,
                     hintText: l10n.toStop,
                     prefixIcon: Icons.location_on,
                     controller: destinationController,
@@ -218,19 +212,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     ),
                 ],
               ),
-              if (!isSearching)
-                Positioned(
-                  top: 85,
-                  right: 20,
-                  child: SwapButton(
-                    onPressed: () {
-                      notifier.swapStations();
-                      final temp = originController.text;
-                      originController.text = destinationController.text;
-                      destinationController.text = temp;
-                    },
-                  ),
-                ),
             ],
           ),
           const SizedBox(height: 24),

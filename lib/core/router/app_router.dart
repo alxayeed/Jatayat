@@ -15,7 +15,7 @@ import '../ui/widgets/app_pdf_viewer.dart';
 class AppRoutes {
   static const String fareSearch = '/fare-search';
   static const String routeExplorer = '/route-explorer';
-  static const String history = '/history';
+  static const String bookmarks = '/bookmarks';
   static const String settings = '/settings';
   static const String fareDetails = '/fare-details';
   static const String routeDetails = '/route-details';
@@ -43,15 +43,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const RouteListScreen(),
           ),
           GoRoute(
-            path: AppRoutes.history,
-            builder: (context, state) => const Scaffold(body: Center(child: Text('History Coming Soon'))),
-          ),
-          GoRoute(
-            path: AppRoutes.settings,
-            builder: (context, state) => const SettingsScreen(),
+            path: AppRoutes.bookmarks,
+            builder: (context, state) => const Scaffold(
+              body: Center(child: Text('History Coming Soon')),
+            ),
           ),
         ],
       ),
+
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
         path: AppRoutes.fareDetails,
@@ -65,11 +64,9 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '${AppRoutes.routeDetails}/:id',
         builder: (context, state) {
           final routeId = state.pathParameters['id']!;
-          final routeCode = state.uri.queryParameters['code'] ?? 'Route Details';
-          return RouteDetailsScreen(
-            routeId: routeId,
-            routeCode: routeCode,
-          );
+          final routeCode =
+              state.uri.queryParameters['code'] ?? 'Route Details';
+          return RouteDetailsScreen(routeId: routeId, routeCode: routeCode);
         },
       ),
       GoRoute(
@@ -83,6 +80,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             title: data['title'] ?? 'Document',
           );
         },
+      ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutes.settings,
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

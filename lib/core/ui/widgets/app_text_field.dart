@@ -4,25 +4,25 @@ import '../../styles/app_colors.dart';
 import '../../styles/app_text_styles.dart';
 
 class AppTextField extends StatelessWidget {
-  final String label;
+  final String? label;
   final String hintText;
   final IconData prefixIcon;
   final TextEditingController controller;
   final Function(String)? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
-  final Widget? suffixIcon; // Added optional Widget for the suffix
+  final Widget? suffixIcon;
 
   const AppTextField({
     super.key,
-    required this.label,
+    this.label,
     required this.hintText,
     required this.prefixIcon,
     required this.controller,
     this.onChanged,
     this.onTap,
     this.readOnly = false,
-    this.suffixIcon, // Added to constructor
+    this.suffixIcon,
   });
 
   @override
@@ -30,14 +30,12 @@ class AppTextField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Label using our Inter Variable bold style
-        Padding(
-          padding: const EdgeInsets.only(left: 4, bottom: 6),
-          child: Text(
-            label.toUpperCase(),
-            style: AppTextStyles.label,
+        if (label != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 6),
+            child: Text(label!.toUpperCase(), style: AppTextStyles.label),
           ),
-        ),
+
         Container(
           decoration: BoxDecoration(
             color: AppColors.surfaceContainerLowest,
