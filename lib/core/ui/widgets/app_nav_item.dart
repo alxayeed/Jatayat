@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../styles/app_colors.dart';
-import '../../styles/app_text_styles.dart';
-
 class AppNavItem extends StatelessWidget {
   final String label;
   final IconData icon;
@@ -19,6 +16,8 @@ class AppNavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -27,7 +26,7 @@ class AppNavItem extends StatelessWidget {
         curve: Curves.easeInOut,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? AppColors.primary : Colors.transparent,
+          color: isActive ? theme.colorScheme.primary : Colors.transparent,
           borderRadius: BorderRadius.circular(99),
         ),
         child: Row(
@@ -35,20 +34,21 @@ class AppNavItem extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: isActive ? Colors.white : AppColors.onSurfaceVariant.withValues(alpha: 0.7),
+              color: isActive
+                  ? theme.colorScheme.onPrimary
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
               size: 24,
             ),
             if (isActive) ...[
               const SizedBox(width: 8),
               Text(
                 label.toUpperCase(),
-                style: AppTextStyles.label.copyWith(
-                  color: Colors.white,
-                  fontSize: 10,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onPrimary,
                   letterSpacing: 0.8,
                 ),
               ),
-            ]
+            ],
           ],
         ),
       ),

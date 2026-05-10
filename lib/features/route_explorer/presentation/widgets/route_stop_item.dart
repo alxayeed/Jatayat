@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../../../../core/styles/app_colors.dart';
 
 class RouteStopItem extends StatelessWidget {
   final String stopName;
   final bool isFirst;
   final bool isLast;
-  final bool isSelected; // Part of the travel path
-  final bool isSpecial;  // Is specifically the Start or End stop
+  final bool isSelected;
+  final bool isSpecial;
 
   const RouteStopItem({
     super.key,
@@ -19,61 +18,67 @@ class RouteStopItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return IntrinsicHeight(
       child: Row(
         children: [
-          // Timeline indicator column
           SizedBox(
             width: 40,
             child: Column(
               children: [
-                // Line above the dot
                 Expanded(
                   child: Container(
                     width: 2,
                     color: isFirst
                         ? Colors.transparent
-                        : (isSelected ? AppColors.primary : AppColors.outlineVariant),
+                        : (isSelected
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.outlineVariant),
                   ),
                 ),
-                // The Dot
                 Container(
                   width: isSpecial ? 14 : 10,
                   height: isSpecial ? 14 : 10,
                   decoration: BoxDecoration(
                     color: isSpecial
-                        ? AppColors.primary
-                        : (isSelected ? AppColors.primary : Colors.transparent),
+                        ? theme.colorScheme.primary
+                        : (isSelected
+                              ? theme.colorScheme.primary
+                              : Colors.transparent),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isSelected ? AppColors.primary : AppColors.outline,
+                      color: isSelected
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.outline,
                       width: 2,
                     ),
                   ),
                 ),
-                // Line below the dot
                 Expanded(
                   child: Container(
                     width: 2,
                     color: isLast
                         ? Colors.transparent
-                        : (isSelected ? AppColors.primary : AppColors.outlineVariant),
+                        : (isSelected
+                              ? theme.colorScheme.primary
+                              : theme.colorScheme.outlineVariant),
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(width: 12),
-          // Stop Name
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Text(
                 stopName,
-                style: TextStyle(
-                  fontSize: 14,
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontWeight: isSpecial ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected ? AppColors.onSurface : AppColors.outline,
+                  color: isSelected
+                      ? theme.colorScheme.onSurface
+                      : theme.colorScheme.outline,
                 ),
               ),
             ),

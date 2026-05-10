@@ -2,34 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../router/app_router.dart';
-import '../../styles/app_colors.dart';
 import '../widgets/app_nav_item.dart';
 
 class MainScreen extends StatelessWidget {
   final Widget child;
+
   const MainScreen({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     final String location = GoRouterState.of(context).uri.path;
+    final theme = Theme.of(context);
 
     return Scaffold(
       body: child,
       bottomNavigationBar: Container(
         height: 85,
         decoration: BoxDecoration(
-          color: AppColors.background,
+          color: theme.colorScheme.surface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF191D17).withValues(alpha: 0.04),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.04),
               blurRadius: 16,
               offset: const Offset(0, -4),
             ),
           ],
           border: Border(
             top: BorderSide(
-              color: AppColors.outlineVariant.withValues(alpha: 0.15),
+              color: theme.colorScheme.outlineVariant,
               width: 0.5,
             ),
           ),
@@ -49,12 +50,6 @@ class MainScreen extends StatelessWidget {
               isActive: location == AppRoutes.routeExplorer,
               onTap: () => context.go(AppRoutes.routeExplorer),
             ),
-            // AppNavItem(
-            //   label: 'Settings',
-            //   icon: Icons.settings,
-            //   isActive: location == AppRoutes.settings,
-            //   onTap: () => context.go(AppRoutes.settings),
-            // ),
             AppNavItem(
               label: 'Bookmarks',
               icon: Icons.bookmark_border,

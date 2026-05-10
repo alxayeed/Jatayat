@@ -2,27 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
-
-
 import '../../../../core/ui/widgets/app_text_field.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
-import '../widgets/fare_card.dart';
 import '../widgets/app_suggestion_list.dart';
+import '../widgets/fare_card.dart';
 
 class FareFinderScreen extends ConsumerStatefulWidget {
   const FareFinderScreen({super.key});
 
   @override
-  ConsumerState<FareFinderScreen> createState() => _FareFinderPageState();
+  ConsumerState createState() => _FareFinderPageState();
 }
 
-class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
+class _FareFinderPageState extends ConsumerState {
   final originController = TextEditingController();
   final destinationController = TextEditingController();
 
@@ -41,14 +37,19 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     final l10n = AppLocalizations.of(context)!;
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
+    final theme = Theme.of(context);
 
     ref.listen<FareSearchState>(fareSearchProvider, (previous, next) {
-      if (previous?.selectedDestination != null && next.selectedDestination == null) {
+      if (previous?.selectedDestination != null &&
+          next.selectedDestination == null) {
         destinationController.clear();
       }
     });
 
-    if (state.fareResults.isNotEmpty && !_isCollapsed && !state.isLoading && !_manuallyExpanded) {
+    if (state.fareResults.isNotEmpty &&
+        !_isCollapsed &&
+        !state.isLoading &&
+        !_manuallyExpanded) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) setState(() => _isCollapsed = true);
       });
@@ -70,31 +71,40 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(l10n.homeTitle, style: AppTextStyles.priceHero),
+                  Text(
+                    l10n.homeTitle,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onSurface,
+                    ),
+                  ),
                   Text(
                     l10n.homeSubtitle,
-                    style: const TextStyle(
-                      color: AppColors.onSurfaceVariant,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 12),
-
                   AnimatedSwitcher(
                     duration: const Duration(milliseconds: 350),
-                    transitionBuilder: (Widget child, Animation<double> animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: SizeTransition(sizeFactor: animation, child: child),
-                      );
-                    },
+                    transitionBuilder:
+                        (Widget child, Animation<double> animation) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: SizeTransition(
+                              sizeFactor: animation,
+                              child: child,
+                            ),
+                          );
+                        },
                     child: _isCollapsed
-                        ? _buildCollapsedSummary(state, l10n)
-                        : _buildSearchCard(state, notifier, l10n),
+                        ? _buildCollapsedSummary(state, l10n, theme)
+                        : _buildSearchCard(state, notifier, l10n, theme),
                   ),
-
                   const SizedBox(height: 32),
-                  if (state.fareResults.isNotEmpty) _buildResultHeader(state, l10n),
+                  if (state.fareResults.isNotEmpty)
+                    _buildResultHeader(state, l10n, theme),
                 ],
               ),
             ),
@@ -106,23 +116,36 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  Widget _buildCollapsedSummary(FareSearchState state, AppLocalizations l10n) {
+  Widget _buildCollapsedSummary(
+    FareSearchState state,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
     return Container(
       key: const ValueKey('summary_view'),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLow,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+        ),
       ),
       child: Row(
         children: [
-          const Icon(Icons.directions_bus_filled_outlined, color: AppColors.primary, size: 22),
+          Icon(
+            Icons.directions_bus_filled_outlined,
+            color: theme.colorScheme.primary,
+            size: 22,
+          ),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               '${state.selectedOrigin?.nameBn ?? ""} ${l10n.fromStop} ${state.selectedDestination?.nameBn ?? ""}',
-              style: AppTextStyles.label.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -137,8 +160,11 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             label: Text(l10n.fareSearchChange),
             style: TextButton.styleFrom(
               visualDensity: VisualDensity.compact,
-              foregroundColor: AppColors.primary,
-              textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+              foregroundColor: theme.colorScheme.primary,
+              textStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+              ),
             ),
           ),
         ],
@@ -146,13 +172,17 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  Widget _buildSearchCard(FareSearchState state, FareSearchNotifier notifier, AppLocalizations l10n) {
-
+  Widget _buildSearchCard(
+    FareSearchState state,
+    FareSearchNotifier notifier,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
     return Container(
       key: const ValueKey('search_card_view'),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLow,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(32),
       ),
       child: Column(
@@ -162,7 +192,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               Column(
                 children: [
                   AppTextField(
-                    // label: l10n.fromStop,
                     hintText: l10n.fromStop,
                     prefixIcon: Icons.my_location,
                     controller: originController,
@@ -172,14 +201,17 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     AppSuggestionList(
                       suggestions: state.originSuggestions,
                       onSelected: (stop) {
-                        originController.text = stop.nameEn ?? "Unknown for ${stop.nameBn}";
-                        notifier.selectOrigin(stop, noRoutesError: l10n.stopsSearchErrorMessage);
+                        originController.text =
+                            stop.nameEn ?? "Unknown for ${stop.nameBn}";
+                        notifier.selectOrigin(
+                          stop,
+                          noRoutesError: l10n.stopsSearchErrorMessage,
+                        );
                         FocusScope.of(context).unfocus();
                       },
                     ),
                   const SizedBox(height: 12),
                   AppTextField(
-                    // label: l10n.toStop,
                     hintText: l10n.toStop,
                     prefixIcon: Icons.location_on,
                     controller: destinationController,
@@ -192,20 +224,23 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     },
                     suffixIcon: destinationController.text.isNotEmpty
                         ? IconButton(
-                      icon: const Icon(Icons.clear, size: 20),
-                      onPressed: () {
-                        destinationController.clear();
-                        notifier.searchDestination('');
-                        notifier.selectDestination(StopEntity(id: '', nameBn: ''));
-                      },
-                    )
+                            icon: const Icon(Icons.clear, size: 20),
+                            onPressed: () {
+                              destinationController.clear();
+                              notifier.searchDestination('');
+                              notifier.selectDestination(
+                                StopEntity(id: '', nameBn: ''),
+                              );
+                            },
+                          )
                         : null,
                   ),
                   if (state.destinationSuggestions.isNotEmpty)
                     AppSuggestionList(
                       suggestions: state.destinationSuggestions,
                       onSelected: (stop) {
-                        destinationController.text = stop.nameEn ?? "Unknown for ${stop.nameBn}";
+                        destinationController.text =
+                            stop.nameEn ?? "Unknown for ${stop.nameBn}";
                         notifier.selectDestination(stop);
                         FocusScope.of(context).unfocus();
                       },
@@ -220,7 +255,11 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               padding: const EdgeInsets.only(bottom: 12.0),
               child: Text(
                 state.errorMessage!,
-                style: const TextStyle(color: AppColors.error, fontWeight: FontWeight.w600, fontSize: 12),
+                style: TextStyle(
+                  color: theme.colorScheme.error,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                ),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -233,33 +272,48 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               );
             },
             child: state.isLoading
-                ? const SizedBox(
-              height: 20,
-              width: 20,
-              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-            )
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: theme.colorScheme.onPrimary,
+                    ),
+                  )
                 : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.search, size: 20),
-                const SizedBox(width: 8),
-                Text(l10n.findBus),
-              ],
-            ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.search, size: 20),
+                      const SizedBox(width: 8),
+                      Text(l10n.findBus),
+                    ],
+                  ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildResultHeader(FareSearchState state, AppLocalizations l10n) {
+  Widget _buildResultHeader(
+    FareSearchState state,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(l10n.allRoutes, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         Text(
-        '${state.fareResults.length} ${l10n.results}',
-          style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+          l10n.allRoutes,
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          '${state.fareResults.length} ${l10n.results}',
+          style: TextStyle(
+            color: theme.colorScheme.primary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ],
     );
@@ -270,7 +324,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-              (context, index) => FareCard(fare: state.fareResults[index]),
+          (context, index) => FareCard(fare: state.fareResults[index]),
           childCount: state.fareResults.length,
         ),
       ),

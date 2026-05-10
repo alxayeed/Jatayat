@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../styles/app_colors.dart';
-import '../../styles/app_text_styles.dart';
-
 class AppTextField extends StatelessWidget {
   final String? label;
   final String hintText;
@@ -27,22 +24,26 @@ class AppTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (label != null)
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 6),
-            child: Text(label!.toUpperCase(), style: AppTextStyles.label),
+            child: Text(
+              label!.toUpperCase(),
+              style: theme.textTheme.labelLarge,
+            ),
           ),
-
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surfaceContainerLowest,
+            color: theme.colorScheme.surfaceContainerLowest,
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: const Color(0xFF191D17).withValues(alpha: 0.06),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.06),
                 blurRadius: 24,
                 offset: const Offset(0, 4),
               ),
@@ -53,26 +54,30 @@ class AppTextField extends StatelessWidget {
             onChanged: onChanged,
             onTap: onTap,
             readOnly: readOnly,
-            style: AppTextStyles.bodyMain.copyWith(
+            style: theme.textTheme.bodyLarge?.copyWith(
               fontFamily: 'HindSiliguri',
               fontWeight: FontWeight.w600,
             ),
             decoration: InputDecoration(
               hintText: hintText,
-              hintStyle: AppTextStyles.bodyMain.copyWith(
-                color: AppColors.outline,
+              hintStyle: theme.textTheme.bodyLarge?.copyWith(
+                color: theme.colorScheme.outline,
                 fontWeight: FontWeight.w400,
               ),
-              prefixIcon: Icon(prefixIcon, color: AppColors.outline, size: 22),
-              suffixIcon: suffixIcon, // Passed to InputDecoration
+              prefixIcon: Icon(
+                prefixIcon,
+                color: theme.colorScheme.outline,
+                size: 22,
+              ),
+              suffixIcon: suffixIcon,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
                   width: 2,
                 ),
               ),
