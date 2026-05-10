@@ -17,7 +17,6 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final bool canPop = ModalRoute.of(context)?.canPop ?? false;
 
     return SliverAppBar(
@@ -25,40 +24,38 @@ class CustomAppBar extends StatelessWidget {
       expandedHeight: 80,
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: true,
+      // leading:
+      actions: [
+        if(!canPop)
+        InkWell(
+          onTap: () => context.push(AppRoutes.settings),
+          child: Icon(
+            Icons.settings,
+            color: AppColors.onSurfaceVariant.withValues(alpha: 0.7),
+            size: 24,
+          ),
+        ),
+      ],
+      actionsPadding: EdgeInsets.only(right: 16),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Image.asset("assets/logo/logo.png"),
+          Icon(Icons.car_rental, size: 48,),
           Expanded(
             child: Text(
               title,
-              style: AppTextStyles.logo.copyWith(
-                fontSize: canPop ? 20 : 36,
-              ),
+              style: AppTextStyles.logo.copyWith(fontSize: canPop ? 20 : 36),
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          // if (!canPop)
-          //   Padding(
-          //     padding: const EdgeInsets.only(right: 4.0),
-          //     child: InkWell(
-          //       onTap: (){
-          //         context.pushNamed(AppRoutes.settings);
-          //       },
-          //       child: const CircleAvatar(
-          //         radius: 18,
-          //         backgroundColor: AppColors.secondaryContainer,
-          //         child: Icon(Icons.settings, size: 20, color: AppColors.primary),
-          //       ),
-          //     ),
-          //   ),
+
         ],
       ),
       flexibleSpace: ClipRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(
-            color: AppColors.background.withValues(alpha: 0.8),
-          ),
+          child: Container(color: AppColors.background.withValues(alpha: 0.8)),
         ),
       ),
     );
