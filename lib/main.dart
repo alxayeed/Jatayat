@@ -4,8 +4,10 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/providers/settings_provider.dart';
 import 'core/router/app_router.dart';
-import 'core/styles/app_theme.dart';import 'core/utils/supabase_logger.dart';
+import 'core/styles/app_theme.dart';
+import 'core/utils/supabase_logger.dart';
 import 'l10n/app_localizations.dart';
 
 void main() async {
@@ -24,18 +26,9 @@ void main() async {
     debugPrint('Initialization failed: $e');
   }
 
+  await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
-
-  await FlutterDownloader.initialize(
-    debug: true,
-    ignoreSsl: true,
-  );
-
-  runApp(
-    const ProviderScope(
-      child: JatraApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: JatraApp()));
 }
 
 class JatraApp extends ConsumerWidget {
@@ -44,17 +37,18 @@ class JatraApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
+    final settings = ref.watch(settingsProvider);
 
     return MaterialApp.router(
-      title: "AppStrings.appName",
+      title: "Jatayat",
       debugShowCheckedModeBanner: false,
       routerConfig: router,
 
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light,
+      themeMode: settings.themeMode,
 
-      locale: const Locale('en'),
+      locale: settings.locale,
       supportedLocales: AppLocalizations.supportedLocales,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
     );

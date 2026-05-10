@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/router/app_router.dart';
-import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/fair_result_entity/fare_result_entity.dart';
 
@@ -14,16 +13,20 @@ class FareCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
-    final calculatedFare = (fare.travelDistanceKm * fare.baseRate).toStringAsFixed(2);
+    final calculatedFare = (fare.travelDistanceKm * fare.baseRate)
+        .toStringAsFixed(2);
     final displayCalculated = calculatedFare;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest,
+        color: theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: theme.colorScheme.primary.withValues(alpha: 0.1),
+        ),
       ),
       child: InkWell(
         onTap: () => context.push(AppRoutes.fareDetails, extra: fare),
@@ -33,69 +36,92 @@ class FareCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // 1. Header: Route No & Gazette Page
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
+                      color: theme.colorScheme.primaryContainer,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       '${l10n.routeCode}: ${fare.routeCode}',
-                      style: TextStyle(
-                        color: AppColors.primaryContainer,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onPrimaryContainer,
                         fontWeight: FontWeight.bold,
-                        fontSize: 12,
                       ),
                     ),
                   ),
                   Text(
                     '${l10n.gazzette}: ${l10n.page} ${fare.pdfPage ?? '-'}',
-                    style: AppTextStyles.caption,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-
-              // 2. Route Name
               Text(
                 fare.routeNameBn,
-                style: AppTextStyles.label.copyWith(fontSize: 16, fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontFamily: 'HindSiliguri',
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
-
-              const Divider(height: 24),
-
-              // 3. Stats Row
+              Divider(height: 24, color: theme.dividerTheme.color),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildStatItem(l10n.travelDistance, '${fare.travelDistanceKm} ${l10n.km}'),
-
-                  // Calculated Fare
+                  _buildStatItem(
+                    l10n.travelDistance,
+                    '${fare.travelDistanceKm} ${l10n.km}',
+                    theme,
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         '${l10n.currencySign}$displayCalculated',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppColors.outline),
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
                       ),
-                      Text(l10n.calculatedFare, style: const TextStyle(fontSize: 10, color: AppColors.outline)),
+                      Text(
+                        l10n.calculatedFare,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontSize: 10,
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                     ],
                   ),
-
-                  // Official Fare
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
                         '${l10n.currencySign}${fare.fareAmount.toInt()}',
-                        style: AppTextStyles.priceHero.copyWith(fontSize: 26, color: AppColors.primary),
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontSize: 26,
+                          color: theme.colorScheme.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      Text(l10n.officialFare, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.primary)),
+                      Text(
+                        l10n.officialFare,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -107,12 +133,24 @@ class FareCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String label, String value) {
+  Widget _buildStatItem(String label, String value, ThemeData theme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-        Text(label, style: const TextStyle(fontSize: 10, color: AppColors.outline)),
+        Text(
+          value,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.onSurface,
+          ),
+        ),
+        Text(
+          label,
+          style: theme.textTheme.labelSmall?.copyWith(
+            fontSize: 10,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
       ],
     );
   }

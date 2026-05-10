@@ -4,50 +4,51 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatra/core/router/app_router.dart';
 
-import '../../styles/app_colors.dart';
-import '../../styles/app_text_styles.dart';
-
 class CustomAppBar extends StatelessWidget {
   final String title;
 
-  // final bool showProfile;
-
-  const CustomAppBar({
-    super.key,
-    required this.title,
-    // this.showProfile = true,
-  });
+  const CustomAppBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {
     final bool canPop = ModalRoute.of(context)?.canPop ?? false;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final Color contentColor = isDark
+        ? Colors.white
+        : theme.colorScheme.primary;
 
     return SliverAppBar(
       pinned: true,
       expandedHeight: 80,
       backgroundColor: Colors.transparent,
       automaticallyImplyLeading: true,
-      // leading:
+      iconTheme: theme.iconTheme.copyWith(color: contentColor),
       actions: [
         if (!canPop)
           InkWell(
             onTap: () => context.push(AppRoutes.settings),
             child: Icon(
               Icons.settings,
-              color: AppColors.onSurfaceVariant.withValues(alpha: 0.7),
+              color: isDark
+                  ? Colors.white
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
               size: 24,
             ),
           ),
       ],
-      actionsPadding: EdgeInsets.only(right: 16),
+      actionsPadding: const EdgeInsets.only(right: 16),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Image.asset("assets/logo/app_logo.png", width: 48, height: 48),
           Expanded(
             child: Text(
               title,
-              style: AppTextStyles.logo.copyWith(fontSize: canPop ? 20 : 36),
+              style: theme.appBarTheme.titleTextStyle?.copyWith(
+                fontSize: canPop ? 20 : 36,
+                color: contentColor,
+              ),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -56,7 +57,9 @@ class CustomAppBar extends StatelessWidget {
       flexibleSpace: ClipRect(
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Container(color: AppColors.background.withValues(alpha: 0.8)),
+          child: Container(
+            color: theme.scaffoldBackgroundColor.withValues(alpha: 0.8),
+          ),
         ),
       ),
     );

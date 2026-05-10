@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
+
 import '../../domain/entities/stop_entity/stop_entity.dart';
 
 class AppSuggestionList extends StatelessWidget {
-  final List<StopEntity> suggestions;
+  final List suggestions;
   final Function(StopEntity) onSelected;
 
   const AppSuggestionList({
@@ -15,11 +14,13 @@ class AppSuggestionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       constraints: const BoxConstraints(maxHeight: 200),
       margin: const EdgeInsets.only(top: 8),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest,
+        color: theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -37,14 +38,28 @@ class AppSuggestionList extends StatelessWidget {
           itemCount: suggestions.length,
           separatorBuilder: (context, index) => Divider(
             height: 1,
-            color: AppColors.outlineVariant.withValues(alpha: 0.1),
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.1),
           ),
           itemBuilder: (context, index) {
             final stop = suggestions[index];
             return ListTile(
-              leading: const Icon(Icons.history, size: 18, color: AppColors.outline),
-              title: Text(stop.nameBn, style: AppTextStyles.banglaName.copyWith(fontSize: 16)),
-              trailing: const Icon(Icons.north_west_rounded, size: 14, color: AppColors.outline),
+              leading: Icon(
+                Icons.history,
+                size: 18,
+                color: theme.colorScheme.outline,
+              ),
+              title: Text(
+                stop.nameBn,
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontFamily: 'HindSiliguri',
+                  fontSize: 16,
+                ),
+              ),
+              trailing: Icon(
+                Icons.north_west_rounded,
+                size: 14,
+                color: theme.colorScheme.outline,
+              ),
               onTap: () => onSelected(stop),
             );
           },

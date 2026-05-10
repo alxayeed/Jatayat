@@ -16,6 +16,8 @@ class ReferenceActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -32,10 +34,9 @@ class ReferenceActionButton extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
+              style: theme.textTheme.labelSmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.bold,
-                fontSize: 11,
               ),
             ),
           ],

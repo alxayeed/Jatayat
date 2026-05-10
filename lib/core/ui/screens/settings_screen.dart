@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../core/styles/app_colors.dart';
-import '../../../../core/styles/app_text_styles.dart';
-import '../../../l10n/app_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../../core/providers/settings_provider.dart';
+import '../../../../l10n/app_localizations.dart';
 import '../widgets/custom_app_bar.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -10,9 +11,11 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: cs.surface,
       body: CustomScrollView(
         slivers: [
           CustomAppBar(title: l10n.settings),
@@ -22,81 +25,72 @@ class SettingsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildSectionLabel(l10n.appearance),
-                  _buildSettingsGroup([
+                  _buildSettingsGroup(context, [
                     _buildOptionTile(
                       context,
                       icon: Icons.palette_outlined,
                       title: l10n.theme,
-                      child: _ThemeToggle(),
+                      child: const _ThemeToggle(),
                     ),
-                    _buildDivider(),
+                    _buildDivider(context),
                     _buildOptionTile(
                       context,
                       icon: Icons.language_outlined,
                       title: l10n.language,
-                      child: _LanguageToggle(),
+                      child: const _LanguageToggle(),
                     ),
-                  ]),
+                  ], label: l10n.appearance),
                   const SizedBox(height: 24),
-                  _buildSectionLabel(l10n.general),
-                  _buildSettingsGroup([
+                  _buildSettingsGroup(context, [
                     _buildTappableTile(
                       context,
                       icon: Icons.privacy_tip_outlined,
                       title: l10n.privacyPolicy,
                       onTap: () {},
                     ),
-                    _buildDivider(),
+                    _buildDivider(context),
                     _buildTappableTile(
                       context,
                       icon: Icons.system_update_outlined,
                       title: l10n.checkForUpdates,
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(l10n.upToDate),
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                        );
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(l10n.upToDate)));
                       },
                     ),
-                  ]),
+                  ], label: l10n.general),
                   const SizedBox(height: 24),
-                  _buildSectionLabel(l10n.about),
-                  _buildSettingsGroup([
+                  _buildSettingsGroup(context, [
                     _buildInfoTile(
                       context,
                       icon: Icons.info_outline_rounded,
                       title: l10n.version,
                       value: '1.0.0',
                     ),
-                    _buildDivider(),
+                    _buildDivider(context),
                     Padding(
                       padding: const EdgeInsets.all(16),
                       child: Row(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.08),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(Icons.directions_bus_outlined,
-                                size: 20, color: AppColors.primary),
+                          _buildIconContainer(
+                            context,
+                            Icons.directions_bus_outlined,
                           ),
                           const SizedBox(width: 16),
                           Expanded(
                             child: Text(
                               l10n.appDescription,
-                              style: AppTextStyles.caption.copyWith(height: 1.5),
+                              style: tt.bodySmall?.copyWith(
+                                height: 1.5,
+                                color: cs.onSurfaceVariant,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ]),
+                  ], label: l10n.about),
                   const SizedBox(height: 40),
                 ],
               ),
@@ -107,51 +101,56 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionLabel(String label) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 10),
-      child: Text(
-        label.toUpperCase(),
-        style: AppTextStyles.caption.copyWith(
-          fontSize: 11,
-          letterSpacing: 1.2,
-          color: AppColors.primary,
-          fontWeight: FontWeight.bold,
+  Widget _buildSettingsGroup(
+    BuildContext context,
+    List<Widget> children, {
+    required String label,
+  }) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 4, bottom: 10),
+          child: Text(
+            label.toUpperCase(),
+            style: tt.labelSmall?.copyWith(
+              letterSpacing: 1.2,
+              color: cs.primary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
-      ),
+        Container(
+          decoration: BoxDecoration(
+            color: cs.surfaceContainerLowest,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: cs.primary.withValues(alpha: 0.1)),
+          ),
+          child: Column(children: children),
+        ),
+      ],
     );
   }
 
-  Widget _buildSettingsGroup(List<Widget> children) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.1)),
-      ),
-      child: Column(children: children),
-    );
-  }
-
-  Widget _buildOptionTile(BuildContext context, {
+  Widget _buildOptionTile(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required Widget child,
   }) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, size: 20, color: AppColors.primary),
-          ),
+          _buildIconContainer(context, icon),
           const SizedBox(width: 16),
-          Text(title, style: AppTextStyles.label.copyWith(fontSize: 15)),
+          Text(title, style: tt.titleSmall?.copyWith(color: cs.onSurface)),
           const Spacer(),
           child,
         ],
@@ -159,11 +158,15 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTappableTile(BuildContext context, {
+  Widget _buildTappableTile(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
   }) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(24),
@@ -171,101 +174,118 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.08),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(icon, size: 20, color: AppColors.primary),
-            ),
+            _buildIconContainer(context, icon),
             const SizedBox(width: 16),
-            Text(title, style: AppTextStyles.label.copyWith(fontSize: 15)),
+            Text(title, style: tt.titleSmall?.copyWith(color: cs.onSurface)),
             const Spacer(),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.onSurfaceVariant, size: 20),
+            Icon(
+              Icons.chevron_right_rounded,
+              color: cs.onSurfaceVariant,
+              size: 20,
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoTile(BuildContext context, {
+  Widget _buildInfoTile(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required String value,
   }) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.08),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, size: 20, color: AppColors.primary),
-          ),
+          _buildIconContainer(context, icon),
           const SizedBox(width: 16),
-          Text(title, style: AppTextStyles.label.copyWith(fontSize: 15)),
+          Text(title, style: tt.titleSmall?.copyWith(color: cs.onSurface)),
           const Spacer(),
-          Text(value, style: AppTextStyles.caption.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            value,
+            style: tt.labelMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: cs.onSurfaceVariant,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildDivider() {
+  Widget _buildIconContainer(BuildContext context, IconData icon) {
+    final cs = Theme.of(context).colorScheme;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isDark
+            ? cs.surfaceContainerHigh
+            : cs.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Icon(
+        icon,
+        size: 20,
+        color: isDark ? cs.onSurfaceVariant : cs.primary,
+      ),
+    );
+  }
+
+  Widget _buildDivider(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Divider(
       height: 1,
       indent: 56,
       endIndent: 16,
-      color: AppColors.primary.withValues(alpha: 0.08),
+      color: cs.outlineVariant.withValues(alpha: 0.4),
     );
   }
 }
 
-// --- Theme Toggle ---
-class _ThemeToggle extends StatefulWidget {
-  @override
-  State<_ThemeToggle> createState() => _ThemeToggleState();
-}
-
-class _ThemeToggleState extends State<_ThemeToggle> {
-  String _selected = 'light';
+class _ThemeToggle extends ConsumerWidget {
+  const _ThemeToggle();
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cs = Theme.of(context).colorScheme;
+    final themeMode = ref.watch(settingsProvider).themeMode;
+    final notifier = ref.read(settingsProvider.notifier);
 
     final options = [
-      (value: 'light', label: l10n.themeLight, icon: Icons.light_mode_outlined),
-      (value: 'dark', label: l10n.themeDark, icon: Icons.dark_mode_outlined),
-      (value: 'system', label: l10n.themeSystem, icon: Icons.brightness_auto_outlined),
+      (value: ThemeMode.light, icon: Icons.light_mode_outlined),
+      (value: ThemeMode.dark, icon: Icons.dark_mode_outlined),
+      (value: ThemeMode.system, icon: Icons.brightness_auto_outlined),
     ];
 
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLow,
+        color: cs.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: options.map((opt) {
-          final isSelected = _selected == opt.value;
+          final isSelected = themeMode == opt.value;
           return GestureDetector(
-            onTap: () => setState(() => _selected = opt.value),
+            onTap: () => notifier.setTheme(opt.value),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : Colors.transparent,
+                color: isSelected ? cs.primary : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Icon(
                 opt.icon,
                 size: 16,
-                color: isSelected ? Colors.white : AppColors.onSurfaceVariant,
+                color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
               ),
             ),
           );
@@ -275,48 +295,45 @@ class _ThemeToggleState extends State<_ThemeToggle> {
   }
 }
 
-// --- Language Toggle ---
-class _LanguageToggle extends StatefulWidget {
-  @override
-  State<_LanguageToggle> createState() => _LanguageToggleState();
-}
-
-class _LanguageToggleState extends State<_LanguageToggle> {
-  String _selected = 'en';
+class _LanguageToggle extends ConsumerWidget {
+  const _LanguageToggle();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    final locale = ref.watch(settingsProvider).locale;
+    final notifier = ref.read(settingsProvider.notifier);
 
     final options = [
-      (value: 'en', label: l10n.langEnglish),
-      (value: 'bn', label: l10n.langBangla),
+      (value: const Locale('en'), label: l10n.langEnglish),
+      (value: const Locale('bn'), label: l10n.langBangla),
     ];
 
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppColors.surfaceContainerLow,
+        color: cs.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: options.map((opt) {
-          final isSelected = _selected == opt.value;
+          final isSelected = locale == opt.value;
           return GestureDetector(
-            onTap: () => setState(() => _selected = opt.value),
+            onTap: () => notifier.setLocale(opt.value),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.primary : Colors.transparent,
+                color: isSelected ? cs.primary : Colors.transparent,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
                 opt.label,
-                style: TextStyle(
-                  fontSize: 12,
+                style: tt.labelMedium?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: isSelected ? Colors.white : AppColors.onSurfaceVariant,
+                  color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
                 ),
               ),
             ),
