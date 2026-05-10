@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jatra/features/bookmarks/presentation/screens/bookmarks_screen.dart';
 
 import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
 import '../../features/fare_finder/presentation/screens/fare_details_screen.dart';
@@ -44,9 +45,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           ),
           GoRoute(
             path: AppRoutes.bookmarks,
-            builder: (context, state) => const Scaffold(
-              body: Center(child: Text('History Coming Soon')),
-            ),
+            builder: (context, state) => const BookmarksScreen(),
           ),
         ],
       ),

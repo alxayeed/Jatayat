@@ -1,12 +1,15 @@
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatra/core/router/app_router.dart';
+
 import '../../styles/app_colors.dart';
 import '../../styles/app_text_styles.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
+
   // final bool showProfile;
 
   const CustomAppBar({
@@ -26,22 +29,21 @@ class CustomAppBar extends StatelessWidget {
       automaticallyImplyLeading: true,
       // leading:
       actions: [
-        if(!canPop)
-        InkWell(
-          onTap: () => context.push(AppRoutes.settings),
-          child: Icon(
-            Icons.settings,
-            color: AppColors.onSurfaceVariant.withValues(alpha: 0.7),
-            size: 24,
+        if (!canPop)
+          InkWell(
+            onTap: () => context.push(AppRoutes.settings),
+            child: Icon(
+              Icons.settings,
+              color: AppColors.onSurfaceVariant.withValues(alpha: 0.7),
+              size: 24,
+            ),
           ),
-        ),
       ],
       actionsPadding: EdgeInsets.only(right: 16),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Image.asset("assets/logo/logo.png"),
-          Icon(Icons.car_rental, size: 48,),
+          // Image.asset("assets/logo/app_logo.png", width: 48, height: 48),
           Expanded(
             child: Text(
               title,
@@ -49,7 +51,6 @@ class CustomAppBar extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-
         ],
       ),
       flexibleSpace: ClipRect(
