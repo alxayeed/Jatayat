@@ -26,11 +26,15 @@ mixin _$FareResultModel {
   @JsonKey(name: 'from_stop_id')
   String get fromStopId => throw _privateConstructorUsedError;
   @JsonKey(name: 'to_stop_id')
-  String get toStopId => throw _privateConstructorUsedError;
-  @JsonKey(name: 'origin_name')
-  String get originName => throw _privateConstructorUsedError;
-  @JsonKey(name: 'destination_name')
-  String get destinationName => throw _privateConstructorUsedError;
+  String get toStopId => throw _privateConstructorUsedError; // Updated Localized Names
+  @JsonKey(name: 'origin_name_bn')
+  String? get originNameBn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'origin_name_en')
+  String? get originNameEn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'destination_name_bn')
+  String? get destinationNameBn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'destination_name_en')
+  String? get destinationNameEn => throw _privateConstructorUsedError;
   @JsonKey(name: 'fare_amount')
   double get fareAmount => throw _privateConstructorUsedError;
   @JsonKey(name: 'travel_distance_km')
@@ -75,8 +79,10 @@ abstract class $FareResultModelCopyWith<$Res> {
     @JsonKey(name: 'fare_id') String fareId,
     @JsonKey(name: 'from_stop_id') String fromStopId,
     @JsonKey(name: 'to_stop_id') String toStopId,
-    @JsonKey(name: 'origin_name') String originName,
-    @JsonKey(name: 'destination_name') String destinationName,
+    @JsonKey(name: 'origin_name_bn') String? originNameBn,
+    @JsonKey(name: 'origin_name_en') String? originNameEn,
+    @JsonKey(name: 'destination_name_bn') String? destinationNameBn,
+    @JsonKey(name: 'destination_name_en') String? destinationNameEn,
     @JsonKey(name: 'fare_amount') double fareAmount,
     @JsonKey(name: 'travel_distance_km') double travelDistanceKm,
     @JsonKey(name: 'route_id') String routeId,
@@ -109,8 +115,10 @@ class _$FareResultModelCopyWithImpl<$Res, $Val extends FareResultModel>
     Object? fareId = null,
     Object? fromStopId = null,
     Object? toStopId = null,
-    Object? originName = null,
-    Object? destinationName = null,
+    Object? originNameBn = freezed,
+    Object? originNameEn = freezed,
+    Object? destinationNameBn = freezed,
+    Object? destinationNameEn = freezed,
     Object? fareAmount = null,
     Object? travelDistanceKm = null,
     Object? routeId = null,
@@ -137,14 +145,22 @@ class _$FareResultModelCopyWithImpl<$Res, $Val extends FareResultModel>
                 ? _value.toStopId
                 : toStopId // ignore: cast_nullable_to_non_nullable
                       as String,
-            originName: null == originName
-                ? _value.originName
-                : originName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            destinationName: null == destinationName
-                ? _value.destinationName
-                : destinationName // ignore: cast_nullable_to_non_nullable
-                      as String,
+            originNameBn: freezed == originNameBn
+                ? _value.originNameBn
+                : originNameBn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            originNameEn: freezed == originNameEn
+                ? _value.originNameEn
+                : originNameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            destinationNameBn: freezed == destinationNameBn
+                ? _value.destinationNameBn
+                : destinationNameBn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            destinationNameEn: freezed == destinationNameEn
+                ? _value.destinationNameEn
+                : destinationNameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             fareAmount: null == fareAmount
                 ? _value.fareAmount
                 : fareAmount // ignore: cast_nullable_to_non_nullable
@@ -208,8 +224,10 @@ abstract class _$$FareResultModelImplCopyWith<$Res>
     @JsonKey(name: 'fare_id') String fareId,
     @JsonKey(name: 'from_stop_id') String fromStopId,
     @JsonKey(name: 'to_stop_id') String toStopId,
-    @JsonKey(name: 'origin_name') String originName,
-    @JsonKey(name: 'destination_name') String destinationName,
+    @JsonKey(name: 'origin_name_bn') String? originNameBn,
+    @JsonKey(name: 'origin_name_en') String? originNameEn,
+    @JsonKey(name: 'destination_name_bn') String? destinationNameBn,
+    @JsonKey(name: 'destination_name_en') String? destinationNameEn,
     @JsonKey(name: 'fare_amount') double fareAmount,
     @JsonKey(name: 'travel_distance_km') double travelDistanceKm,
     @JsonKey(name: 'route_id') String routeId,
@@ -241,8 +259,10 @@ class __$$FareResultModelImplCopyWithImpl<$Res>
     Object? fareId = null,
     Object? fromStopId = null,
     Object? toStopId = null,
-    Object? originName = null,
-    Object? destinationName = null,
+    Object? originNameBn = freezed,
+    Object? originNameEn = freezed,
+    Object? destinationNameBn = freezed,
+    Object? destinationNameEn = freezed,
     Object? fareAmount = null,
     Object? travelDistanceKm = null,
     Object? routeId = null,
@@ -269,14 +289,22 @@ class __$$FareResultModelImplCopyWithImpl<$Res>
             ? _value.toStopId
             : toStopId // ignore: cast_nullable_to_non_nullable
                   as String,
-        originName: null == originName
-            ? _value.originName
-            : originName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        destinationName: null == destinationName
-            ? _value.destinationName
-            : destinationName // ignore: cast_nullable_to_non_nullable
-                  as String,
+        originNameBn: freezed == originNameBn
+            ? _value.originNameBn
+            : originNameBn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        originNameEn: freezed == originNameEn
+            ? _value.originNameEn
+            : originNameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        destinationNameBn: freezed == destinationNameBn
+            ? _value.destinationNameBn
+            : destinationNameBn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        destinationNameEn: freezed == destinationNameEn
+            ? _value.destinationNameEn
+            : destinationNameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         fareAmount: null == fareAmount
             ? _value.fareAmount
             : fareAmount // ignore: cast_nullable_to_non_nullable
@@ -333,8 +361,10 @@ class _$FareResultModelImpl extends _FareResultModel {
     @JsonKey(name: 'fare_id') required this.fareId,
     @JsonKey(name: 'from_stop_id') required this.fromStopId,
     @JsonKey(name: 'to_stop_id') required this.toStopId,
-    @JsonKey(name: 'origin_name') required this.originName,
-    @JsonKey(name: 'destination_name') required this.destinationName,
+    @JsonKey(name: 'origin_name_bn') this.originNameBn,
+    @JsonKey(name: 'origin_name_en') this.originNameEn,
+    @JsonKey(name: 'destination_name_bn') this.destinationNameBn,
+    @JsonKey(name: 'destination_name_en') this.destinationNameEn,
     @JsonKey(name: 'fare_amount') required this.fareAmount,
     @JsonKey(name: 'travel_distance_km') required this.travelDistanceKm,
     @JsonKey(name: 'route_id') required this.routeId,
@@ -360,12 +390,19 @@ class _$FareResultModelImpl extends _FareResultModel {
   @override
   @JsonKey(name: 'to_stop_id')
   final String toStopId;
+  // Updated Localized Names
   @override
-  @JsonKey(name: 'origin_name')
-  final String originName;
+  @JsonKey(name: 'origin_name_bn')
+  final String? originNameBn;
   @override
-  @JsonKey(name: 'destination_name')
-  final String destinationName;
+  @JsonKey(name: 'origin_name_en')
+  final String? originNameEn;
+  @override
+  @JsonKey(name: 'destination_name_bn')
+  final String? destinationNameBn;
+  @override
+  @JsonKey(name: 'destination_name_en')
+  final String? destinationNameEn;
   @override
   @JsonKey(name: 'fare_amount')
   final double fareAmount;
@@ -402,7 +439,7 @@ class _$FareResultModelImpl extends _FareResultModel {
 
   @override
   String toString() {
-    return 'FareResultModel(fareId: $fareId, fromStopId: $fromStopId, toStopId: $toStopId, originName: $originName, destinationName: $destinationName, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
+    return 'FareResultModel(fareId: $fareId, fromStopId: $fromStopId, toStopId: $toStopId, originNameBn: $originNameBn, originNameEn: $originNameEn, destinationNameBn: $destinationNameBn, destinationNameEn: $destinationNameEn, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
   }
 
   @override
@@ -415,10 +452,14 @@ class _$FareResultModelImpl extends _FareResultModel {
                 other.fromStopId == fromStopId) &&
             (identical(other.toStopId, toStopId) ||
                 other.toStopId == toStopId) &&
-            (identical(other.originName, originName) ||
-                other.originName == originName) &&
-            (identical(other.destinationName, destinationName) ||
-                other.destinationName == destinationName) &&
+            (identical(other.originNameBn, originNameBn) ||
+                other.originNameBn == originNameBn) &&
+            (identical(other.originNameEn, originNameEn) ||
+                other.originNameEn == originNameEn) &&
+            (identical(other.destinationNameBn, destinationNameBn) ||
+                other.destinationNameBn == destinationNameBn) &&
+            (identical(other.destinationNameEn, destinationNameEn) ||
+                other.destinationNameEn == destinationNameEn) &&
             (identical(other.fareAmount, fareAmount) ||
                 other.fareAmount == fareAmount) &&
             (identical(other.travelDistanceKm, travelDistanceKm) ||
@@ -445,8 +486,10 @@ class _$FareResultModelImpl extends _FareResultModel {
     fareId,
     fromStopId,
     toStopId,
-    originName,
-    destinationName,
+    originNameBn,
+    originNameEn,
+    destinationNameBn,
+    destinationNameEn,
     fareAmount,
     travelDistanceKm,
     routeId,
@@ -482,8 +525,10 @@ abstract class _FareResultModel extends FareResultModel {
     @JsonKey(name: 'fare_id') required final String fareId,
     @JsonKey(name: 'from_stop_id') required final String fromStopId,
     @JsonKey(name: 'to_stop_id') required final String toStopId,
-    @JsonKey(name: 'origin_name') required final String originName,
-    @JsonKey(name: 'destination_name') required final String destinationName,
+    @JsonKey(name: 'origin_name_bn') final String? originNameBn,
+    @JsonKey(name: 'origin_name_en') final String? originNameEn,
+    @JsonKey(name: 'destination_name_bn') final String? destinationNameBn,
+    @JsonKey(name: 'destination_name_en') final String? destinationNameEn,
     @JsonKey(name: 'fare_amount') required final double fareAmount,
     @JsonKey(name: 'travel_distance_km') required final double travelDistanceKm,
     @JsonKey(name: 'route_id') required final String routeId,
@@ -510,13 +555,19 @@ abstract class _FareResultModel extends FareResultModel {
   String get fromStopId;
   @override
   @JsonKey(name: 'to_stop_id')
-  String get toStopId;
+  String get toStopId; // Updated Localized Names
   @override
-  @JsonKey(name: 'origin_name')
-  String get originName;
+  @JsonKey(name: 'origin_name_bn')
+  String? get originNameBn;
   @override
-  @JsonKey(name: 'destination_name')
-  String get destinationName;
+  @JsonKey(name: 'origin_name_en')
+  String? get originNameEn;
+  @override
+  @JsonKey(name: 'destination_name_bn')
+  String? get destinationNameBn;
+  @override
+  @JsonKey(name: 'destination_name_en')
+  String? get destinationNameEn;
   @override
   @JsonKey(name: 'fare_amount')
   double get fareAmount;

@@ -15,10 +15,10 @@ class FareFinderScreen extends ConsumerStatefulWidget {
   const FareFinderScreen({super.key});
 
   @override
-  ConsumerState createState() => _FareFinderPageState();
+  ConsumerState<FareFinderScreen> createState() => _FareFinderPageState();
 }
 
-class _FareFinderPageState extends ConsumerState {
+class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   final originController = TextEditingController();
   final destinationController = TextEditingController();
 
@@ -38,6 +38,7 @@ class _FareFinderPageState extends ConsumerState {
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
     final theme = Theme.of(context);
+    final isBn = l10n.localeName == 'bn';
 
     ref.listen<FareSearchState>(fareSearchProvider, (previous, next) {
       if (previous?.selectedDestination != null &&
@@ -99,8 +100,8 @@ class _FareFinderPageState extends ConsumerState {
                           );
                         },
                     child: _isCollapsed
-                        ? _buildCollapsedSummary(state, l10n, theme)
-                        : _buildSearchCard(state, notifier, l10n, theme),
+                        ? _buildCollapsedSummary(state, l10n, theme, isBn)
+                        : _buildSearchCard(state, notifier, l10n, theme, isBn),
                   ),
                   const SizedBox(height: 32),
                   if (state.fareResults.isNotEmpty)
@@ -120,10 +121,19 @@ class _FareFinderPageState extends ConsumerState {
     FareSearchState state,
     AppLocalizations l10n,
     ThemeData theme,
+    bool isBn,
   ) {
+    final originName = isBn
+        ? state.selectedOrigin?.nameBn
+        : (state.selectedOrigin?.nameEn ?? state.selectedOrigin?.nameBn);
+    final destinationName = isBn
+        ? state.selectedDestination?.nameBn
+        : (state.selectedDestination?.nameEn ??
+              state.selectedDestination?.nameBn);
+
     return Container(
       key: const ValueKey('summary_view'),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
@@ -132,6 +142,7 @@ class _FareFinderPageState extends ConsumerState {
         ),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Icon(
             Icons.directions_bus_filled_outlined,
@@ -141,31 +152,27 @@ class _FareFinderPageState extends ConsumerState {
           const SizedBox(width: 12),
           Expanded(
             child: Text(
-              '${state.selectedOrigin?.nameBn ?? ""} ${l10n.fromStop} ${state.selectedDestination?.nameBn ?? ""}',
+              '$originName ➤ $destinationName',
               style: theme.textTheme.labelLarge?.copyWith(
                 fontSize: 15,
                 fontWeight: FontWeight.w600,
               ),
-              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+              maxLines: 2,
             ),
           ),
-          TextButton.icon(
+          const SizedBox(width: 8),
+          IconButton(
             onPressed: () {
               setState(() {
                 _isCollapsed = false;
                 _manuallyExpanded = true;
               });
             },
-            icon: const Icon(Icons.edit_note_rounded, size: 20),
-            label: Text(l10n.fareSearchChange),
-            style: TextButton.styleFrom(
-              visualDensity: VisualDensity.compact,
-              foregroundColor: theme.colorScheme.primary,
-              textStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 13,
-              ),
-            ),
+            icon: const Icon(Icons.edit_note_rounded),
+            color: theme.colorScheme.primary,
+            visualDensity: VisualDensity.compact,
+            tooltip: l10n.fareSearchChange,
           ),
         ],
       ),
@@ -177,6 +184,7 @@ class _FareFinderPageState extends ConsumerState {
     FareSearchNotifier notifier,
     AppLocalizations l10n,
     ThemeData theme,
+    bool isBn,
   ) {
     return Container(
       key: const ValueKey('search_card_view'),
@@ -187,66 +195,64 @@ class _FareFinderPageState extends ConsumerState {
       ),
       child: Column(
         children: [
-          Stack(
+          Column(
             children: [
-              Column(
-                children: [
-                  AppTextField(
-                    hintText: l10n.fromStop,
-                    prefixIcon: Icons.my_location,
-                    controller: originController,
-                    onChanged: notifier.searchOrigin,
-                  ),
-                  if (state.originSuggestions.isNotEmpty)
-                    AppSuggestionList(
-                      suggestions: state.originSuggestions,
-                      onSelected: (stop) {
-                        originController.text =
-                            stop.nameEn ?? "Unknown for ${stop.nameBn}";
-                        notifier.selectOrigin(
-                          stop,
-                          noRoutesError: l10n.stopsSearchErrorMessage,
-                        );
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
-                  const SizedBox(height: 12),
-                  AppTextField(
-                    hintText: l10n.toStop,
-                    prefixIcon: Icons.location_on,
-                    controller: destinationController,
-                    readOnly: state.selectedOrigin == null,
-                    onChanged: notifier.searchDestination,
-                    onTap: () {
-                      if (state.selectedOrigin != null) {
-                        notifier.searchDestination(destinationController.text);
-                      }
-                    },
-                    suffixIcon: destinationController.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(Icons.clear, size: 20),
-                            onPressed: () {
-                              destinationController.clear();
-                              notifier.searchDestination('');
-                              notifier.selectDestination(
-                                StopEntity(id: '', nameBn: ''),
-                              );
-                            },
-                          )
-                        : null,
-                  ),
-                  if (state.destinationSuggestions.isNotEmpty)
-                    AppSuggestionList(
-                      suggestions: state.destinationSuggestions,
-                      onSelected: (stop) {
-                        destinationController.text =
-                            stop.nameEn ?? "Unknown for ${stop.nameBn}";
-                        notifier.selectDestination(stop);
-                        FocusScope.of(context).unfocus();
-                      },
-                    ),
-                ],
+              AppTextField(
+                hintText: l10n.fromStop,
+                prefixIcon: Icons.my_location,
+                controller: originController,
+                onChanged: notifier.searchOrigin,
               ),
+              if (state.originSuggestions.isNotEmpty)
+                AppSuggestionList(
+                  suggestions: state.originSuggestions,
+                  onSelected: (stop) {
+                    originController.text = isBn
+                        ? stop.nameBn
+                        : (stop.nameEn ?? stop.nameBn);
+                    notifier.selectOrigin(
+                      stop,
+                      noRoutesError: l10n.stopsSearchErrorMessage,
+                    );
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
+              const SizedBox(height: 12),
+              AppTextField(
+                hintText: l10n.toStop,
+                prefixIcon: Icons.location_on,
+                controller: destinationController,
+                readOnly: state.selectedOrigin == null,
+                onChanged: notifier.searchDestination,
+                onTap: () {
+                  if (state.selectedOrigin != null) {
+                    notifier.searchDestination(destinationController.text);
+                  }
+                },
+                suffixIcon: destinationController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, size: 20),
+                        onPressed: () {
+                          destinationController.clear();
+                          notifier.searchDestination('');
+                          notifier.selectDestination(
+                            StopEntity(id: '', nameBn: ''),
+                          );
+                        },
+                      )
+                    : null,
+              ),
+              if (state.destinationSuggestions.isNotEmpty)
+                AppSuggestionList(
+                  suggestions: state.destinationSuggestions,
+                  onSelected: (stop) {
+                    destinationController.text = isBn
+                        ? stop.nameBn
+                        : (stop.nameEn ?? stop.nameBn);
+                    notifier.selectDestination(stop);
+                    FocusScope.of(context).unfocus();
+                  },
+                ),
             ],
           ),
           const SizedBox(height: 24),

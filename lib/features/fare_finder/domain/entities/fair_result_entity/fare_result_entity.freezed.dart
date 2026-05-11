@@ -19,13 +19,14 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$FareResultEntity {
   String get fareId => throw _privateConstructorUsedError;
   double get fareAmount => throw _privateConstructorUsedError;
-  double get travelDistanceKm =>
-      throw _privateConstructorUsedError; // Origin/Destination IDs to help highlight the timeline
+  double get travelDistanceKm => throw _privateConstructorUsedError;
   String get fromStopId => throw _privateConstructorUsedError;
   String get toStopId =>
-      throw _privateConstructorUsedError; // Names for the header/timeline
-  String get originName => throw _privateConstructorUsedError;
-  String get destinationName =>
+      throw _privateConstructorUsedError; // Localized Names for the header/timeline
+  String? get originNameBn => throw _privateConstructorUsedError;
+  String? get originNameEn => throw _privateConstructorUsedError;
+  String? get destinationNameBn => throw _privateConstructorUsedError;
+  String? get destinationNameEn =>
       throw _privateConstructorUsedError; // Nested Route Info
   String get routeId => throw _privateConstructorUsedError;
   String get routeCode => throw _privateConstructorUsedError;
@@ -57,8 +58,10 @@ abstract class $FareResultEntityCopyWith<$Res> {
     double travelDistanceKm,
     String fromStopId,
     String toStopId,
-    String originName,
-    String destinationName,
+    String? originNameBn,
+    String? originNameEn,
+    String? destinationNameBn,
+    String? destinationNameEn,
     String routeId,
     String routeCode,
     String routeNameBn,
@@ -91,8 +94,10 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
     Object? travelDistanceKm = null,
     Object? fromStopId = null,
     Object? toStopId = null,
-    Object? originName = null,
-    Object? destinationName = null,
+    Object? originNameBn = freezed,
+    Object? originNameEn = freezed,
+    Object? destinationNameBn = freezed,
+    Object? destinationNameEn = freezed,
     Object? routeId = null,
     Object? routeCode = null,
     Object? routeNameBn = null,
@@ -125,14 +130,22 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
                 ? _value.toStopId
                 : toStopId // ignore: cast_nullable_to_non_nullable
                       as String,
-            originName: null == originName
-                ? _value.originName
-                : originName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            destinationName: null == destinationName
-                ? _value.destinationName
-                : destinationName // ignore: cast_nullable_to_non_nullable
-                      as String,
+            originNameBn: freezed == originNameBn
+                ? _value.originNameBn
+                : originNameBn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            originNameEn: freezed == originNameEn
+                ? _value.originNameEn
+                : originNameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            destinationNameBn: freezed == destinationNameBn
+                ? _value.destinationNameBn
+                : destinationNameBn // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            destinationNameEn: freezed == destinationNameEn
+                ? _value.destinationNameEn
+                : destinationNameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             routeId: null == routeId
                 ? _value.routeId
                 : routeId // ignore: cast_nullable_to_non_nullable
@@ -190,8 +203,10 @@ abstract class _$$FareResultEntityImplCopyWith<$Res>
     double travelDistanceKm,
     String fromStopId,
     String toStopId,
-    String originName,
-    String destinationName,
+    String? originNameBn,
+    String? originNameEn,
+    String? destinationNameBn,
+    String? destinationNameEn,
     String routeId,
     String routeCode,
     String routeNameBn,
@@ -223,8 +238,10 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
     Object? travelDistanceKm = null,
     Object? fromStopId = null,
     Object? toStopId = null,
-    Object? originName = null,
-    Object? destinationName = null,
+    Object? originNameBn = freezed,
+    Object? originNameEn = freezed,
+    Object? destinationNameBn = freezed,
+    Object? destinationNameEn = freezed,
     Object? routeId = null,
     Object? routeCode = null,
     Object? routeNameBn = null,
@@ -257,14 +274,22 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
             ? _value.toStopId
             : toStopId // ignore: cast_nullable_to_non_nullable
                   as String,
-        originName: null == originName
-            ? _value.originName
-            : originName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        destinationName: null == destinationName
-            ? _value.destinationName
-            : destinationName // ignore: cast_nullable_to_non_nullable
-                  as String,
+        originNameBn: freezed == originNameBn
+            ? _value.originNameBn
+            : originNameBn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        originNameEn: freezed == originNameEn
+            ? _value.originNameEn
+            : originNameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        destinationNameBn: freezed == destinationNameBn
+            ? _value.destinationNameBn
+            : destinationNameBn // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        destinationNameEn: freezed == destinationNameEn
+            ? _value.destinationNameEn
+            : destinationNameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         routeId: null == routeId
             ? _value.routeId
             : routeId // ignore: cast_nullable_to_non_nullable
@@ -315,8 +340,10 @@ class _$FareResultEntityImpl implements _FareResultEntity {
     required this.travelDistanceKm,
     required this.fromStopId,
     required this.toStopId,
-    required this.originName,
-    required this.destinationName,
+    required this.originNameBn,
+    required this.originNameEn,
+    required this.destinationNameBn,
+    required this.destinationNameEn,
     required this.routeId,
     required this.routeCode,
     required this.routeNameBn,
@@ -334,16 +361,19 @@ class _$FareResultEntityImpl implements _FareResultEntity {
   final double fareAmount;
   @override
   final double travelDistanceKm;
-  // Origin/Destination IDs to help highlight the timeline
   @override
   final String fromStopId;
   @override
   final String toStopId;
-  // Names for the header/timeline
+  // Localized Names for the header/timeline
   @override
-  final String originName;
+  final String? originNameBn;
   @override
-  final String destinationName;
+  final String? originNameEn;
+  @override
+  final String? destinationNameBn;
+  @override
+  final String? destinationNameEn;
   // Nested Route Info
   @override
   final String routeId;
@@ -366,7 +396,7 @@ class _$FareResultEntityImpl implements _FareResultEntity {
 
   @override
   String toString() {
-    return 'FareResultEntity(fareId: $fareId, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, fromStopId: $fromStopId, toStopId: $toStopId, originName: $originName, destinationName: $destinationName, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
+    return 'FareResultEntity(fareId: $fareId, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, fromStopId: $fromStopId, toStopId: $toStopId, originNameBn: $originNameBn, originNameEn: $originNameEn, destinationNameBn: $destinationNameBn, destinationNameEn: $destinationNameEn, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
   }
 
   @override
@@ -383,10 +413,14 @@ class _$FareResultEntityImpl implements _FareResultEntity {
                 other.fromStopId == fromStopId) &&
             (identical(other.toStopId, toStopId) ||
                 other.toStopId == toStopId) &&
-            (identical(other.originName, originName) ||
-                other.originName == originName) &&
-            (identical(other.destinationName, destinationName) ||
-                other.destinationName == destinationName) &&
+            (identical(other.originNameBn, originNameBn) ||
+                other.originNameBn == originNameBn) &&
+            (identical(other.originNameEn, originNameEn) ||
+                other.originNameEn == originNameEn) &&
+            (identical(other.destinationNameBn, destinationNameBn) ||
+                other.destinationNameBn == destinationNameBn) &&
+            (identical(other.destinationNameEn, destinationNameEn) ||
+                other.destinationNameEn == destinationNameEn) &&
             (identical(other.routeId, routeId) || other.routeId == routeId) &&
             (identical(other.routeCode, routeCode) ||
                 other.routeCode == routeCode) &&
@@ -410,8 +444,10 @@ class _$FareResultEntityImpl implements _FareResultEntity {
     travelDistanceKm,
     fromStopId,
     toStopId,
-    originName,
-    destinationName,
+    originNameBn,
+    originNameEn,
+    destinationNameBn,
+    destinationNameEn,
     routeId,
     routeCode,
     routeNameBn,
@@ -442,8 +478,10 @@ abstract class _FareResultEntity implements FareResultEntity {
     required final double travelDistanceKm,
     required final String fromStopId,
     required final String toStopId,
-    required final String originName,
-    required final String destinationName,
+    required final String? originNameBn,
+    required final String? originNameEn,
+    required final String? destinationNameBn,
+    required final String? destinationNameEn,
     required final String routeId,
     required final String routeCode,
     required final String routeNameBn,
@@ -460,15 +498,19 @@ abstract class _FareResultEntity implements FareResultEntity {
   @override
   double get fareAmount;
   @override
-  double get travelDistanceKm; // Origin/Destination IDs to help highlight the timeline
+  double get travelDistanceKm;
   @override
   String get fromStopId;
   @override
-  String get toStopId; // Names for the header/timeline
+  String get toStopId; // Localized Names for the header/timeline
   @override
-  String get originName;
+  String? get originNameBn;
   @override
-  String get destinationName; // Nested Route Info
+  String? get originNameEn;
+  @override
+  String? get destinationNameBn;
+  @override
+  String? get destinationNameEn; // Nested Route Info
   @override
   String get routeId;
   @override
