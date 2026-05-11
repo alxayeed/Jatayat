@@ -2,19 +2,22 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'fare_result_entity.freezed.dart';
 
-
 @freezed
 class FareResultEntity with _$FareResultEntity {
   const factory FareResultEntity({
     required String fareId,
     required double fareAmount,
     required double travelDistanceKm,
-    // Origin/Destination IDs to help highlight the timeline
+
     required String fromStopId,
     required String toStopId,
-    // Names for the header/timeline
-    required String originName,
-    required String destinationName,
+
+    // Localized Names for the header/timeline
+    required String? originNameBn,
+    required String? originNameEn,
+    required String? destinationNameBn,
+    required String? destinationNameEn,
+
     // Nested Route Info
     required String routeId,
     required String routeCode,

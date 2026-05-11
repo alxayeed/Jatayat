@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
@@ -24,14 +25,23 @@ class FareDetailsScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
+    // Check language from SettingsProvider
+    final currentLocale = ref.watch(settingsProvider).locale;
+    final isBn = currentLocale.languageCode == 'bn';
+
     final bool isFlipped = searchState.selectedOrigin?.id == fare.toStopId;
 
-    final String displayOriginName = isFlipped
-        ? fare.destinationName
-        : fare.originName;
-    final String displayDestName = isFlipped
-        ? fare.originName
-        : fare.destinationName;
+    // Localized Name Selection with Fallbacks
+    final String baseOriginName = isBn
+        ? (fare.originNameBn ?? fare.originNameEn ?? '')
+        : (fare.originNameEn ?? fare.originNameBn ?? '');
+
+    final String baseDestName = isBn
+        ? (fare.destinationNameBn ?? fare.destinationNameEn ?? '')
+        : (fare.destinationNameEn ?? fare.destinationNameBn ?? '');
+
+    final String displayOriginName = isFlipped ? baseDestName : baseOriginName;
+    final String displayDestName = isFlipped ? baseOriginName : baseDestName;
     final String displayOriginId = isFlipped ? fare.toStopId : fare.fromStopId;
     final String displayDestId = isFlipped ? fare.fromStopId : fare.toStopId;
 
@@ -221,11 +231,15 @@ class FareDetailsScreen extends ConsumerWidget {
     ThemeData theme,
   ) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          Icons.radio_button_checked,
-          size: 20,
-          color: theme.colorScheme.primary,
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Icon(
+            Icons.radio_button_checked,
+            size: 20,
+            color: theme.colorScheme.primary,
+          ),
         ),
         const SizedBox(width: 12),
         Expanded(
@@ -239,18 +253,14 @@ class FareDetailsScreen extends ConsumerWidget {
               Text(
                 originName,
                 style: theme.textTheme.titleMedium?.copyWith(fontSize: 15),
-                overflow: TextOverflow.ellipsis,
+                softWrap: true,
               ),
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Icon(
-            Icons.arrow_forward,
-            size: 16,
-            color: theme.colorScheme.outline,
-          ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
+          child: Icon(Icons.arrow_forward, size: 16, color: Colors.grey),
         ),
         Expanded(
           child: Column(
@@ -262,14 +272,22 @@ class FareDetailsScreen extends ConsumerWidget {
               ),
               Text(
                 destinationName,
+                textAlign: TextAlign.end,
                 style: theme.textTheme.titleMedium?.copyWith(fontSize: 15),
-                overflow: TextOverflow.ellipsis,
+                softWrap: true,
               ),
             ],
           ),
         ),
         const SizedBox(width: 12),
-        Icon(Icons.location_on, size: 20, color: theme.colorScheme.error),
+        Padding(
+          padding: const EdgeInsets.only(top: 4),
+          child: Icon(
+            Icons.location_on,
+            size: 20,
+            color: theme.colorScheme.error,
+          ),
+        ),
       ],
     );
   }

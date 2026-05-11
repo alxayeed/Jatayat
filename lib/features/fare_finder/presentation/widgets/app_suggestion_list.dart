@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/providers/settings_provider.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 
-class AppSuggestionList extends StatelessWidget {
-  final List suggestions;
+class AppSuggestionList extends ConsumerWidget {
+  final List<StopEntity> suggestions;
   final Function(StopEntity) onSelected;
 
   const AppSuggestionList({
@@ -13,12 +15,14 @@ class AppSuggestionList extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final currentLocale = ref.watch(settingsProvider).locale;
+    final isBn = currentLocale.languageCode == 'bn';
 
     return Container(
       constraints: const BoxConstraints(maxHeight: 200),
-      margin: const EdgeInsets.only(top: 8),
+      margin: const EdgeInsets.only(top: 4),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(16),
@@ -42,6 +46,10 @@ class AppSuggestionList extends StatelessWidget {
           ),
           itemBuilder: (context, index) {
             final stop = suggestions[index];
+            final displayName = isBn
+                ? (stop.nameBn ?? stop.nameEn)
+                : (stop.nameEn ?? stop.nameBn);
+
             return ListTile(
               leading: Icon(
                 Icons.history,
@@ -49,10 +57,11 @@ class AppSuggestionList extends StatelessWidget {
                 color: theme.colorScheme.outline,
               ),
               title: Text(
-                stop.nameBn,
+                displayName ?? "",
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  fontFamily: 'HindSiliguri',
+                  fontFamily: isBn ? 'HindSiliguri' : null,
                   fontSize: 16,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               trailing: Icon(
