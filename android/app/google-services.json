@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "631464687902",
-    "project_id": "jatriii",
-    "storage_bucket": "jatriii.firebasestorage.app"
+    "project_number": "80890607538",
+    "project_id": "jatayaat",
+    "storage_bucket": "jatayaat.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:631464687902:android:ea02d229ba9af30c98b10f",
+        "mobilesdk_app_id": "1:80890607538:android:6944957d81e1f7abbfd6ab",
         "android_client_info": {
-          "package_name": "com.raindropstudio.jatri"
+          "package_name": "com.raindropstudio.jatayat"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD9JHQ-VK9ppuJvDioGC-hFyvZyd5KQ4jc"
+          "current_key": "AIzaSyCw2ptnYZRGROwRvgncN6rympotBHjtw58"
         }
       ],
       "services": {
