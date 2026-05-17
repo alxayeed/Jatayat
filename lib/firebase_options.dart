@@ -50,19 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyD9JHQ-VK9ppuJvDioGC-hFyvZyd5KQ4jc',
-    appId: '1:631464687902:android:ea02d229ba9af30c98b10f',
-    messagingSenderId: '631464687902',
-    projectId: 'jatriii',
-    storageBucket: 'jatriii.firebasestorage.app',
+    apiKey: 'AIzaSyCw2ptnYZRGROwRvgncN6rympotBHjtw58',
+    appId: '1:80890607538:android:6944957d81e1f7abbfd6ab',
+    messagingSenderId: '80890607538',
+    projectId: 'jatayaat',
+    storageBucket: 'jatayaat.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCTYwqYvYZ6pcly9TYUvcZtVrCksAvPEBo',
-    appId: '1:631464687902:ios:9ecee581a7fbbd6098b10f',
-    messagingSenderId: '631464687902',
-    projectId: 'jatriii',
-    storageBucket: 'jatriii.firebasestorage.app',
-    iosBundleId: 'com.raindropstudio.jatri',
+    apiKey: 'AIzaSyDIozDHsWBESo38S7-vMtf4VeI-D3bXcwc',
+    appId: '1:80890607538:ios:d2cc13a5658feb6bbfd6ab',
+    messagingSenderId: '80890607538',
+    projectId: 'jatayaat',
+    storageBucket: 'jatayaat.firebasestorage.app',
+    iosBundleId: 'com.raindropstudio.jatayat',
   );
+
 }

@@ -1,4 +1,4 @@
-package com.raindropstudio.jatri
+package com.raindropstudio.jatayat
 
 import io.flutter.embedding.android.FlutterActivity
 
