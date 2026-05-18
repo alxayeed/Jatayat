@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jatra/features/bookmarks/presentation/screens/bookmarks_screen.dart';
+import 'package:go_router/go_router.dart';
+// import 'package:jatra/features/bookmarks/presentation/screens/bookmarks_screen.dart'; // Temporarily commented out
+import 'package:jatra/features/documents/presentation/screens/documents_screen.dart';
 
 import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
 import '../../features/fare_finder/presentation/screens/fare_details_screen.dart';
 import '../../features/fare_finder/presentation/screens/fare_finder_screen.dart';
-import '../../features/route_explorer/presentation/screens/route_list_screen.dart';
 import '../../features/route_explorer/presentation/screens/route_details_screen.dart';
-
+import '../../features/route_explorer/presentation/screens/route_list_screen.dart';
 import '../ui/screens/main_screen.dart';
 import '../ui/screens/settings_screen.dart';
 import '../ui/widgets/app_pdf_viewer.dart';
@@ -16,7 +16,9 @@ import '../ui/widgets/app_pdf_viewer.dart';
 class AppRoutes {
   static const String fareSearch = '/fare-search';
   static const String routeExplorer = '/route-explorer';
-  static const String bookmarks = '/bookmarks';
+  static const String documents = '/documents';
+
+  // static const String bookmarks = '/bookmarks'; // Temporarily commented out
   static const String settings = '/settings';
   static const String fareDetails = '/fare-details';
   static const String routeDetails = '/route-details';
@@ -44,9 +46,14 @@ final routerProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const RouteListScreen(),
           ),
           GoRoute(
-            path: AppRoutes.bookmarks,
-            builder: (context, state) => const BookmarksScreen(),
+            path: AppRoutes.documents,
+            builder: (context, state) => const DocumentsScreen(),
           ),
+          // Temporarily commented out from shell
+          // GoRoute(
+          //   path: AppRoutes.bookmarks,
+          //   builder: (context, state) => const BookmarksScreen(),
+          // ),
         ],
       ),
 
