@@ -16,35 +16,32 @@ class DocumentCardShimmer extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerLowest,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: theme.colorScheme.primary.withValues(alpha: 0.05),
+          color: theme.colorScheme.primary.withValues(alpha: 0.1),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Shimmer for the Version Name badge
-              const SkeletonBox(width: 90, height: 24, borderRadius: 8),
-              // Shimmer for the top right Action Icon
-              const SkeletonBox(width: 20, height: 20, borderRadius: 4),
+              const SkeletonBox(width: 70, height: 24, borderRadius: 8),
+              const SizedBox(width: 8),
+              const SkeletonBox(width: 50, height: 20, borderRadius: 8),
+              const Spacer(),
+              const SkeletonBox(width: 18, height: 18, borderRadius: 4),
             ],
           ),
-          const SizedBox(height: 18),
-          // Shimmer for the Document Title headline text
-          const SkeletonBox(width: 240, height: 22, borderRadius: 6),
+          const SizedBox(height: 14),
+          const SkeletonBox(width: 260, height: 20, borderRadius: 6),
           const SizedBox(height: 8),
-          // Shimmer for cases with multi-line wrap titles
-          const SkeletonBox(width: 140, height: 16, borderRadius: 6),
-          Divider(height: 24, color: theme.dividerTheme.color),
+          const SkeletonBox(width: 180, height: 14, borderRadius: 6),
+          const SizedBox(height: 8),
+          Divider(height: 16, color: theme.dividerTheme.color),
           Row(
             children: const [
-              // Shimmer for the Calendar prefix icon
               SkeletonBox(width: 14, height: 14, borderRadius: 4),
-              SizedBox(width: 8),
-              // Shimmer for the formatted publication date string
-              SkeletonBox(width: 100, height: 14, borderRadius: 4),
+              SizedBox(width: 6),
+              SkeletonBox(width: 110, height: 14, borderRadius: 4),
             ],
           ),
         ],
