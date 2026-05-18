@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
@@ -131,7 +130,7 @@ class FareDetailsScreen extends ConsumerWidget {
                         child: CircularProgressIndicator(),
                       ),
                     ),
-                    error: (_, __) => Padding(
+                    error: (_, _) => Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(l10n.failedToLoadStops),
                     ),
@@ -161,20 +160,37 @@ class FareDetailsScreen extends ConsumerWidget {
                       Expanded(
                         child: _buildActionButton(
                           l10n.brtaLink,
-                          Icons.open_in_new_rounded,
+                          Icons.cloud_download_rounded,
+                          // Swapped icon to fit a document view action better
                           isDark
                               ? Colors.white70
                               : theme.colorScheme.onSurfaceVariant,
                           theme,
-                          () async {
-                            if (fare.btrcUrl != null) {
-                              final uri = Uri.parse(fare.btrcUrl!);
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(
-                                  uri,
-                                  mode: LaunchMode.externalApplication,
-                                );
-                              }
+                          () {
+                            if (fare.btrcUrl != null &&
+                                fare.btrcUrl!.isNotEmpty) {
+                              // Route the Oracle Cloud/BRTA copy directly inside your smooth native viewer!
+                              context.push(
+                                AppRoutes.pdfViewer,
+                                extra: {
+                                  'url': fare.btrcUrl,
+                                  'page': 1,
+                                  // Default to first page for the main legal document
+                                  'title': isBn
+                                      ? 'গেজেট অনুলিপি'
+                                      : 'Official Ministry Gazette',
+                                },
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    isBn
+                                        ? 'কোন লিংক পাওয়া যায়নি'
+                                        : 'No link available',
+                                  ),
+                                ),
+                              );
                             }
                           },
                         ),
