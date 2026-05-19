@@ -72,5 +72,7 @@
   "about": "About",
   "version": "Version",
   "upToDate": "You're up to date!",
-  "appDescription": "Jatayat helps you find official bus fares across Dhaka city."
+  "appDescription": "Jatayat helps you find official bus fares across Dhaka city.",
+  "loadingGazette": "Loading Gazette Reference...",
+    "errorLoadingPdf": "Failed to display the document"
 }

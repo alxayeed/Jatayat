@@ -223,4 +223,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get appDescription =>
       'Jatayat helps you find official bus fares across Dhaka city.';
+
+  @override
+  String get loadingGazette => 'Loading Gazette Reference...';
+
+  @override
+  String get errorLoadingPdf => 'Failed to display the document';
 }

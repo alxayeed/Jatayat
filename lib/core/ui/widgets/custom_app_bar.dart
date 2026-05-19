@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatra/core/router/app_router.dart';
@@ -26,7 +27,7 @@ class CustomAppBar extends StatelessWidget {
       automaticallyImplyLeading: true,
       iconTheme: theme.iconTheme.copyWith(color: contentColor),
       actions: [
-        if (!canPop)
+        if (!canPop && kDebugMode)
           InkWell(
             onTap: () => context.push(AppRoutes.settings),
             child: Icon(

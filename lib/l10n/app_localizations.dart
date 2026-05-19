@@ -517,6 +517,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Jatayat helps you find official bus fares across Dhaka city.'**
   String get appDescription;
+
+  /// No description provided for @loadingGazette.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Gazette Reference...'**
+  String get loadingGazette;
+
+  /// No description provided for @errorLoadingPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to display the document'**
+  String get errorLoadingPdf;
 }
 
 class _AppLocalizationsDelegate
