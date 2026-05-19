@@ -529,6 +529,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to display the document'**
   String get errorLoadingPdf;
+
+  /// No description provided for @disclaimerHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Source & Note'**
+  String get disclaimerHeader;
+
+  /// No description provided for @governmentDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This is an independent platform designed to help you view transit data easily and does not represent any government entity.'**
+  String get governmentDisclaimer;
 }
 
 class _AppLocalizationsDelegate

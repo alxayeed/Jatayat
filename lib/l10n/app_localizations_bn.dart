@@ -228,4 +228,11 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get errorLoadingPdf => 'ডকুমেন্টটি প্রদর্শন করা যায়নি';
+
+  @override
+  String get disclaimerHeader => 'তথ্যের উৎস ও নোট';
+
+  @override
+  String get governmentDisclaimer =>
+      'যাতায়াত অ্যাপে ব্যবহৃত সমস্ত ভাড়ার তালিকা সর্বসাধারণের জন্য উন্মুক্ত সরকারি বিআরটিএ (BRTA) গ্যাজেট থেকে নির্ভুলভাবে সংগ্রহ করা হয়েছে। এটি কোনো অফিশিয়াল সরকারি অ্যাপ নয়, বরং আপনার সুবিধার্থে ডেটাগুলো সহজভাবে দেখার একটি স্বাধীন মাধ্যম।';
 }

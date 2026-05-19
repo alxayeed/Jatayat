@@ -62,6 +62,13 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       }
     }
 
+    // Idle state check: No active loading, no results, and no open autocomplete suggestion drop-downs
+    final bool isIdleState =
+        !state.isLoading &&
+        state.fareResults.isEmpty &&
+        state.originSuggestions.isEmpty &&
+        state.destinationSuggestions.isEmpty;
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -111,7 +118,70 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             ),
           ),
           _buildFareResults(state),
-          const SliverToBoxAdapter(child: SizedBox(height: 100)),
+
+          // Show the disclaimer card dynamically at the bottom if the view is idle
+          if (isIdleState)
+            SliverFillRemaining(
+              hasScrollBody: false,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 20.0,
+                  right: 20.0,
+                  bottom: 24.0,
+                  top: 12.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [_buildGovernmentDisclaimer(l10n, theme)],
+                ),
+              ),
+            )
+          else
+            const SliverToBoxAdapter(child: SizedBox(height: 100)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGovernmentDisclaimer(AppLocalizations l10n, ThemeData theme) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.1),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.gavel_outlined,
+                size: 16,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                l10n.localeName == 'bn' ? 'আইনি নোটিশ' : 'Legal Disclaimer',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.governmentDisclaimer,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontSize: 11,
+              height: 1.4,
+            ),
+          ),
         ],
       ),
     );

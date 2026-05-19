@@ -74,5 +74,7 @@
   "upToDate": "You're up to date!",
   "appDescription": "Jatayat helps you find official bus fares across Dhaka city.",
   "loadingGazette": "Loading Gazette Reference...",
-    "errorLoadingPdf": "Failed to display the document"
+    "errorLoadingPdf": "Failed to display the document",
+    "disclaimerHeader": "Data Source & Note",
+      "governmentDisclaimer": "All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This is an independent platform designed to help you view transit data easily and does not represent any government entity."
 }
