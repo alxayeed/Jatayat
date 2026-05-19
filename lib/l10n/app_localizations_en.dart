@@ -229,4 +229,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorLoadingPdf => 'Failed to display the document';
+
+  @override
+  String get disclaimerHeader => 'Data Source & Note';
+
+  @override
+  String get governmentDisclaimer =>
+      'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This is an independent platform designed to help you view transit data easily and does not represent any government entity.';
 }
