@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../core/styles/app_colors.dart';
+import '../../../../../l10n/app_localizations.dart'; // Adjust path if necessary
 
 class AppPdfViewer extends StatefulWidget {
   final String pdfUrl;
@@ -45,9 +46,6 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
   }
 
   Future<void> _downloadAndSavePdf() async {
-    final stopwatch = Stopwatch()..start();
-    developer.log('🔼 Req: [Download PDF] ${widget.pdfUrl}', name: 'PdfViewer');
-
     try {
       final response = await http.get(Uri.parse(widget.pdfUrl));
       if (response.statusCode != 200) {
@@ -61,12 +59,6 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
 
       await file.writeAsBytes(response.bodyBytes);
 
-      stopwatch.stop();
-      developer.log(
-        '✅ Res: [Download PDF] Finished in ${stopwatch.elapsedMilliseconds}ms',
-        name: 'PdfViewer',
-      );
-
       if (mounted) {
         setState(() {
           _localPath = file.path;
@@ -74,7 +66,6 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
         });
       }
     } catch (e, stackTrace) {
-      stopwatch.stop();
       developer.log(
         '❌ Err: [Download PDF]',
         name: 'PdfViewer',
@@ -94,6 +85,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!; // Fetch localization
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -122,21 +114,21 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
             ),
         ],
       ),
-      body: _buildBody(theme),
+      body: _buildBody(theme, l10n),
     );
   }
 
-  Widget _buildBody(ThemeData theme) {
+  Widget _buildBody(ThemeData theme, AppLocalizations l10n) {
     if (_isLoading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(color: AppColors.primary),
-            SizedBox(height: 16),
+            const CircularProgressIndicator(color: AppColors.primary),
+            const SizedBox(height: 16),
             Text(
-              'গ্যাজেট রেফারেন্স লোড হচ্ছে...',
-              style: TextStyle(color: AppColors.onSurfaceVariant),
+              l10n.loadingGazette, // Localized String
+              style: const TextStyle(color: AppColors.onSurfaceVariant),
             ),
           ],
         ),
@@ -157,7 +149,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
               ),
               const SizedBox(height: 16),
               Text(
-                'ডকুমেন্টটি প্রদর্শন করা যায়নি',
+                l10n.errorLoadingPdf, // Localized String
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -184,7 +176,6 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
       pageFling: true,
       pageSnap: true,
       defaultPage: _currentPage,
-      // Immediate native viewport target assignment
       fitPolicy: FitPolicy.WIDTH,
       preventLinkNavigation: false,
       onRender: (pages) {

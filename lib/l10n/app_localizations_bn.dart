@@ -222,4 +222,10 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get appDescription =>
       'যাতায়াত আপনাকে ঢাকা শহরের বাসের সরকারি ভাড়া জানতে সাহায্য করে।';
+
+  @override
+  String get loadingGazette => 'গ্যাজেট রেফারেন্স লোড হচ্ছে...';
+
+  @override
+  String get errorLoadingPdf => 'ডকুমেন্টটি প্রদর্শন করা যায়নি';
 }
