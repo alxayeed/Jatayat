@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../core/styles/app_colors.dart';
-import '../../../../../l10n/app_localizations.dart'; // Adjust path if necessary
+import '../../../../../l10n/app_localizations.dart';
+import 'app_feedback_button.dart'; // Adjust path if necessary
 
 class AppPdfViewer extends StatefulWidget {
   final String pdfUrl;
@@ -115,6 +116,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
         ],
       ),
       body: _buildBody(theme, l10n),
+      floatingActionButton: const AppFeedbackButton(),
     );
   }
 
