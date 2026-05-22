@@ -1,7 +1,7 @@
 name: jatra
 description: "A bus transport utility app for Dhaka."
 publish_to: 'none'
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: ^3.11.1
@@ -60,6 +60,7 @@ flutter:
   assets:
     - assets/
     - .env
+    - shorebird.yaml
   fonts:
     - family: WorkSans
       fonts:
