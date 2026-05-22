@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:jatra/core/ui/widgets/custom_app_bar.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/ui/widgets/app_feedback_button.dart';
 import '../../../../core/ui/widgets/reference_action_button.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -34,6 +35,7 @@ class RouteDetailsScreen extends ConsumerWidget {
         error: (error, stackTrace) => _buildErrorView(ref, error, l10n, theme),
         data: (route) => _buildRouteContent(context, route, l10n, theme),
       ),
+      floatingActionButton: const AppFeedbackButton(),
     );
   }
 

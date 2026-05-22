@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/ui/widgets/app_feedback_button.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -204,6 +205,7 @@ class FareDetailsScreen extends ConsumerWidget {
           ),
         ],
       ),
+      floatingActionButton: const AppFeedbackButton(),
     );
   }
 

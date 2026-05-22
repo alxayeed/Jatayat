@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,127 +32,146 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
     final feedbackState = ref.watch(feedbackProvider);
     final bool isLoading = feedbackState.isLoading;
 
-    return Container(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 14,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Top Header Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      children: [
+        // Main Form Layer
+        Container(
+          padding: EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 14,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+          ),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Send Feedback',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onSurface,
-                  ),
-                ),
-                isLoading
-                    ? Padding(
-                        padding: const EdgeInsets.only(right: 24.0),
-                        child: SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: theme.colorScheme.primary,
-                          ),
-                        ),
-                      )
-                    : TextButton.icon(
-                        onPressed: () {
-                          final text = _textController.text.trim();
-                          if (text.isEmpty) return;
-                          widget.submit(
-                            text,
-                            extras: {'type': _selectedCategory},
-                          );
-                        },
-                        icon: const Icon(Icons.send_rounded, size: 16),
-                        label: const Text(
-                          'Submit',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        style: TextButton.styleFrom(
-                          visualDensity: VisualDensity.compact,
-                          foregroundColor: theme.colorScheme.primary,
-                        ),
+                // Top Header Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Send Feedback',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
                       ),
-              ],
-            ),
-            const SizedBox(height: 10),
-
-            // Custom Compact Zero-Padding Segment Bar
-            Row(
-              children: [
-                _buildCompactTab(
-                  label: 'Bug Report',
-                  icon: Icons.bug_report_outlined,
-                  isSelected: _selectedCategory == 'bug',
-                  theme: theme,
-                  onTap: isLoading
-                      ? null
-                      : () => setState(() => _selectedCategory = 'bug'),
+                    ),
+                    TextButton.icon(
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              final text = _textController.text.trim();
+                              if (text.isEmpty) return;
+                              widget.submit(
+                                text,
+                                extras: {'type': _selectedCategory},
+                              );
+                            },
+                      icon: const Icon(Icons.send_rounded, size: 16),
+                      label: const Text(
+                        'Submit',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      style: TextButton.styleFrom(
+                        visualDensity: VisualDensity.compact,
+                        foregroundColor: theme.colorScheme.primary,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                _buildCompactTab(
-                  label: 'Suggestion',
-                  icon: Icons.lightbulb_outline_rounded,
-                  isSelected: _selectedCategory == 'suggestion',
-                  theme: theme,
-                  onTap: isLoading
-                      ? null
-                      : () => setState(() => _selectedCategory = 'suggestion'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
+                const SizedBox(height: 10),
 
-            // Text Input Field
-            TextField(
-              controller: _textController,
-              maxLines: 3,
-              enabled: !isLoading,
-              style: theme.textTheme.bodyMedium,
-              decoration: InputDecoration(
-                hintText: _selectedCategory == 'bug'
-                    ? 'What went wrong? Tell us how to reproduce it...'
-                    : 'What feature or improvement would you like to see?',
-                hintStyle: theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant.withValues(
-                    alpha: 0.5,
+                // Custom Compact Zero-Padding Segment Bar
+                Row(
+                  children: [
+                    _buildCompactTab(
+                      label: 'Bug Report',
+                      icon: Icons.bug_report_outlined,
+                      isSelected: _selectedCategory == 'bug',
+                      theme: theme,
+                      onTap: isLoading
+                          ? null
+                          : () => setState(() => _selectedCategory = 'bug'),
+                    ),
+                    const SizedBox(width: 8),
+                    _buildCompactTab(
+                      label: 'Suggestion',
+                      icon: Icons.lightbulb_outline_rounded,
+                      isSelected: _selectedCategory == 'suggestion',
+                      theme: theme,
+                      onTap: isLoading
+                          ? null
+                          : () => setState(
+                              () => _selectedCategory = 'suggestion',
+                            ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+
+                // Text Input Field
+                TextField(
+                  controller: _textController,
+                  maxLines: 3,
+                  enabled: !isLoading,
+                  style: theme.textTheme.bodyMedium,
+                  decoration: InputDecoration(
+                    hintText: _selectedCategory == 'bug'
+                        ? 'What went wrong? Tell us how to reproduce it...'
+                        : 'What feature or improvement would you like to see?',
+                    hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.5,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: theme.colorScheme.surfaceContainerLow,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: theme.colorScheme.primary,
+                        width: 1,
+                      ),
+                    ),
                   ),
                 ),
-                filled: true,
-                fillColor: theme.colorScheme.surfaceContainerLow,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: theme.colorScheme.primary,
-                    width: 1,
+              ],
+            ),
+          ),
+        ),
+
+        // Centered Full-Widget Loading Overlay Layer
+        if (isLoading)
+          Positioned.fill(
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(24),
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                child: Container(
+                  color: theme.colorScheme.surface.withValues(alpha: 0.6),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                      color: theme.colorScheme.primary,
+                    ),
                   ),
                 ),
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+      ],
     );
   }
 
