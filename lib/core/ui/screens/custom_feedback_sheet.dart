@@ -1,6 +1,8 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; // ADDED
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../providers/feedback_provider.dart';
 
 class CustomFeedbackSheet extends ConsumerStatefulWidget {
   final OnSubmit submit;
@@ -13,7 +15,6 @@ class CustomFeedbackSheet extends ConsumerStatefulWidget {
 }
 
 class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
-  // Updated to ConsumerState
   final TextEditingController _textController = TextEditingController();
   String _selectedCategory = 'bug';
 
@@ -26,12 +27,14 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final feedbackState = ref.watch(feedbackProvider);
+    final bool isLoading = feedbackState.isLoading;
 
     return Container(
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
-        top: 14, // Slightly reduced top padding
+        top: 14,
         bottom: MediaQuery.of(context).viewInsets.bottom + 16,
       ),
       decoration: BoxDecoration(
@@ -54,22 +57,37 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
                     color: theme.colorScheme.onSurface,
                   ),
                 ),
-                TextButton.icon(
-                  onPressed: () {
-                    final text = _textController.text.trim();
-                    if (text.isEmpty) return;
-                    widget.submit(text, extras: {'type': _selectedCategory});
-                  },
-                  icon: const Icon(Icons.send_rounded, size: 16),
-                  label: const Text(
-                    'Submit',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  style: TextButton.styleFrom(
-                    visualDensity: VisualDensity.compact,
-                    foregroundColor: theme.colorScheme.primary,
-                  ),
-                ),
+                isLoading
+                    ? Padding(
+                        padding: const EdgeInsets.only(right: 24.0),
+                        child: SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ),
+                      )
+                    : TextButton.icon(
+                        onPressed: () {
+                          final text = _textController.text.trim();
+                          if (text.isEmpty) return;
+                          widget.submit(
+                            text,
+                            extras: {'type': _selectedCategory},
+                          );
+                        },
+                        icon: const Icon(Icons.send_rounded, size: 16),
+                        label: const Text(
+                          'Submit',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        style: TextButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                          foregroundColor: theme.colorScheme.primary,
+                        ),
+                      ),
               ],
             ),
             const SizedBox(height: 10),
@@ -82,7 +100,9 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
                   icon: Icons.bug_report_outlined,
                   isSelected: _selectedCategory == 'bug',
                   theme: theme,
-                  onTap: () => setState(() => _selectedCategory = 'bug'),
+                  onTap: isLoading
+                      ? null
+                      : () => setState(() => _selectedCategory = 'bug'),
                 ),
                 const SizedBox(width: 8),
                 _buildCompactTab(
@@ -90,7 +110,9 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
                   icon: Icons.lightbulb_outline_rounded,
                   isSelected: _selectedCategory == 'suggestion',
                   theme: theme,
-                  onTap: () => setState(() => _selectedCategory = 'suggestion'),
+                  onTap: isLoading
+                      ? null
+                      : () => setState(() => _selectedCategory = 'suggestion'),
                 ),
               ],
             ),
@@ -100,6 +122,7 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
             TextField(
               controller: _textController,
               maxLines: 3,
+              enabled: !isLoading,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
                 hintText: _selectedCategory == 'bug'
@@ -131,25 +154,21 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
     );
   }
 
-  // Helper builder for zero-padding, soft-colored category selectors
   Widget _buildCompactTab({
     required String label,
     required IconData icon,
     required bool isSelected,
     required ThemeData theme,
-    required VoidCallback onTap,
+    required VoidCallback? onTap,
   }) {
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        // Ultra-tight zero-waste spacing
         decoration: BoxDecoration(
           color: isSelected
-              ? theme.colorScheme.primary.withValues(
-                  alpha: 0.12,
-                ) // Soft theme blueprint selection instead of harsh red
+              ? theme.colorScheme.primary.withValues(alpha: 0.12)
               : theme.colorScheme.surfaceContainerHighest.withValues(
                   alpha: 0.4,
                 ),
