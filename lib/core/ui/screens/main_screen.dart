@@ -1,7 +1,9 @@
+import 'package:feedback/feedback.dart'; // ADDED
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../router/app_router.dart';
+import '../../services/github_feedback_service.dart';
 import '../widgets/app_nav_item.dart';
 
 class MainScreen extends StatelessWidget {
@@ -16,6 +18,26 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       body: child,
+      // Injecting the stylized category feedback system globally
+      floatingActionButton: FloatingActionButton.small(
+        onPressed: () {
+          BetterFeedback.of(context).show((UserFeedback feedback) async {
+            // 1. Safely extract the selection category string mapped inside your CustomFeedbackSheet
+            final String feedbackType = feedback.extra?['type'] ?? 'bug';
+
+            // 2. Pass the message data along with the categorization tag straight to your service
+            await GitHubFeedbackService.uploadFeedback(
+              context,
+              feedback,
+              feedbackType,
+            );
+          });
+        },
+        backgroundColor: theme.colorScheme.onPrimary,
+        foregroundColor: theme.colorScheme.secondary,
+        tooltip: 'Report an issue or suggestion',
+        child: const Icon(Icons.bug_report_outlined),
+      ),
       bottomNavigationBar: Container(
         height: 85,
         decoration: BoxDecoration(
@@ -56,13 +78,6 @@ class MainScreen extends StatelessWidget {
               isActive: location == AppRoutes.documents,
               onTap: () => context.go(AppRoutes.documents),
             ),
-            // Temporarily commented out
-            // AppNavItem(
-            //   label: 'Bookmarks',
-            //   icon: Icons.bookmark_border,
-            //   isActive: location == AppRoutes.bookmarks,
-            //   onTap: () => context.go(AppRoutes.bookmarks),
-            // ),
           ],
         ),
       ),

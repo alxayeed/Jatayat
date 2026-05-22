@@ -1,3 +1,4 @@
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -7,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'core/providers/settings_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/styles/app_theme.dart';
+import 'core/ui/screens/custom_feedback_sheet.dart';
 import 'core/utils/supabase_logger.dart';
 import 'l10n/app_localizations.dart';
 
@@ -28,7 +30,14 @@ void main() async {
 
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
-  runApp(const ProviderScope(child: JatraApp()));
+  runApp(
+    const ProviderScope(
+      child: BetterFeedback(
+        feedbackBuilder: _customFeedbackBuilder,
+        child: JatraApp(),
+      ),
+    ),
+  );
 }
 
 class JatraApp extends ConsumerWidget {
@@ -53,4 +62,12 @@ class JatraApp extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
     );
   }
+}
+
+Widget _customFeedbackBuilder(
+  BuildContext context,
+  OnSubmit onSubmit,
+  ScrollController? scrollController,
+) {
+  return CustomFeedbackSheet(submit: onSubmit);
 }
