@@ -1,36 +1,52 @@
-import 'package:feedback/feedback.dart'; // ADDED
+import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../providers/feedback_provider.dart';
 import '../../router/app_router.dart';
-import '../../services/github_feedback_service.dart';
 import '../widgets/app_nav_item.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends ConsumerWidget {
   final Widget child;
 
   const MainScreen({super.key, required this.child});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final String location = GoRouterState.of(context).uri.path;
     final theme = Theme.of(context);
 
     return Scaffold(
       body: child,
-      // Injecting the stylized category feedback system globally
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
           BetterFeedback.of(context).show((UserFeedback feedback) async {
-            // 1. Safely extract the selection category string mapped inside your CustomFeedbackSheet
             final String feedbackType = feedback.extra?['type'] ?? 'bug';
 
-            // 2. Pass the message data along with the categorization tag straight to your service
-            await GitHubFeedbackService.uploadFeedback(
-              context,
-              feedback,
-              feedbackType,
-            );
+            final bool success = await ref
+                .read(feedbackProvider.notifier)
+                .uploadFeedback(feedback: feedback, feedbackType: feedbackType);
+
+            if (!context.mounted) return;
+
+            if (success) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    feedbackType == 'bug'
+                        ? 'Bug report sent successfully!'
+                        : 'Suggestion logged!',
+                  ),
+                ),
+              );
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Failed to submit feedback. Please try again.'),
+                ),
+              );
+            }
           });
         },
         backgroundColor: theme.colorScheme.onPrimary,
