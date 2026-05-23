@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/bookmarks/data/repositories/bookmarks_repository_impl.dart';
+import '../../features/bookmarks/domain/repositories/bookmarks_repository.dart';
 import '../../features/documents/data/repositories/document_repository_impl.dart';
 import '../../features/documents/domain/repositories/document_repository.dart';
 // Repository Implementations
@@ -38,4 +40,13 @@ final routeRepositoryProvider = Provider<RouteRepository>((ref) {
   final supabaseDataSource = ref.watch(routeDataSourceProvider);
 
   return RouteRepositoryImpl(supabaseDataSource: supabaseDataSource);
+});
+
+// ==========================================
+// FEATURE: BOOKMARKS
+// ==========================================
+
+final bookmarksRepositoryProvider = Provider<BookmarksRepository>((ref) {
+  final localDataSource = ref.watch(bookmarksLocalDataSourceProvider);
+  return BookmarksRepositoryImpl(localDataSource);
 });

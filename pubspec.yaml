@@ -1,7 +1,7 @@
 name: jatayat
 description: "A bus transport utility app for Dhaka."
 publish_to: 'none'
-version: 1.0.0+5
+version: 1.0.0+6
 
 environment:
   sdk: ^3.11.1
@@ -43,6 +43,8 @@ dependencies:
   feedback: ^3.2.0
   http: ^1.6.0
   image: ^4.8.0
+  sqflite: ^2.3.0
+  path: ^1.9.0
 
 dev_dependencies:
   flutter_test:

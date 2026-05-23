@@ -59,6 +59,12 @@ class MainScreen extends ConsumerWidget {
               isActive: location == AppRoutes.documents,
               onTap: () => context.go(AppRoutes.documents),
             ),
+            AppNavItem(
+              label: 'Bookmarks',
+              icon: Icons.bookmark_border_rounded,
+              isActive: location == AppRoutes.bookmarks,
+              onTap: () => context.go(AppRoutes.bookmarks),
+            ),
           ],
         ),
       ),

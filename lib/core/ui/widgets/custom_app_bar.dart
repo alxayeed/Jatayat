@@ -7,8 +7,13 @@ import 'package:jatayat/core/router/app_router.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
+  final List<Widget>? actions;
 
-  const CustomAppBar({super.key, required this.title});
+  const CustomAppBar({
+    super.key,
+    required this.title,
+    this.actions,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,7 @@ class CustomAppBar extends StatelessWidget {
       automaticallyImplyLeading: true,
       iconTheme: theme.iconTheme.copyWith(color: contentColor),
       actions: [
+        if (actions != null) ...actions!,
         if (!canPop && kDebugMode)
           InkWell(
             onTap: () => context.push(AppRoutes.settings),
