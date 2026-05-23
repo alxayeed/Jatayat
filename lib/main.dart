@@ -34,14 +34,14 @@ void main() async {
     const ProviderScope(
       child: BetterFeedback(
         feedbackBuilder: _customFeedbackBuilder,
-        child: JatraApp(),
+        child: JatayatApp(),
       ),
     ),
   );
 }
 
-class JatraApp extends ConsumerWidget {
-  const JatraApp({super.key});
+class JatayatApp extends ConsumerWidget {
+  const JatayatApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

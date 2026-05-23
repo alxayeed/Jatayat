@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:jatra/features/bookmarks/presentation/screens/bookmarks_screen.dart'; // Temporarily commented out
-import 'package:jatra/features/documents/presentation/screens/documents_screen.dart';
+// import 'package:jatayat/features/bookmarks/presentation/screens/bookmarks_screen.dart'; // Temporarily commented out
+import 'package:jatayat/features/documents/presentation/screens/documents_screen.dart';
 
 import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
 import '../../features/fare_finder/presentation/screens/fare_details_screen.dart';
