@@ -4,6 +4,7 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'core/database/local_database.dart';
 import 'core/providers/settings_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/styles/app_theme.dart';
@@ -27,6 +28,17 @@ void main() async {
   }
 
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+
+  // Pre-initialize the local database (triggers migration if needed)
+  await LocalDatabase.instance.database;
+
+  // Load saved settings before first frame to prevent flash of defaults
+  final savedTheme = await LocalDatabase.instance.getSetting('theme_mode');
+  final savedLocale = await LocalDatabase.instance.getSetting('locale');
+  setInitialSettings(SettingsState(
+    themeMode: SettingsNotifier.themeModeFromString(savedTheme),
+    locale: savedLocale != null ? Locale(savedLocale) : const Locale('en'),
+  ));
 
   runApp(const ProviderScope(child: JatayatApp()));
 }
