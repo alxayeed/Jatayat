@@ -47,15 +47,47 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
 
   Future<void> _downloadAndSavePdf() async {
     try {
-      final response = await http.get(Uri.parse(widget.pdfUrl));
-      if (response.statusCode != 200) {
-        throw 'Failed to download asset (${response.statusCode})';
-      }
-
       final dir = await getTemporaryDirectory();
       // Extract file name cleanly while stripping bucket query parameters
       final filename = widget.pdfUrl.split('/').last.split('?').first;
       final file = File('${dir.path}/$filename');
+
+      // Check if file is already cached locally
+      if (await file.exists()) {
+        final lastModified = await file.lastModified();
+        final difference = DateTime.now().difference(lastModified);
+
+        // If cached file is newer than 3 days, load it instantly!
+        if (difference.inDays < 3) {
+          developer.log(
+            '📂 Cache Hit: Loading PDF from local storage: ${file.path} (Age: ${difference.inDays} days)',
+            name: 'PdfViewer',
+          );
+          if (mounted) {
+            setState(() {
+              _localPath = file.path;
+              _isLoading = false;
+            });
+          }
+          return;
+        } else {
+          developer.log(
+            '⏳ Cache Expired: File is older than 3 days. Redownloading...',
+            name: 'PdfViewer',
+          );
+        }
+      } else {
+        developer.log(
+          '🌐 Cache Miss: PDF not found locally. Downloading from ${widget.pdfUrl}',
+          name: 'PdfViewer',
+        );
+      }
+
+      // Download from the server
+      final response = await http.get(Uri.parse(widget.pdfUrl));
+      if (response.statusCode != 200) {
+        throw 'Failed to download asset (${response.statusCode})';
+      }
 
       await file.writeAsBytes(response.bodyBytes);
 
