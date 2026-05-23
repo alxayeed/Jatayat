@@ -1,3 +1,3 @@
-# jatra
+# jatayat
 
 A new Flutter project.

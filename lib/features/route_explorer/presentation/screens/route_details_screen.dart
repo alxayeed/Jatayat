@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jatra/core/ui/widgets/custom_app_bar.dart';
+import 'package:jatayat/core/ui/widgets/custom_app_bar.dart';
 
 import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/widgets/app_feedback_button.dart';

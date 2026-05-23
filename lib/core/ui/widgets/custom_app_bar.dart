@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jatra/core/router/app_router.dart';
+import 'package:jatayat/core/router/app_router.dart';
 
 class CustomAppBar extends StatelessWidget {
   final String title;
