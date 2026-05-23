@@ -16,7 +16,7 @@ class AppTextStyles {
     height: 1.1,
   );
 
-  /// The Jatra logo in the AppBar
+  /// The Jatayat logo in the AppBar
   static const logo = TextStyle(
     fontFamily: 'WorkSans',
     fontWeight: FontWeight.w900,

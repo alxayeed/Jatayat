@@ -28,11 +28,11 @@ void main() async {
 
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
-  runApp(const ProviderScope(child: JatraApp()));
+  runApp(const ProviderScope(child: JatayatApp()));
 }
 
-class JatraApp extends ConsumerWidget {
-  const JatraApp({super.key});
+class JatayatApp extends ConsumerWidget {
+  const JatayatApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
