@@ -69,5 +69,8 @@ Widget _customFeedbackBuilder(
   OnSubmit onSubmit,
   ScrollController? scrollController,
 ) {
-  return CustomFeedbackSheet(submit: onSubmit);
+  return CustomFeedbackSheet(
+    submit: onSubmit,
+    scrollController: scrollController,
+  );
 }

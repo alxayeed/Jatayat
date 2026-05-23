@@ -8,8 +8,13 @@ import '../../providers/feedback_provider.dart';
 
 class CustomFeedbackSheet extends ConsumerStatefulWidget {
   final OnSubmit submit;
+  final ScrollController? scrollController;
 
-  const CustomFeedbackSheet({super.key, required this.submit});
+  const CustomFeedbackSheet({
+    super.key,
+    required this.submit,
+    this.scrollController,
+  });
 
   @override
   ConsumerState<CustomFeedbackSheet> createState() =>
@@ -36,17 +41,18 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
       children: [
         // Main Form Layer
         Container(
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             left: 20,
             right: 20,
             top: 14,
-            bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+            bottom: 16,
           ),
           decoration: BoxDecoration(
             color: theme.colorScheme.surface,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           ),
           child: SingleChildScrollView(
+            controller: widget.scrollController,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
