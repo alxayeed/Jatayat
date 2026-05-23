@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../database/local_database.dart';
+
 class SettingsState {
   final ThemeMode themeMode;
   final Locale locale;
@@ -21,15 +23,53 @@ class SettingsState {
 }
 
 class SettingsNotifier extends StateNotifier<SettingsState> {
-  SettingsNotifier() : super(const SettingsState());
+  final LocalDatabase _db;
 
-  void setTheme(ThemeMode mode) => state = state.copyWith(themeMode: mode);
+  SettingsNotifier(this._db, SettingsState initialState) : super(initialState);
 
-  void setLocale(Locale locale) => state = state.copyWith(locale: locale);
+  void setTheme(ThemeMode mode) {
+    state = state.copyWith(themeMode: mode);
+    _db.setSetting('theme_mode', themeModeToString(mode));
+  }
+
+  void setLocale(Locale locale) {
+    state = state.copyWith(locale: locale);
+    _db.setSetting('locale', locale.languageCode);
+  }
+
+  // ── Helpers ──────────────────────────────────────────────────────────────
+
+  static ThemeMode themeModeFromString(String? value) {
+    switch (value) {
+      case 'dark':
+        return ThemeMode.dark;
+      case 'system':
+        return ThemeMode.system;
+      case 'light':
+      default:
+        return ThemeMode.light;
+    }
+  }
+
+  static String themeModeToString(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.dark:
+        return 'dark';
+      case ThemeMode.system:
+        return 'system';
+      case ThemeMode.light:
+        return 'light';
+    }
+  }
+}
+
+/// Pre-loaded initial settings, populated in main() before runApp().
+SettingsState _initialSettings = const SettingsState();
+
+void setInitialSettings(SettingsState settings) {
+  _initialSettings = settings;
 }
 
 final settingsProvider = StateNotifierProvider<SettingsNotifier, SettingsState>(
-  (ref) {
-    return SettingsNotifier();
-  },
+  (ref) => SettingsNotifier(LocalDatabase.instance, _initialSettings),
 );
