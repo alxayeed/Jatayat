@@ -116,20 +116,26 @@ class GitHubFeedbackNotifier extends AsyncNotifier<void> {
         ? '![Bug Screenshot](../blob/$activeBranch/feedbacks/$fileName?raw=true)'
         : '*[Screenshot upload verification failed]*';
 
+    final isBug = feedbackType == 'bug';
+    final String cleanLabel = isBug ? 'bug' : 'enhancement';
+    final String headingPrefix = isBug ? '📝 Bug description' : '📝 Suggestion';
+
     final String issueBody =
         '''
-### 📝 Tester Feedback Message
-${feedback.text}
+**Label:** `$cleanLabel`<br>
+*Reported: ${DateTime.now().toLocal()}*
 
-### ⏱️ System Metadata
-* **Category Type:** ${feedbackType.toUpperCase()}
-* **Submitted On:** ${DateTime.now().toLocal()}
+---
 
-### 📸 Bug Canvas (Stored in Repository Blobs)
+### $headingPrefix
+> ${feedback.text.trim()}
+
+---
+
+### Attached screenshots:
+
 $nativeMarkdownImage
 ''';
-
-    final isBug = feedbackType == 'bug';
     final String issueTitle = isBug
         ? '🐛 Bug: $firstLine'
         : '💡 Suggestion: $firstLine';

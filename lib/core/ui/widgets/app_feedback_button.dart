@@ -15,12 +15,11 @@ class AppFeedbackButton extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Container(
         decoration: BoxDecoration(
-          // Uses the theme primary container to pop out dynamically on dark or light background sets
-          color: theme.colorScheme.primaryContainer,
+          color: theme.colorScheme.secondaryContainer,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: theme.colorScheme.primary.withValues(alpha: 0.1),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -29,7 +28,7 @@ class AppFeedbackButton extends ConsumerWidget {
         child: IconButton(
           onPressed: () => _showFeedbackSystem(context, ref),
           icon: const Icon(Icons.feedback, size: 20),
-          color: theme.colorScheme.onPrimaryContainer,
+          color: theme.colorScheme.onSecondaryContainer,
           tooltip: 'Share App Insights',
           constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
         ),
