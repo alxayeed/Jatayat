@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:jatayat/features/bookmarks/presentation/screens/bookmarks_screen.dart'; // Temporarily commented out
+import 'package:jatayat/features/bookmarks/presentation/screens/bookmarks_screen.dart';
 import 'package:jatayat/features/documents/presentation/screens/documents_screen.dart';
 
 import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
@@ -17,8 +17,7 @@ class AppRoutes {
   static const String fareSearch = '/fare-search';
   static const String routeExplorer = '/route-explorer';
   static const String documents = '/documents';
-
-  // static const String bookmarks = '/bookmarks'; // Temporarily commented out
+  static const String bookmarks = '/bookmarks';
   static const String settings = '/settings';
   static const String fareDetails = '/fare-details';
   static const String routeDetails = '/route-details';
@@ -49,11 +48,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: AppRoutes.documents,
             builder: (context, state) => const DocumentsScreen(),
           ),
-          // Temporarily commented out from shell
-          // GoRoute(
-          //   path: AppRoutes.bookmarks,
-          //   builder: (context, state) => const BookmarksScreen(),
-          // ),
+          GoRoute(
+            path: AppRoutes.bookmarks,
+            builder: (context, state) => const BookmarksScreen(),
+          ),
         ],
       ),
 

@@ -3,11 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatayat/core/ui/widgets/custom_app_bar.dart';
 
+import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/widgets/app_feedback_button.dart';
 import '../../../../core/ui/widgets/reference_action_button.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../bookmarks/presentation/providers/bookmarks_provider.dart';
 import '../../domain/entities/bus_route/bus_route.dart';
 import '../providers/route_explorer_provider.dart';
 import '../widgets/route_card.dart';
@@ -33,7 +35,7 @@ class RouteDetailsScreen extends ConsumerWidget {
       body: asyncDetailedRoute.when(
         loading: () => const RouteDetailsShimmer(),
         error: (error, stackTrace) => _buildErrorView(ref, error, l10n, theme),
-        data: (route) => _buildRouteContent(context, route, l10n, theme),
+        data: (route) => _buildRouteContent(context, ref, route, l10n, theme),
       ),
       floatingActionButton: const AppFeedbackButton(),
     );
@@ -41,13 +43,55 @@ class RouteDetailsScreen extends ConsumerWidget {
 
   Widget _buildRouteContent(
     BuildContext context,
+    WidgetRef ref,
     BusRoute route,
     AppLocalizations l10n,
     ThemeData theme,
   ) {
+    final bookmarksAsync = ref.watch(bookmarksProvider);
+    final isSaved = bookmarksAsync.maybeWhen(
+      data: (items) => items.any((item) => item.id == route.id),
+      orElse: () => false,
+    );
+
+    final currentLocale = ref.watch(settingsProvider).locale;
+    final isBn = currentLocale.languageCode == 'bn';
+
     return CustomScrollView(
       slivers: [
-        CustomAppBar(title: '${l10n.routePrefix} $routeCode'),
+        CustomAppBar(
+          title: '${l10n.routePrefix} $routeCode',
+          actions: [
+            IconButton(
+              icon: Icon(
+                isSaved ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+                color: isSaved
+                    ? theme.colorScheme.primary
+                    : (theme.brightness == Brightness.dark ? Colors.white : theme.colorScheme.primary),
+              ),
+              onPressed: () {
+                final bookmarksNotifier = ref.read(bookmarksProvider.notifier);
+                if (isSaved) {
+                  bookmarksNotifier.removeBookmark(route.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(isBn ? 'রুটটি বুকমার্ক থেকে মুছে ফেলা হয়েছে' : 'Route removed from bookmarks'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                } else {
+                  bookmarksNotifier.addRouteBookmark(route);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(isBn ? 'রুটটি বুকমার্ক করা হয়েছে' : 'Route added to bookmarks'),
+                      duration: const Duration(seconds: 2),
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

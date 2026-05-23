@@ -1,8 +1,8 @@
-# Renaming & Feedback Feature Walkthrough
+# Jatayat Feature Walkthrough
 
-We have successfully renamed the project from `jatra` to `jatayat`, refactored the feedback system styling, and implemented a high-performance local disk caching system for route PDFs.
+We have successfully integrated the **GitHub Feedback Feature**, completed the codebase **Renaming (jatra -> jatayat)**, and refactored the **Bookmarks Feature** to adhere strictly to Clean Architecture specifications with an offline-first local database cache.
 
-## Changes Made
+## 🛠️ Changes Implemented
 
 ### 1. Codebase Renaming (jatra -> jatayat)
 * **Configuration**: Updated package name in `pubspec.yaml` to `jatayat` and README headers.
@@ -34,8 +34,14 @@ We have successfully renamed the project from `jatra` to `jatayat`, refactored t
   * **If older than 3 days or not found (Cache Miss)**: Downloads a fresh copy from the server, caches it locally, and loads.
 * **Outcome**: Dramatic page load performance boost, offline viewing support, and massive cellular data savings for users.
 
----
+### 5. Bookmarks Clean Architecture & Offline-First Cache
+* **Domain Layer** (`lib/features/bookmarks/domain/`): Defined the abstract repository interface, `BookmarkItem` entity, and granular Use Cases (`GetBookmarksUseCase`, `AddRouteBookmarkUseCase`, `AddFareBookmarkUseCase`, `RemoveBookmarkUseCase`, `IsBookmarkedUseCase`, `GetCachedRouteUseCase`).
+* **Data Layer** (`lib/features/bookmarks/data/`): Designed local data sources using SQLite and developed repository implementations managing JSON serialization.
+* **Dependency Injection**: Expose use cases and dependencies cleanly via Riverpod providers in `lib/core/di/`.
+* **Offline Route Caching**:
+  - When a user bookmarks a fare search result, the system automatically writes the associated `BusRoute` details (including all its stoppages) into the database with `type = 'route_cache'`.
+  - In **`routeDetailsProvider`**, the provider now checks the local SQLite cache first for any matches (using `GetCachedRouteUseCase`).
+  - **Result**: Even if the user is completely offline, they can open any bookmarked route details or fare search details, and see the full route stoppages timeline loaded instantly from the local database!
 
-## Verification Results
-* Switch branches and merges were successfully integrated on `feature/feedback`.
-* Verified both Light and Dark mode readability on console chat and codebase structures.
+## 🧪 Verification Results
+* Ran `flutter analyze` and confirmed **zero** errors and warnings across all modified or newly introduced files.
