@@ -7,6 +7,7 @@ import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../bookmarks/presentation/providers/bookmarks_provider.dart';
 import '../../../route_explorer/presentation/providers/route_explorer_provider.dart';
 import '../../domain/entities/fair_result_entity/fare_result_entity.dart';
 import '../providers/fare_search_provider.dart';
@@ -27,6 +28,13 @@ class FareDetailsScreen extends ConsumerWidget {
     // Check language from SettingsProvider
     final currentLocale = ref.watch(settingsProvider).locale;
     final isBn = currentLocale.languageCode == 'bn';
+
+    // Watch bookmarks state
+    final bookmarksAsync = ref.watch(bookmarksProvider);
+    final isSaved = bookmarksAsync.maybeWhen(
+      data: (items) => items.any((item) => item.id == fare.fareId),
+      orElse: () => false,
+    );
 
     final bool isFlipped = searchState.selectedOrigin?.id == fare.toStopId;
 
@@ -50,7 +58,40 @@ class FareDetailsScreen extends ConsumerWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          CustomAppBar(title: l10n.fareDetailsTitle),
+          CustomAppBar(
+            title: l10n.fareDetailsTitle,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  isSaved ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+                  color: isSaved
+                      ? theme.colorScheme.primary
+                      : (theme.brightness == Brightness.dark ? Colors.white : theme.colorScheme.primary),
+                ),
+                onPressed: () {
+                  final bookmarksNotifier = ref.read(bookmarksProvider.notifier);
+                  if (isSaved) {
+                    bookmarksNotifier.removeBookmark(fare.fareId);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(isBn ? 'ভাড়ার বিবরণ বুকমার্ক থেকে মুছে ফেলা হয়েছে' : 'Fare details removed from bookmarks'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  } else {
+                    final route = routeDetailsAsync.value;
+                    bookmarksNotifier.addFareBookmark(fare, route);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(isBn ? 'ভাড়ার বিবরণ বুকমার্ক করা হয়েছে' : 'Fare details added to bookmarks'),
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),

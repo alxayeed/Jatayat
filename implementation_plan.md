@@ -1,66 +1,89 @@
-# Implementation Plan - Rename Project to Jatayat
+# Implementation Plan - Refactoring Bookmarks to Clean Architecture
 
-Rename all remaining references of the old project name `jatra` to `jatayat` across the codebase, configuration files, and IDE settings.
+Refactor the newly implemented Bookmarks feature to strictly adhere to the project's Clean Architecture standards (Domain, Data, and Presentation separation with Riverpod dependency injection).
+
+---
 
 ## Proposed Changes
 
-### Core Flutter Configuration
+### 1. Domain Layer (Entities & Repository Abstract Interface)
 
-#### [MODIFY] [pubspec.yaml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/pubspec.yaml)
-- Change project name from `jatra` to `jatayat`.
+#### [NEW] [bookmark_item.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/entities/bookmark_item.dart)
+* Extract `BookmarkItem` from presentation layer provider to domain entity.
 
-### Dart Source Files
+#### [NEW] [bookmarks_repository.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/repositories/bookmarks_repository.dart)
+* Define `BookmarksRepository` abstract contract:
+  ```dart
+  abstract class BookmarksRepository {
+    Future<List<BookmarkItem>> getBookmarks();
+    Future<void> addRouteBookmark(BusRoute route);
+    Future<void> addFareBookmark(FareResultEntity fare);
+    Future<void> removeBookmark(String id);
+    Future<bool> isBookmarked(String id);
+  }
+  ```
 
-#### [MODIFY] [main.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/main.dart)
-- Rename `JatraApp` class to `JatayatApp`.
-- Update `runApp` initialization to use `JatayatApp`.
+---
 
-#### [MODIFY] [app_router.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/router/app_router.dart)
-- Update imports using `package:jatra/` to `package:jatayat/`.
+### 2. Domain Layer (Use Cases)
 
-#### [MODIFY] [custom_app_bar.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/ui/widgets/custom_app_bar.dart)
-- Update imports using `package:jatra/` to `package:jatayat/`.
+#### [NEW] [get_bookmarks_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/get_bookmarks_use_case.dart)
+* Retrieves all saved bookmarks.
 
-#### [MODIFY] [route_details_screen.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/route_explorer/presentation/screens/route_details_screen.dart)
-- Update imports using `package:jatra/` to `package:jatayat/`.
+#### [NEW] [add_route_bookmark_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/add_route_bookmark_use_case.dart)
+* Persists a bookmarked bus route.
 
-#### [MODIFY] [app_text_styles.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/styles/app_text_styles.dart)
-- Update the doc comment referencing the Jatra logo to Jatayat logo.
+#### [NEW] [add_fare_bookmark_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/add_fare_bookmark_use_case.dart)
+* Persists a bookmarked fare search result.
 
-### Test Files
+#### [NEW] [remove_bookmark_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/remove_bookmark_use_case.dart)
+* Removes a bookmark by ID.
 
-#### [MODIFY] [widget_test.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/test/widget_test.dart)
-- Update commented import `package:jatra/main.dart` to `package:jatayat/main.dart`.
+#### [NEW] [is_bookmarked_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/is_bookmarked_use_case.dart)
+* Checks bookmark status for details screens.
 
-### Project Metadata & Documentation
+---
 
-#### [MODIFY] [README.md](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/README.md)
-- Change header to `# jatayat`.
+### 3. Data Layer (Data Sources & Models)
 
-### IDE & Configuration Files
+#### [NEW] [bookmarks_local_data_source.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/data/datasources/bookmarks_local_data_source.dart)
+* Define local data source abstract and concrete implementation that communicates directly with `LocalDatabase`.
 
-#### [NEW] [jatayat.iml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/jatayat.iml)
-- Recreate root `.iml` file with name `jatayat.iml`.
+#### [NEW] [bookmarks_repository_impl.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/data/repositories/bookmarks_repository_impl.dart)
+* Implement `BookmarksRepository` contract, handles JSON deserialization/serialization of entities.
 
-#### [NEW] [jatayat_android.iml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/android/jatayat_android.iml)
-- Recreate android `.iml` file with name `jatayat_android.iml`.
+---
 
-#### [DELETE] [jatra.iml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/jatra.iml)
-- Remove old root `.iml` file.
+### 4. Dependency Injection (Riverpod)
 
-#### [DELETE] [jatra_android.iml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/android/jatra_android.iml)
-- Remove old android `.iml` file.
+#### [MODIFY] [core_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/core_providers.dart)
+* Expose `LocalDatabase.instance` as a provider for the data source.
 
-#### [MODIFY] [modules.xml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/.idea/modules.xml)
-- Update references of `.iml` files from `jatra` to `jatayat`.
+#### [MODIFY] [data_source_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/data_source_providers.dart)
+* Register `bookmarksLocalDataSourceProvider`.
+
+#### [MODIFY] [repository_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/repository_providers.dart)
+* Register `bookmarksRepositoryProvider`.
+
+#### [MODIFY] [usecase_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/usecase_providers.dart)
+* Register:
+  * `getBookmarksUseCaseProvider`
+  * `addRouteBookmarkUseCaseProvider`
+  * `addFareBookmarkUseCaseProvider`
+  * `removeBookmarkUseCaseProvider`
+  * `isBookmarkedUseCaseProvider`
+
+---
+
+### 5. Presentation Layer (Refactoring Providers)
+
+#### [MODIFY] [bookmarks_provider.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/presentation/providers/bookmarks_provider.dart)
+* Clean up definitions of `BookmarkItem` and direct dependency on `LocalDatabase`.
+* Wire up `BookmarksNotifier` to execute the respective Use Cases injected from Riverpod!
 
 ---
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `flutter pub get` to sync the updated project name.
-- Run `flutter analyze` to ensure all imports and classes are resolved and syntax is valid.
-
-### Manual Verification
-- Confirm that the project builds successfully.
+* Run `flutter analyze` to ensure code is clean and compilation succeeds.

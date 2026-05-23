@@ -58,15 +58,23 @@ class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
 // but you can remove autoDispose if you want it to cache the stops permanently during the session.
 
 final routeDetailsProvider = FutureProvider.autoDispose.family<BusRoute, String>((ref, routeId) async {
-  // 1. Get the UseCase
-  final getRouteDetails = ref.watch(getRouteDetailsUseCaseProvider);
+  // 1. Try fetching from the local SQLite cache first for offline-first support
+  try {
+    final getCachedRoute = ref.watch(getCachedRouteUseCaseProvider);
+    final cachedRoute = await getCachedRoute(routeId);
+    if (cachedRoute != null) {
+      return cachedRoute;
+    }
+  } catch (_) {
+    // Fail silently and proceed to remote fetch
+  }
 
-  // 2. Execute the deep fetch
+  // 2. Fetch from Supabase backend as fallback
+  final getRouteDetails = ref.watch(getRouteDetailsUseCaseProvider);
   final result = await getRouteDetails(GetRouteDetailsParams(routeId: routeId));
 
-  // 3. Return the fully populated entity, or throw to trigger AsyncError in the UI
   return result.fold(
-        (failure) => throw Exception(failure.message),
-        (detailedRoute) => detailedRoute,
+    (failure) => throw Exception(failure.message),
+    (detailedRoute) => detailedRoute,
   );
 });

@@ -56,13 +56,12 @@ class MainScreen extends StatelessWidget {
               isActive: location == AppRoutes.documents,
               onTap: () => context.go(AppRoutes.documents),
             ),
-            // Temporarily commented out
-            // AppNavItem(
-            //   label: 'Bookmarks',
-            //   icon: Icons.bookmark_border,
-            //   isActive: location == AppRoutes.bookmarks,
-            //   onTap: () => context.go(AppRoutes.bookmarks),
-            // ),
+            AppNavItem(
+              label: 'Bookmarks',
+              icon: Icons.bookmark_border_rounded,
+              isActive: location == AppRoutes.bookmarks,
+              onTap: () => context.go(AppRoutes.bookmarks),
+            ),
           ],
         ),
       ),

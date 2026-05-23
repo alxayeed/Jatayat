@@ -1,30 +1,36 @@
-# Renaming Walkthrough - jatra to jatayat
+# Refactoring Walkthrough - Bookmarks Clean Architecture
 
-We have successfully renamed all remaining references of the old project name `jatra` to `jatayat` across configurations, code, test files, and IDE environments.
+We have successfully refactored the Bookmarks feature to adhere to strict Clean Architecture specifications and solved a major offline-first limitation.
 
-## Changes Made
+## 🛠️ Changes Implemented
 
-### 1. Configuration & Metadata
-* **[pubspec.yaml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/pubspec.yaml)**: Changed the project name package reference to `jatayat`.
-* **[README.md](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/README.md)**: Updated main heading to `# jatayat`.
+### 1. Domain Layer (Pure Dart Business Logic)
+- **`BookmarkItem`** (`lib/features/bookmarks/domain/entities/bookmark_item.dart`): Pure domain entity holding dynamic payload (`BusRoute` or `FareResultEntity`).
+- **`BookmarksRepository`** (`lib/features/bookmarks/domain/repositories/bookmarks_repository.dart`): Abstract interface defining CRUD actions + offline cached route retrieval.
+- **Granular Use Cases**:
+  - `GetBookmarksUseCase`
+  - `AddRouteBookmarkUseCase`
+  - `AddFareBookmarkUseCase`
+  - `RemoveBookmarkUseCase`
+  - `IsBookmarkedUseCase`
+  - `GetCachedRouteUseCase` (New! Supports offline details retrieval)
 
-### 2. Codebase & Classes
-* **[main.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/main.dart)**: Renamed application entry class `JatraApp` to `JatayatApp`.
-* **[app_router.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/router/app_router.dart)**: Changed package import paths from `jatra/...` to `jatayat/...`.
-* **[custom_app_bar.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/ui/widgets/custom_app_bar.dart)**: Changed package import paths to `jatayat/...`.
-* **[route_details_screen.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/route_explorer/presentation/screens/route_details_screen.dart)**: Changed package import paths to `jatayat/...`.
-* **[app_text_styles.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/styles/app_text_styles.dart)**: Renamed Jatra logo comment references to Jatayat logo.
+### 2. Data Layer (Data Sources & Repository Implementations)
+- **`BookmarksLocalDataSource`** (`lib/features/bookmarks/data/datasources/bookmarks_local_data_source.dart`): Communicates with local `LocalDatabase` SQLite instance.
+- **`BookmarksRepositoryImpl`** (`lib/features/bookmarks/data/repositories/bookmarks_repository_impl.dart`): Handles serialization, deserialization, and maps queries into domain entities.
 
-### 3. Tests
-* **[widget_test.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/test/widget_test.dart)**: Updated the commented import of the main app from `package:jatra/` to `package:jatayat/`.
+### 3. Dependency Injection (Riverpod)
+- Exposed `LocalDatabase.instance` inside `core_providers.dart`.
+- Registered local data source in `data_source_providers.dart`.
+- Registered repository implementation in `repository_providers.dart`.
+- Exposed all UseCases under `usecase_providers.dart`.
 
-### 4. IDE Module Settings
-* Created **[jatayat.iml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/jatayat.iml)** and **[jatayat_android.iml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/android/jatayat_android.iml)**.
-* Deleted old `jatra.iml` and `android/jatra_android.iml` files.
-* **[modules.xml](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/.idea/modules.xml)**: Linked the newly created `.iml` files.
+### 4. Presentation & Offline-First Optimizations
+- **`bookmarks_provider.dart`** Refactored to watch and execute injected Clean Architecture Use Cases.
+- **Offline Route Caching**:
+  - When a user bookmarks a fare search result, the system automatically writes the associated `BusRoute` details (including all its stoppages) into the database with `type = 'route_cache'`.
+  - In **`routeDetailsProvider`**, the provider now checks the local SQLite cache first for any matches (using `GetCachedRouteUseCase`).
+  - **Result**: Even if the user is completely offline, they can open any bookmarked route details or fare search details, and see the full route stoppages timeline loaded instantly from the local database!
 
----
-
-## Verification Results
-1. **Dependency Sync**: Ran `flutter pub get` successfully.
-2. **Code Verification**: Ran `flutter analyze` successfully. All imports were resolved, and no new compile errors were introduced.
+## 🧪 Verification Results
+- Ran `flutter analyze` and confirmed **zero** errors and warnings across all modified or newly introduced files.
