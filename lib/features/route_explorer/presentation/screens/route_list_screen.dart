@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/route_explorer_provider.dart';
 import '../widgets/route_card.dart';
@@ -21,6 +24,20 @@ class RouteListScreen extends ConsumerWidget {
           l10n.routeExplorer,
           style: theme.textTheme.titleLarge?.copyWith(fontSize: 20),
         ),
+        actions: [
+          if (kDebugMode)
+            InkWell(
+              onTap: () => context.push(AppRoutes.settings),
+              child: Icon(
+                Icons.settings,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                size: 24,
+              ),
+            ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: Column(
         children: [

@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/router/app_router.dart';
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/documents_provider.dart';
@@ -28,6 +31,20 @@ class DocumentsScreen extends ConsumerWidget {
             fontFamily: isBengali ? 'HindSiliguri' : null,
           ),
         ),
+        actions: [
+          if (kDebugMode)
+            InkWell(
+              onTap: () => context.push(AppRoutes.settings),
+              child: Icon(
+                Icons.settings,
+                color: theme.brightness == Brightness.dark
+                    ? Colors.white
+                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                size: 24,
+              ),
+            ),
+          const SizedBox(width: 16),
+        ],
       ),
       body: Column(
         children: [
