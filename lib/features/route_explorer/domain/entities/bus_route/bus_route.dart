@@ -28,6 +28,7 @@ class BusRoute with _$BusRoute {
     required String id, // Strongly recommended to keep for DB lookups
     required String routeCode,
     required String nameBn,
+    String? nameEn,
     required double totalDistanceKm,
     required int totalStops,
     required String region,

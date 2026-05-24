@@ -56,6 +56,7 @@ class BusRouteModel with _$BusRouteModel {
     required String id, // Added Primary Key
     required String routeCode,
     required String nameBn,
+    String? nameEn,
     required double totalDistanceKm,
     required int totalStops,
     required String region,
@@ -80,6 +81,7 @@ class BusRouteModel with _$BusRouteModel {
     id: id,
     routeCode: routeCode,
     nameBn: nameBn,
+    nameEn: nameEn,
     totalDistanceKm: totalDistanceKm,
     totalStops: totalStops,
     region: region,
@@ -98,6 +100,7 @@ class BusRouteModel with _$BusRouteModel {
     id: entity.id,
     routeCode: entity.routeCode,
     nameBn: entity.nameBn,
+    nameEn: entity.nameEn,
     totalDistanceKm: entity.totalDistanceKm,
     totalStops: entity.totalStops,
     region: entity.region,

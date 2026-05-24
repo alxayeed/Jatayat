@@ -318,6 +318,7 @@ mixin _$BusRoute {
       throw _privateConstructorUsedError; // Strongly recommended to keep for DB lookups
   String get routeCode => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
   double get totalDistanceKm => throw _privateConstructorUsedError;
   int get totalStops => throw _privateConstructorUsedError;
   String get region => throw _privateConstructorUsedError;
@@ -349,6 +350,7 @@ abstract class $BusRouteCopyWith<$Res> {
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistanceKm,
     int totalStops,
     String region,
@@ -380,6 +382,7 @@ class _$BusRouteCopyWithImpl<$Res, $Val extends BusRoute>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistanceKm = null,
     Object? totalStops = null,
     Object? region = null,
@@ -405,6 +408,10 @@ class _$BusRouteCopyWithImpl<$Res, $Val extends BusRoute>
                 ? _value.nameBn
                 : nameBn // ignore: cast_nullable_to_non_nullable
                       as String,
+            nameEn: freezed == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             totalDistanceKm: null == totalDistanceKm
                 ? _value.totalDistanceKm
                 : totalDistanceKm // ignore: cast_nullable_to_non_nullable
@@ -464,6 +471,7 @@ abstract class _$$BusRouteImplCopyWith<$Res>
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistanceKm,
     int totalStops,
     String region,
@@ -494,6 +502,7 @@ class __$$BusRouteImplCopyWithImpl<$Res>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistanceKm = null,
     Object? totalStops = null,
     Object? region = null,
@@ -519,6 +528,10 @@ class __$$BusRouteImplCopyWithImpl<$Res>
             ? _value.nameBn
             : nameBn // ignore: cast_nullable_to_non_nullable
                   as String,
+        nameEn: freezed == nameEn
+            ? _value.nameEn
+            : nameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         totalDistanceKm: null == totalDistanceKm
             ? _value.totalDistanceKm
             : totalDistanceKm // ignore: cast_nullable_to_non_nullable
@@ -572,6 +585,7 @@ class _$BusRouteImpl implements _BusRoute {
     required this.id,
     required this.routeCode,
     required this.nameBn,
+    this.nameEn,
     required this.totalDistanceKm,
     required this.totalStops,
     required this.region,
@@ -594,6 +608,8 @@ class _$BusRouteImpl implements _BusRoute {
   final String routeCode;
   @override
   final String nameBn;
+  @override
+  final String? nameEn;
   @override
   final double totalDistanceKm;
   @override
@@ -625,7 +641,7 @@ class _$BusRouteImpl implements _BusRoute {
 
   @override
   String toString() {
-    return 'BusRoute(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, totalStops: $totalStops, region: $region, pdfPageNumber: $pdfPageNumber, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseFarePerKm: $baseFarePerKm, minimumFare: $minimumFare, issuedDate: $issuedDate, stops: $stops)';
+    return 'BusRoute(id: $id, routeCode: $routeCode, nameBn: $nameBn, nameEn: $nameEn, totalDistanceKm: $totalDistanceKm, totalStops: $totalStops, region: $region, pdfPageNumber: $pdfPageNumber, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseFarePerKm: $baseFarePerKm, minimumFare: $minimumFare, issuedDate: $issuedDate, stops: $stops)';
   }
 
   @override
@@ -637,6 +653,7 @@ class _$BusRouteImpl implements _BusRoute {
             (identical(other.routeCode, routeCode) ||
                 other.routeCode == routeCode) &&
             (identical(other.nameBn, nameBn) || other.nameBn == nameBn) &&
+            (identical(other.nameEn, nameEn) || other.nameEn == nameEn) &&
             (identical(other.totalDistanceKm, totalDistanceKm) ||
                 other.totalDistanceKm == totalDistanceKm) &&
             (identical(other.totalStops, totalStops) ||
@@ -662,6 +679,7 @@ class _$BusRouteImpl implements _BusRoute {
     id,
     routeCode,
     nameBn,
+    nameEn,
     totalDistanceKm,
     totalStops,
     region,
@@ -693,6 +711,7 @@ abstract class _BusRoute implements BusRoute {
     required final String id,
     required final String routeCode,
     required final String nameBn,
+    final String? nameEn,
     required final double totalDistanceKm,
     required final int totalStops,
     required final String region,
@@ -714,6 +733,8 @@ abstract class _BusRoute implements BusRoute {
   String get routeCode;
   @override
   String get nameBn;
+  @override
+  String? get nameEn;
   @override
   double get totalDistanceKm;
   @override
