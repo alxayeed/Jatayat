@@ -9,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../../core/styles/app_colors.dart';
 import '../../../../../l10n/app_localizations.dart';
+import '../../error/error_handler.dart';
 import 'app_feedback_button.dart'; // Adjust path if necessary
 
 class AppPdfViewer extends StatefulWidget {
@@ -30,7 +31,7 @@ class AppPdfViewer extends StatefulWidget {
 class _AppPdfViewerState extends State<AppPdfViewer> {
   String? _localPath;
   bool _isLoading = true;
-  String _errorMessage = '';
+  Object? _error;
 
   // Controls tracking and state management
   int _totalPages = 0;
@@ -108,7 +109,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
 
       if (mounted) {
         setState(() {
-          _errorMessage = e.toString();
+          _error = e;
           _isLoading = false;
         });
       }
@@ -169,7 +170,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
       );
     }
 
-    if (_errorMessage.isNotEmpty) {
+    if (_error != null) {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -190,7 +191,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
               ),
               const SizedBox(height: 8),
               Text(
-                _errorMessage,
+                AppErrorHandler.getFriendlyMessage(_error!, l10n),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.error,
@@ -227,7 +228,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
         }
       },
       onError: (error) {
-        setState(() => _errorMessage = error.toString());
+        setState(() => _error = error);
       },
       onPageError: (page, error) {
         developer.log('❌ Page Error: [$page] $error', name: 'PdfViewer');

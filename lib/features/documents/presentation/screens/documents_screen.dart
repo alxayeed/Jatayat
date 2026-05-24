@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/error/error_handler.dart';
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/documents_provider.dart';
@@ -106,7 +107,7 @@ class DocumentsScreen extends ConsumerWidget {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        error.toString(),
+                        AppErrorHandler.getFriendlyMessage(error, l10n),
                         textAlign: TextAlign.center,
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.error,

@@ -235,4 +235,27 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get governmentDisclaimer =>
       'যাতায়াত অ্যাপে ব্যবহৃত সমস্ত ভাড়ার তালিকা সর্বসাধারণের জন্য উন্মুক্ত সরকারি বিআরটিএ (BRTA) গ্যাজেট থেকে নির্ভুলভাবে সংগ্রহ করা হয়েছে। এটি কোনো অফিশিয়াল সরকারি অ্যাপ নয়, বরং আপনার সুবিধার্থে ডেটাগুলো সহজভাবে দেখার একটি স্বাধীন মাধ্যম।';
+
+  @override
+  String get errorNetwork =>
+      'নেটওয়ার্ক সংযোগ সমস্যা। আপনার ইন্টারনেট চেক করুন এবং পুনরায় চেষ্টা করুন।';
+
+  @override
+  String get errorTimeout =>
+      'অনুরোধের সময় পার হয়ে গেছে। দয়া করে আবার চেষ্টা করুন।';
+
+  @override
+  String get errorNotFound => 'অনুরোধকৃত তথ্যটি পাওয়া যায়নি।';
+
+  @override
+  String get errorUnauthorized =>
+      'প্রবেশাধিকার নেই। আপনি এই তথ্য দেখতে অনুমোদিত নন।';
+
+  @override
+  String get errorServer =>
+      'সার্ভার সমস্যা হয়েছে (৫০০)। দয়া করে কিছুক্ষণ পর আবার চেষ্টা করুন।';
+
+  @override
+  String get errorGeneric =>
+      'একটি অপ্রত্যাশিত সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
 }
