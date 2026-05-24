@@ -38,6 +38,7 @@ class _CustomFeedbackSheetState extends ConsumerState<CustomFeedbackSheet> {
     final bool isLoading = feedbackState.isLoading;
 
     return Stack(
+      fit: StackFit.expand,
       children: [
         // Main Form Layer
         Container(
