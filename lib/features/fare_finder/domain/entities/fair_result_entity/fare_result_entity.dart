@@ -22,6 +22,7 @@ class FareResultEntity with _$FareResultEntity {
     required String routeId,
     required String routeCode,
     required String routeNameBn,
+    String? routeNameEn,
     required double routeTotalDistance,
     required int? pdfPage,
     required String? pdfUrl,

@@ -271,8 +271,9 @@ class FareDetailsScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          fare.routeNameBn,
+          l10n.localeName == 'bn' ? fare.routeNameBn : (fare.routeNameEn ?? fare.routeNameBn),
           style: theme.textTheme.headlineSmall?.copyWith(
+            fontFamily: l10n.localeName == 'bn' ? 'HindSiliguri' : null,
             fontWeight: FontWeight.bold,
             color: isDark ? Colors.white : null,
           ),

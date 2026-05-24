@@ -24,6 +24,7 @@ mixin _$RouteModel {
   String get id => throw _privateConstructorUsedError;
   String get routeCode => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
   double get totalDistanceKm => throw _privateConstructorUsedError;
   String get documentId => throw _privateConstructorUsedError;
   int get pdfPageNumber => throw _privateConstructorUsedError;
@@ -50,6 +51,7 @@ abstract class $RouteModelCopyWith<$Res> {
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistanceKm,
     String documentId,
     int pdfPageNumber,
@@ -75,6 +77,7 @@ class _$RouteModelCopyWithImpl<$Res, $Val extends RouteModel>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistanceKm = null,
     Object? documentId = null,
     Object? pdfPageNumber = null,
@@ -94,6 +97,10 @@ class _$RouteModelCopyWithImpl<$Res, $Val extends RouteModel>
                 ? _value.nameBn
                 : nameBn // ignore: cast_nullable_to_non_nullable
                       as String,
+            nameEn: freezed == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             totalDistanceKm: null == totalDistanceKm
                 ? _value.totalDistanceKm
                 : totalDistanceKm // ignore: cast_nullable_to_non_nullable
@@ -129,6 +136,7 @@ abstract class _$$RouteModelImplCopyWith<$Res>
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistanceKm,
     String documentId,
     int pdfPageNumber,
@@ -153,6 +161,7 @@ class __$$RouteModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistanceKm = null,
     Object? documentId = null,
     Object? pdfPageNumber = null,
@@ -172,6 +181,10 @@ class __$$RouteModelImplCopyWithImpl<$Res>
             ? _value.nameBn
             : nameBn // ignore: cast_nullable_to_non_nullable
                   as String,
+        nameEn: freezed == nameEn
+            ? _value.nameEn
+            : nameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         totalDistanceKm: null == totalDistanceKm
             ? _value.totalDistanceKm
             : totalDistanceKm // ignore: cast_nullable_to_non_nullable
@@ -201,6 +214,7 @@ class _$RouteModelImpl extends _RouteModel {
     required this.id,
     required this.routeCode,
     required this.nameBn,
+    this.nameEn,
     required this.totalDistanceKm,
     required this.documentId,
     required this.pdfPageNumber,
@@ -218,6 +232,8 @@ class _$RouteModelImpl extends _RouteModel {
   @override
   final String nameBn;
   @override
+  final String? nameEn;
+  @override
   final double totalDistanceKm;
   @override
   final String documentId;
@@ -233,7 +249,7 @@ class _$RouteModelImpl extends _RouteModel {
 
   @override
   String toString() {
-    return 'RouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, documentId: $documentId, pdfPageNumber: $pdfPageNumber, documents: $documents)';
+    return 'RouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, nameEn: $nameEn, totalDistanceKm: $totalDistanceKm, documentId: $documentId, pdfPageNumber: $pdfPageNumber, documents: $documents)';
   }
 
   @override
@@ -245,6 +261,7 @@ class _$RouteModelImpl extends _RouteModel {
             (identical(other.routeCode, routeCode) ||
                 other.routeCode == routeCode) &&
             (identical(other.nameBn, nameBn) || other.nameBn == nameBn) &&
+            (identical(other.nameEn, nameEn) || other.nameEn == nameEn) &&
             (identical(other.totalDistanceKm, totalDistanceKm) ||
                 other.totalDistanceKm == totalDistanceKm) &&
             (identical(other.documentId, documentId) ||
@@ -264,6 +281,7 @@ class _$RouteModelImpl extends _RouteModel {
     id,
     routeCode,
     nameBn,
+    nameEn,
     totalDistanceKm,
     documentId,
     pdfPageNumber,
@@ -289,6 +307,7 @@ abstract class _RouteModel extends RouteModel {
     required final String id,
     required final String routeCode,
     required final String nameBn,
+    final String? nameEn,
     required final double totalDistanceKm,
     required final String documentId,
     required final int pdfPageNumber,
@@ -305,6 +324,8 @@ abstract class _RouteModel extends RouteModel {
   String get routeCode;
   @override
   String get nameBn;
+  @override
+  String? get nameEn;
   @override
   double get totalDistanceKm;
   @override

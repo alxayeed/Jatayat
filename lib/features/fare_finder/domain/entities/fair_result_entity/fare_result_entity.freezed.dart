@@ -31,6 +31,7 @@ mixin _$FareResultEntity {
   String get routeId => throw _privateConstructorUsedError;
   String get routeCode => throw _privateConstructorUsedError;
   String get routeNameBn => throw _privateConstructorUsedError;
+  String? get routeNameEn => throw _privateConstructorUsedError;
   double get routeTotalDistance => throw _privateConstructorUsedError;
   int? get pdfPage => throw _privateConstructorUsedError;
   String? get pdfUrl => throw _privateConstructorUsedError;
@@ -65,6 +66,7 @@ abstract class $FareResultEntityCopyWith<$Res> {
     String routeId,
     String routeCode,
     String routeNameBn,
+    String? routeNameEn,
     double routeTotalDistance,
     int? pdfPage,
     String? pdfUrl,
@@ -101,6 +103,7 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
     Object? routeId = null,
     Object? routeCode = null,
     Object? routeNameBn = null,
+    Object? routeNameEn = freezed,
     Object? routeTotalDistance = null,
     Object? pdfPage = freezed,
     Object? pdfUrl = freezed,
@@ -158,6 +161,10 @@ class _$FareResultEntityCopyWithImpl<$Res, $Val extends FareResultEntity>
                 ? _value.routeNameBn
                 : routeNameBn // ignore: cast_nullable_to_non_nullable
                       as String,
+            routeNameEn: freezed == routeNameEn
+                ? _value.routeNameEn
+                : routeNameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             routeTotalDistance: null == routeTotalDistance
                 ? _value.routeTotalDistance
                 : routeTotalDistance // ignore: cast_nullable_to_non_nullable
@@ -210,6 +217,7 @@ abstract class _$$FareResultEntityImplCopyWith<$Res>
     String routeId,
     String routeCode,
     String routeNameBn,
+    String? routeNameEn,
     double routeTotalDistance,
     int? pdfPage,
     String? pdfUrl,
@@ -245,6 +253,7 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
     Object? routeId = null,
     Object? routeCode = null,
     Object? routeNameBn = null,
+    Object? routeNameEn = freezed,
     Object? routeTotalDistance = null,
     Object? pdfPage = freezed,
     Object? pdfUrl = freezed,
@@ -302,6 +311,10 @@ class __$$FareResultEntityImplCopyWithImpl<$Res>
             ? _value.routeNameBn
             : routeNameBn // ignore: cast_nullable_to_non_nullable
                   as String,
+        routeNameEn: freezed == routeNameEn
+            ? _value.routeNameEn
+            : routeNameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         routeTotalDistance: null == routeTotalDistance
             ? _value.routeTotalDistance
             : routeTotalDistance // ignore: cast_nullable_to_non_nullable
@@ -347,6 +360,7 @@ class _$FareResultEntityImpl implements _FareResultEntity {
     required this.routeId,
     required this.routeCode,
     required this.routeNameBn,
+    this.routeNameEn,
     required this.routeTotalDistance,
     required this.pdfPage,
     required this.pdfUrl,
@@ -382,6 +396,8 @@ class _$FareResultEntityImpl implements _FareResultEntity {
   @override
   final String routeNameBn;
   @override
+  final String? routeNameEn;
+  @override
   final double routeTotalDistance;
   @override
   final int? pdfPage;
@@ -396,7 +412,7 @@ class _$FareResultEntityImpl implements _FareResultEntity {
 
   @override
   String toString() {
-    return 'FareResultEntity(fareId: $fareId, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, fromStopId: $fromStopId, toStopId: $toStopId, originNameBn: $originNameBn, originNameEn: $originNameEn, destinationNameBn: $destinationNameBn, destinationNameEn: $destinationNameEn, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
+    return 'FareResultEntity(fareId: $fareId, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, fromStopId: $fromStopId, toStopId: $toStopId, originNameBn: $originNameBn, originNameEn: $originNameEn, destinationNameBn: $destinationNameBn, destinationNameEn: $destinationNameEn, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeNameEn: $routeNameEn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
   }
 
   @override
@@ -426,6 +442,8 @@ class _$FareResultEntityImpl implements _FareResultEntity {
                 other.routeCode == routeCode) &&
             (identical(other.routeNameBn, routeNameBn) ||
                 other.routeNameBn == routeNameBn) &&
+            (identical(other.routeNameEn, routeNameEn) ||
+                other.routeNameEn == routeNameEn) &&
             (identical(other.routeTotalDistance, routeTotalDistance) ||
                 other.routeTotalDistance == routeTotalDistance) &&
             (identical(other.pdfPage, pdfPage) || other.pdfPage == pdfPage) &&
@@ -437,7 +455,7 @@ class _$FareResultEntityImpl implements _FareResultEntity {
   }
 
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     fareId,
     fareAmount,
@@ -451,13 +469,14 @@ class _$FareResultEntityImpl implements _FareResultEntity {
     routeId,
     routeCode,
     routeNameBn,
+    routeNameEn,
     routeTotalDistance,
     pdfPage,
     pdfUrl,
     btrcUrl,
     baseRate,
     minFare,
-  );
+  ]);
 
   /// Create a copy of FareResultEntity
   /// with the given fields replaced by the non-null parameter values.
@@ -485,6 +504,7 @@ abstract class _FareResultEntity implements FareResultEntity {
     required final String routeId,
     required final String routeCode,
     required final String routeNameBn,
+    final String? routeNameEn,
     required final double routeTotalDistance,
     required final int? pdfPage,
     required final String? pdfUrl,
@@ -517,6 +537,8 @@ abstract class _FareResultEntity implements FareResultEntity {
   String get routeCode;
   @override
   String get routeNameBn;
+  @override
+  String? get routeNameEn;
   @override
   double get routeTotalDistance;
   @override

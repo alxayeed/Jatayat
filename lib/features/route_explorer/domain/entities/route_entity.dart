@@ -8,6 +8,7 @@ class RouteEntity with _$RouteEntity {
     required String id,
     required String routeCode,
     required String nameBn,
+    String? nameEn,
     required double totalDistance,
     required String documentId,
     required int pdfPage,

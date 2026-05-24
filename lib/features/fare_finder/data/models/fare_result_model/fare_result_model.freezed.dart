@@ -45,6 +45,8 @@ mixin _$FareResultModel {
   String get routeCode => throw _privateConstructorUsedError;
   @JsonKey(name: 'route_name_bn')
   String get routeNameBn => throw _privateConstructorUsedError;
+  @JsonKey(name: 'route_name_en')
+  String? get routeNameEn => throw _privateConstructorUsedError;
   @JsonKey(name: 'route_total_distance')
   double get routeTotalDistance => throw _privateConstructorUsedError;
   @JsonKey(name: 'pdf_page_number')
@@ -88,6 +90,7 @@ abstract class $FareResultModelCopyWith<$Res> {
     @JsonKey(name: 'route_id') String routeId,
     @JsonKey(name: 'route_code') String routeCode,
     @JsonKey(name: 'route_name_bn') String routeNameBn,
+    @JsonKey(name: 'route_name_en') String? routeNameEn,
     @JsonKey(name: 'route_total_distance') double routeTotalDistance,
     @JsonKey(name: 'pdf_page_number') int? pdfPage,
     @JsonKey(name: 'pdf_url') String? pdfUrl,
@@ -124,6 +127,7 @@ class _$FareResultModelCopyWithImpl<$Res, $Val extends FareResultModel>
     Object? routeId = null,
     Object? routeCode = null,
     Object? routeNameBn = null,
+    Object? routeNameEn = freezed,
     Object? routeTotalDistance = null,
     Object? pdfPage = freezed,
     Object? pdfUrl = freezed,
@@ -181,6 +185,10 @@ class _$FareResultModelCopyWithImpl<$Res, $Val extends FareResultModel>
                 ? _value.routeNameBn
                 : routeNameBn // ignore: cast_nullable_to_non_nullable
                       as String,
+            routeNameEn: freezed == routeNameEn
+                ? _value.routeNameEn
+                : routeNameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             routeTotalDistance: null == routeTotalDistance
                 ? _value.routeTotalDistance
                 : routeTotalDistance // ignore: cast_nullable_to_non_nullable
@@ -233,6 +241,7 @@ abstract class _$$FareResultModelImplCopyWith<$Res>
     @JsonKey(name: 'route_id') String routeId,
     @JsonKey(name: 'route_code') String routeCode,
     @JsonKey(name: 'route_name_bn') String routeNameBn,
+    @JsonKey(name: 'route_name_en') String? routeNameEn,
     @JsonKey(name: 'route_total_distance') double routeTotalDistance,
     @JsonKey(name: 'pdf_page_number') int? pdfPage,
     @JsonKey(name: 'pdf_url') String? pdfUrl,
@@ -268,6 +277,7 @@ class __$$FareResultModelImplCopyWithImpl<$Res>
     Object? routeId = null,
     Object? routeCode = null,
     Object? routeNameBn = null,
+    Object? routeNameEn = freezed,
     Object? routeTotalDistance = null,
     Object? pdfPage = freezed,
     Object? pdfUrl = freezed,
@@ -325,6 +335,10 @@ class __$$FareResultModelImplCopyWithImpl<$Res>
             ? _value.routeNameBn
             : routeNameBn // ignore: cast_nullable_to_non_nullable
                   as String,
+        routeNameEn: freezed == routeNameEn
+            ? _value.routeNameEn
+            : routeNameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         routeTotalDistance: null == routeTotalDistance
             ? _value.routeTotalDistance
             : routeTotalDistance // ignore: cast_nullable_to_non_nullable
@@ -370,6 +384,7 @@ class _$FareResultModelImpl extends _FareResultModel {
     @JsonKey(name: 'route_id') required this.routeId,
     @JsonKey(name: 'route_code') required this.routeCode,
     @JsonKey(name: 'route_name_bn') required this.routeNameBn,
+    @JsonKey(name: 'route_name_en') this.routeNameEn,
     @JsonKey(name: 'route_total_distance') required this.routeTotalDistance,
     @JsonKey(name: 'pdf_page_number') this.pdfPage,
     @JsonKey(name: 'pdf_url') this.pdfUrl,
@@ -419,6 +434,9 @@ class _$FareResultModelImpl extends _FareResultModel {
   @JsonKey(name: 'route_name_bn')
   final String routeNameBn;
   @override
+  @JsonKey(name: 'route_name_en')
+  final String? routeNameEn;
+  @override
   @JsonKey(name: 'route_total_distance')
   final double routeTotalDistance;
   @override
@@ -439,7 +457,7 @@ class _$FareResultModelImpl extends _FareResultModel {
 
   @override
   String toString() {
-    return 'FareResultModel(fareId: $fareId, fromStopId: $fromStopId, toStopId: $toStopId, originNameBn: $originNameBn, originNameEn: $originNameEn, destinationNameBn: $destinationNameBn, destinationNameEn: $destinationNameEn, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
+    return 'FareResultModel(fareId: $fareId, fromStopId: $fromStopId, toStopId: $toStopId, originNameBn: $originNameBn, originNameEn: $originNameEn, destinationNameBn: $destinationNameBn, destinationNameEn: $destinationNameEn, fareAmount: $fareAmount, travelDistanceKm: $travelDistanceKm, routeId: $routeId, routeCode: $routeCode, routeNameBn: $routeNameBn, routeNameEn: $routeNameEn, routeTotalDistance: $routeTotalDistance, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseRate: $baseRate, minFare: $minFare)';
   }
 
   @override
@@ -469,6 +487,8 @@ class _$FareResultModelImpl extends _FareResultModel {
                 other.routeCode == routeCode) &&
             (identical(other.routeNameBn, routeNameBn) ||
                 other.routeNameBn == routeNameBn) &&
+            (identical(other.routeNameEn, routeNameEn) ||
+                other.routeNameEn == routeNameEn) &&
             (identical(other.routeTotalDistance, routeTotalDistance) ||
                 other.routeTotalDistance == routeTotalDistance) &&
             (identical(other.pdfPage, pdfPage) || other.pdfPage == pdfPage) &&
@@ -481,7 +501,7 @@ class _$FareResultModelImpl extends _FareResultModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
+  int get hashCode => Object.hashAll([
     runtimeType,
     fareId,
     fromStopId,
@@ -495,13 +515,14 @@ class _$FareResultModelImpl extends _FareResultModel {
     routeId,
     routeCode,
     routeNameBn,
+    routeNameEn,
     routeTotalDistance,
     pdfPage,
     pdfUrl,
     btrcUrl,
     baseRate,
     minFare,
-  );
+  ]);
 
   /// Create a copy of FareResultModel
   /// with the given fields replaced by the non-null parameter values.
@@ -534,6 +555,7 @@ abstract class _FareResultModel extends FareResultModel {
     @JsonKey(name: 'route_id') required final String routeId,
     @JsonKey(name: 'route_code') required final String routeCode,
     @JsonKey(name: 'route_name_bn') required final String routeNameBn,
+    @JsonKey(name: 'route_name_en') final String? routeNameEn,
     @JsonKey(name: 'route_total_distance')
     required final double routeTotalDistance,
     @JsonKey(name: 'pdf_page_number') final int? pdfPage,
@@ -583,6 +605,9 @@ abstract class _FareResultModel extends FareResultModel {
   @override
   @JsonKey(name: 'route_name_bn')
   String get routeNameBn;
+  @override
+  @JsonKey(name: 'route_name_en')
+  String? get routeNameEn;
   @override
   @JsonKey(name: 'route_total_distance')
   double get routeTotalDistance;
