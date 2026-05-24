@@ -48,7 +48,3 @@ app.*.map.json
 .env
 **/android/key.properties
 **/android/app/*.jks
-
-# Developer AI Agent Skills
-.agents/
-skills-lock.json
