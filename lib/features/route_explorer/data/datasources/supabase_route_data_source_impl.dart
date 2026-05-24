@@ -42,7 +42,7 @@ class SupabaseRouteDataSourceImpl implements RouteDataSource {
       final response = await supabase
           .from('v1_routes')
           .select()
-          .or('route_code.ilike.%$query%,name_bn.ilike.%$query%')
+          .or('route_code.ilike.%$query%,name_bn.ilike.%$query%,name_en.ilike.%$query%')
           .order('route_code', ascending: true);
 
       final results = (response as List)

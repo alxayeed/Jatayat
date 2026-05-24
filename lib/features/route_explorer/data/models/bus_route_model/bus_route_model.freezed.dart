@@ -323,6 +323,7 @@ mixin _$BusRouteModel {
   String get id => throw _privateConstructorUsedError; // Added Primary Key
   String get routeCode => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
   double get totalDistanceKm => throw _privateConstructorUsedError;
   int get totalStops => throw _privateConstructorUsedError;
   String get region =>
@@ -357,6 +358,7 @@ abstract class $BusRouteModelCopyWith<$Res> {
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistanceKm,
     int totalStops,
     String region,
@@ -388,6 +390,7 @@ class _$BusRouteModelCopyWithImpl<$Res, $Val extends BusRouteModel>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistanceKm = null,
     Object? totalStops = null,
     Object? region = null,
@@ -413,6 +416,10 @@ class _$BusRouteModelCopyWithImpl<$Res, $Val extends BusRouteModel>
                 ? _value.nameBn
                 : nameBn // ignore: cast_nullable_to_non_nullable
                       as String,
+            nameEn: freezed == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             totalDistanceKm: null == totalDistanceKm
                 ? _value.totalDistanceKm
                 : totalDistanceKm // ignore: cast_nullable_to_non_nullable
@@ -472,6 +479,7 @@ abstract class _$$BusRouteModelImplCopyWith<$Res>
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistanceKm,
     int totalStops,
     String region,
@@ -502,6 +510,7 @@ class __$$BusRouteModelImplCopyWithImpl<$Res>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistanceKm = null,
     Object? totalStops = null,
     Object? region = null,
@@ -527,6 +536,10 @@ class __$$BusRouteModelImplCopyWithImpl<$Res>
             ? _value.nameBn
             : nameBn // ignore: cast_nullable_to_non_nullable
                   as String,
+        nameEn: freezed == nameEn
+            ? _value.nameEn
+            : nameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         totalDistanceKm: null == totalDistanceKm
             ? _value.totalDistanceKm
             : totalDistanceKm // ignore: cast_nullable_to_non_nullable
@@ -580,6 +593,7 @@ class _$BusRouteModelImpl extends _BusRouteModel {
     required this.id,
     required this.routeCode,
     required this.nameBn,
+    this.nameEn,
     required this.totalDistanceKm,
     required this.totalStops,
     required this.region,
@@ -603,6 +617,8 @@ class _$BusRouteModelImpl extends _BusRouteModel {
   final String routeCode;
   @override
   final String nameBn;
+  @override
+  final String? nameEn;
   @override
   final double totalDistanceKm;
   @override
@@ -635,7 +651,7 @@ class _$BusRouteModelImpl extends _BusRouteModel {
 
   @override
   String toString() {
-    return 'BusRouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistanceKm: $totalDistanceKm, totalStops: $totalStops, region: $region, pdfPageNumber: $pdfPageNumber, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseFarePerKm: $baseFarePerKm, minimumFare: $minimumFare, issuedDate: $issuedDate, stops: $stops)';
+    return 'BusRouteModel(id: $id, routeCode: $routeCode, nameBn: $nameBn, nameEn: $nameEn, totalDistanceKm: $totalDistanceKm, totalStops: $totalStops, region: $region, pdfPageNumber: $pdfPageNumber, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, baseFarePerKm: $baseFarePerKm, minimumFare: $minimumFare, issuedDate: $issuedDate, stops: $stops)';
   }
 
   @override
@@ -647,6 +663,7 @@ class _$BusRouteModelImpl extends _BusRouteModel {
             (identical(other.routeCode, routeCode) ||
                 other.routeCode == routeCode) &&
             (identical(other.nameBn, nameBn) || other.nameBn == nameBn) &&
+            (identical(other.nameEn, nameEn) || other.nameEn == nameEn) &&
             (identical(other.totalDistanceKm, totalDistanceKm) ||
                 other.totalDistanceKm == totalDistanceKm) &&
             (identical(other.totalStops, totalStops) ||
@@ -672,6 +689,7 @@ class _$BusRouteModelImpl extends _BusRouteModel {
     id,
     routeCode,
     nameBn,
+    nameEn,
     totalDistanceKm,
     totalStops,
     region,
@@ -703,6 +721,7 @@ abstract class _BusRouteModel extends BusRouteModel {
     required final String id,
     required final String routeCode,
     required final String nameBn,
+    final String? nameEn,
     required final double totalDistanceKm,
     required final int totalStops,
     required final String region,
@@ -725,6 +744,8 @@ abstract class _BusRouteModel extends BusRouteModel {
   String get routeCode;
   @override
   String get nameBn;
+  @override
+  String? get nameEn;
   @override
   double get totalDistanceKm;
   @override

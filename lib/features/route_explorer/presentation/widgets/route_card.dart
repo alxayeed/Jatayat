@@ -58,9 +58,9 @@ class RouteCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              route.nameBn,
+              l10n.localeName == 'bn' ? route.nameBn : (route.nameEn ?? route.nameBn),
               style: theme.textTheme.titleMedium?.copyWith(
-                fontFamily: 'HindSiliguri',
+                fontFamily: l10n.localeName == 'bn' ? 'HindSiliguri' : null,
                 fontWeight: FontWeight.bold,
               ),
             ),
