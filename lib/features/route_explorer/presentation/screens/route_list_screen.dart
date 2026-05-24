@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/error/error_handler.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/route_explorer_provider.dart';
 import '../widgets/route_card.dart';
@@ -96,7 +97,7 @@ class RouteListScreen extends ConsumerWidget {
                 itemBuilder: (context, index) => const RouteCardShimmer(),
               ),
               error: (error, stack) =>
-                  _buildErrorState(error.toString(), ref, l10n, theme),
+                  _buildErrorState(error, ref, l10n, theme),
             ),
           ),
         ],
@@ -128,7 +129,7 @@ class RouteListScreen extends ConsumerWidget {
   }
 
   Widget _buildErrorState(
-    String message,
+    Object error,
     WidgetRef ref,
     AppLocalizations l10n,
     ThemeData theme,
@@ -144,7 +145,7 @@ class RouteListScreen extends ConsumerWidget {
             Text(l10n.failedToLoadRoutes, style: theme.textTheme.titleMedium),
             const SizedBox(height: 8),
             Text(
-              message,
+              AppErrorHandler.getFriendlyMessage(error, l10n),
               textAlign: TextAlign.center,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,

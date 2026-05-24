@@ -236,4 +236,23 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get governmentDisclaimer =>
       'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This is an independent platform designed to help you view transit data easily and does not represent any government entity.';
+
+  @override
+  String get errorNetwork =>
+      'Network connection issue. Please check your internet and try again.';
+
+  @override
+  String get errorTimeout => 'Request timed out. Please try again.';
+
+  @override
+  String get errorNotFound => 'The requested resource could not be found.';
+
+  @override
+  String get errorUnauthorized => 'Access denied. You are not authorized.';
+
+  @override
+  String get errorServer => 'An internal server error occurred (500).';
+
+  @override
+  String get errorGeneric => 'An unexpected error occurred. Please try again.';
 }

@@ -1,4 +1,5 @@
 import 'package:feedback/feedback.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -28,8 +29,8 @@ void main() async {
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
-      debug: true,
-      httpClient: SupabaseLoggingClient(),
+      debug: kDebugMode,
+      httpClient: kDebugMode ? SupabaseLoggingClient() : null,
     );
   } catch (e) {
     debugPrint('Initialization failed for environment $envFile: $e');
