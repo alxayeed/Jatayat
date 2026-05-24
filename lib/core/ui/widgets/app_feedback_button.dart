@@ -1,5 +1,6 @@
 import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/feedback_provider.dart';
@@ -9,6 +10,11 @@ class AppFeedbackButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final showFeedback = dotenv.env['SHOW_FEEDBACK_BUTTON'] == 'true';
+    if (!showFeedback) {
+      return const SizedBox.shrink();
+    }
+
     final theme = Theme.of(context);
 
     return Padding(
