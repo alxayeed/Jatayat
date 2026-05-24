@@ -66,9 +66,9 @@ class FareCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                fare.routeNameBn,
+                l10n.localeName == 'bn' ? fare.routeNameBn : (fare.routeNameEn ?? fare.routeNameBn),
                 style: theme.textTheme.titleMedium?.copyWith(
-                  fontFamily: 'HindSiliguri',
+                  fontFamily: l10n.localeName == 'bn' ? 'HindSiliguri' : null,
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface,
                 ),

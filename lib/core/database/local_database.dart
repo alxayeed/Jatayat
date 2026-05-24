@@ -20,8 +20,9 @@ class LocalDatabase {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _createDB,
+      onUpgrade: _upgradeDB,
     );
   }
 
@@ -39,9 +40,54 @@ class LocalDatabase {
         created_at INTEGER NOT NULL
       )
     ''');
+
+    // 🛠️ Settings Table (key-value store for user preferences)
+    await db.execute('''
+      CREATE TABLE settings (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      )
+    ''');
   }
 
-  // ── Operations ─────────────────────────────────────────────────────────────
+  Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      // Migration: Add settings table for existing users
+      await db.execute('''
+        CREATE TABLE settings (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL
+        )
+      ''');
+    }
+  }
+
+  // ── Settings Operations ───────────────────────────────────────────────────
+
+  Future<String?> getSetting(String key) async {
+    final db = await instance.database;
+    final maps = await db.query(
+      'settings',
+      columns: ['value'],
+      where: 'key = ?',
+      whereArgs: [key],
+    );
+    if (maps.isNotEmpty) {
+      return maps.first['value'] as String;
+    }
+    return null;
+  }
+
+  Future<void> setSetting(String key, String value) async {
+    final db = await instance.database;
+    await db.insert(
+      'settings',
+      {'key': key, 'value': value},
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  // ── Bookmark Operations ───────────────────────────────────────────────────
 
   Future<int> insertBookmark({
     required String id,

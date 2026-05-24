@@ -20,6 +20,7 @@ mixin _$RouteEntity {
   String get id => throw _privateConstructorUsedError;
   String get routeCode => throw _privateConstructorUsedError;
   String get nameBn => throw _privateConstructorUsedError;
+  String? get nameEn => throw _privateConstructorUsedError;
   double get totalDistance => throw _privateConstructorUsedError;
   String get documentId => throw _privateConstructorUsedError;
   int get pdfPage => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $RouteEntityCopyWith<$Res> {
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistance,
     String documentId,
     int pdfPage,
@@ -79,6 +81,7 @@ class _$RouteEntityCopyWithImpl<$Res, $Val extends RouteEntity>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistance = null,
     Object? documentId = null,
     Object? pdfPage = null,
@@ -103,6 +106,10 @@ class _$RouteEntityCopyWithImpl<$Res, $Val extends RouteEntity>
                 ? _value.nameBn
                 : nameBn // ignore: cast_nullable_to_non_nullable
                       as String,
+            nameEn: freezed == nameEn
+                ? _value.nameEn
+                : nameEn // ignore: cast_nullable_to_non_nullable
+                      as String?,
             totalDistance: null == totalDistance
                 ? _value.totalDistance
                 : totalDistance // ignore: cast_nullable_to_non_nullable
@@ -158,6 +165,7 @@ abstract class _$$RouteEntityImplCopyWith<$Res>
     String id,
     String routeCode,
     String nameBn,
+    String? nameEn,
     double totalDistance,
     String documentId,
     int pdfPage,
@@ -187,6 +195,7 @@ class __$$RouteEntityImplCopyWithImpl<$Res>
     Object? id = null,
     Object? routeCode = null,
     Object? nameBn = null,
+    Object? nameEn = freezed,
     Object? totalDistance = null,
     Object? documentId = null,
     Object? pdfPage = null,
@@ -211,6 +220,10 @@ class __$$RouteEntityImplCopyWithImpl<$Res>
             ? _value.nameBn
             : nameBn // ignore: cast_nullable_to_non_nullable
                   as String,
+        nameEn: freezed == nameEn
+            ? _value.nameEn
+            : nameEn // ignore: cast_nullable_to_non_nullable
+                  as String?,
         totalDistance: null == totalDistance
             ? _value.totalDistance
             : totalDistance // ignore: cast_nullable_to_non_nullable
@@ -259,6 +272,7 @@ class _$RouteEntityImpl implements _RouteEntity {
     required this.id,
     required this.routeCode,
     required this.nameBn,
+    this.nameEn,
     required this.totalDistance,
     required this.documentId,
     required this.pdfPage,
@@ -276,6 +290,8 @@ class _$RouteEntityImpl implements _RouteEntity {
   final String routeCode;
   @override
   final String nameBn;
+  @override
+  final String? nameEn;
   @override
   final double totalDistance;
   @override
@@ -298,7 +314,7 @@ class _$RouteEntityImpl implements _RouteEntity {
 
   @override
   String toString() {
-    return 'RouteEntity(id: $id, routeCode: $routeCode, nameBn: $nameBn, totalDistance: $totalDistance, documentId: $documentId, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, issuedDate: $issuedDate, baseRate: $baseRate, minFare: $minFare, notes: $notes)';
+    return 'RouteEntity(id: $id, routeCode: $routeCode, nameBn: $nameBn, nameEn: $nameEn, totalDistance: $totalDistance, documentId: $documentId, pdfPage: $pdfPage, pdfUrl: $pdfUrl, btrcUrl: $btrcUrl, issuedDate: $issuedDate, baseRate: $baseRate, minFare: $minFare, notes: $notes)';
   }
 
   @override
@@ -310,6 +326,7 @@ class _$RouteEntityImpl implements _RouteEntity {
             (identical(other.routeCode, routeCode) ||
                 other.routeCode == routeCode) &&
             (identical(other.nameBn, nameBn) || other.nameBn == nameBn) &&
+            (identical(other.nameEn, nameEn) || other.nameEn == nameEn) &&
             (identical(other.totalDistance, totalDistance) ||
                 other.totalDistance == totalDistance) &&
             (identical(other.documentId, documentId) ||
@@ -331,6 +348,7 @@ class _$RouteEntityImpl implements _RouteEntity {
     id,
     routeCode,
     nameBn,
+    nameEn,
     totalDistance,
     documentId,
     pdfPage,
@@ -356,6 +374,7 @@ abstract class _RouteEntity implements RouteEntity {
     required final String id,
     required final String routeCode,
     required final String nameBn,
+    final String? nameEn,
     required final double totalDistance,
     required final String documentId,
     required final int pdfPage,
@@ -373,6 +392,8 @@ abstract class _RouteEntity implements RouteEntity {
   String get routeCode;
   @override
   String get nameBn;
+  @override
+  String? get nameEn;
   @override
   double get totalDistance;
   @override
