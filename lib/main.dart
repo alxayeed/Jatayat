@@ -14,8 +14,14 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Determine flavor at compile-time (defaults to 'dev')
+  const String flavor = String.fromEnvironment('FLAVOR', defaultValue: 'dev');
+  final String envFile = flavor == 'prod' ? '.env.prod' : '.env.dev';
+
   try {
-    await dotenv.load(fileName: ".env");
+    // Load flavor-specific configuration
+    await dotenv.load(fileName: envFile);
+    debugPrint('🚀 Environment initialized successfully from: $envFile');
 
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
@@ -24,7 +30,7 @@ void main() async {
       httpClient: SupabaseLoggingClient(),
     );
   } catch (e) {
-    debugPrint('Initialization failed: $e');
+    debugPrint('Initialization failed for environment $envFile: $e');
   }
 
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
