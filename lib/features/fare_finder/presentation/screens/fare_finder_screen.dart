@@ -165,7 +165,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               ),
               const SizedBox(width: 8),
               Text(
-                l10n.localeName == 'bn' ? 'আইনি নোটিশ' : 'Legal Disclaimer',
+                l10n.disclaimerHeader,
                 style: theme.textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface,
