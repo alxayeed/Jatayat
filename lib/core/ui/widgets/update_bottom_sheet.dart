@@ -1,18 +1,17 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class UpdateBottomSheet extends StatelessWidget {
+import '../../providers/upgrade_provider.dart';
+
+class UpdateBottomSheet extends ConsumerWidget {
   const UpdateBottomSheet({super.key});
 
-  /// Fires the external system intent to open the Jatayat Play Store listing page
   Future<void> _launchPlayStore() async {
     const String packageName = 'com.raindropstudio.jatayat';
-
-    // Standard native market scheme protocol for Android devices
     final Uri marketUri = Uri.parse('market://details?id=$packageName');
-    // Fallback web URL if the market scheme fails or for browser redirection
     final Uri webUri = Uri.parse(
       'https://play.google.com/store/apps/details?id=$packageName',
     );
@@ -32,12 +31,11 @@ class UpdateBottomSheet extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // Fetches the primary color currently configured in your global MaterialApp theme
+  Widget build(BuildContext context, WidgetRef ref) {
     final Color appPrimaryColor = Theme.of(context).primaryColor;
 
     return PopScope(
-      canPop: false, // Prevents user from dismissing via the system back button
+      canPop: false,
       child: Container(
         padding: const EdgeInsets.all(24.0),
         decoration: const BoxDecoration(
@@ -75,7 +73,14 @@ class UpdateBottomSheet extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextButton(
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () async {
+                        await ref
+                            .read(appUpgradeProvider.notifier)
+                            .snoozeUpdate();
+                        if (context.mounted) {
+                          Navigator.pop(context);
+                        }
+                      },
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
@@ -94,7 +99,6 @@ class UpdateBottomSheet extends StatelessWidget {
                       onPressed: _launchPlayStore,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: appPrimaryColor,
-                        // Dynamically maps to your theme's primary color
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         elevation: 0,
                         shape: RoundedRectangleBorder(
