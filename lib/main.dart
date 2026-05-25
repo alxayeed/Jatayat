@@ -8,6 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/database/local_database.dart';
 import 'core/providers/settings_provider.dart';
+import 'core/providers/ad_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/styles/app_theme.dart';
 import 'core/ui/screens/custom_feedback_sheet.dart';
@@ -32,6 +33,9 @@ void main() async {
       debug: kDebugMode,
       httpClient: kDebugMode ? SupabaseLoggingClient() : null,
     );
+
+    // Initialize Mobile Ads SDK
+    await AdService().initialize();
   } catch (e) {
     debugPrint('Initialization failed for environment $envFile: $e');
   }

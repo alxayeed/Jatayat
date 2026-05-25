@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/providers/ad_provider.dart';
+import '../../../../core/ui/widgets/app_native_ad_card.dart';
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
@@ -113,10 +115,31 @@ class BookmarksScreen extends ConsumerWidget {
       );
     }
 
+    final showAds = ref.watch(adServiceProvider).areAdsEnabled;
+    final bool hasAdSlot = showAds && items.isNotEmpty;
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: items.length,
+      itemCount: items.length + (hasAdSlot ? 1 : 0),
       itemBuilder: (context, index) {
+        if (hasAdSlot) {
+          final int adIndex = items.length > 5 ? 4 : items.length;
+          if (index == adIndex) {
+            return const AppNativeAdCard();
+          }
+          final itemIndex = index > adIndex ? index - 1 : index;
+          final item = items[itemIndex];
+          final route = item.entity as BusRoute;
+
+          return Dismissible(
+            key: Key('route-bookmark-${item.id}'),
+            direction: DismissDirection.endToStart,
+            background: _buildDismissBackground(theme),
+            onDismissed: (_) => _handleDismiss(context, ref, item.id, isBn, true),
+            child: RouteCard(route: route),
+          );
+        }
+
         final item = items[index];
         final route = item.entity as BusRoute;
 
@@ -149,10 +172,31 @@ class BookmarksScreen extends ConsumerWidget {
       );
     }
 
+    final showAds = ref.watch(adServiceProvider).areAdsEnabled;
+    final bool hasAdSlot = showAds && items.isNotEmpty;
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: items.length,
+      itemCount: items.length + (hasAdSlot ? 1 : 0),
       itemBuilder: (context, index) {
+        if (hasAdSlot) {
+          final int adIndex = items.length > 5 ? 4 : items.length;
+          if (index == adIndex) {
+            return const AppNativeAdCard();
+          }
+          final itemIndex = index > adIndex ? index - 1 : index;
+          final item = items[itemIndex];
+          final fare = item.entity as FareResultEntity;
+
+          return Dismissible(
+            key: Key('fare-bookmark-${item.id}'),
+            direction: DismissDirection.endToStart,
+            background: _buildDismissBackground(theme),
+            onDismissed: (_) => _handleDismiss(context, ref, item.id, isBn, false),
+            child: FareCard(fare: fare),
+          );
+        }
+
         final item = items[index];
         final fare = item.entity as FareResultEntity;
 

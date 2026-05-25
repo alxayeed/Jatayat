@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/providers/ad_provider.dart';
+import '../../../../core/ui/widgets/app_native_ad_card.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/ui/widgets/app_text_field.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
@@ -396,12 +398,27 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   }
 
   Widget _buildFareResults(FareSearchState state) {
+    final adService = ref.watch(adServiceProvider);
+    final results = state.fareResults;
+    final bool showAds = adService.areAdsEnabled;
+    final bool hasAdSlot = showAds && results.isNotEmpty;
+
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => FareCard(fare: state.fareResults[index]),
-          childCount: state.fareResults.length,
+          (context, index) {
+            if (hasAdSlot) {
+              final int adIndex = results.length > 4 ? 3 : results.length;
+              if (index == adIndex) {
+                return const AppNativeAdCard();
+              }
+              final dataIndex = index > adIndex ? index - 1 : index;
+              return FareCard(fare: results[dataIndex]);
+            }
+            return FareCard(fare: results[index]);
+          },
+          childCount: results.length + (hasAdSlot ? 1 : 0),
         ),
       ),
     );

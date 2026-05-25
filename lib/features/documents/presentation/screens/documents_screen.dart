@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/providers/ad_provider.dart';
+import '../../../../core/ui/widgets/app_native_ad_card.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/providers/settings_provider.dart';
@@ -144,13 +146,24 @@ class DocumentsScreen extends ConsumerWidget {
                   );
                 }
 
+                final showAds = ref.watch(adServiceProvider).areAdsEnabled;
+                final bool hasAdSlot = showAds && documents.isNotEmpty;
+
                 return RefreshIndicator(
                   onRefresh: () =>
                       ref.read(documentsProvider.notifier).refresh(),
                   child: ListView.builder(
                     padding: const EdgeInsets.all(16),
-                    itemCount: documents.length,
+                    itemCount: documents.length + (hasAdSlot ? 1 : 0),
                     itemBuilder: (context, index) {
+                      if (hasAdSlot) {
+                        final int adIndex = documents.length > 5 ? 4 : documents.length;
+                        if (index == adIndex) {
+                          return const AppNativeAdCard();
+                        }
+                        final docIndex = index > adIndex ? index - 1 : index;
+                        return DocumentCard(document: documents[docIndex]);
+                      }
                       return DocumentCard(document: documents[index]);
                     },
                   ),

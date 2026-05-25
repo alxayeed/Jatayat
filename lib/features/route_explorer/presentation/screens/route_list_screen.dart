@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/providers/ad_provider.dart';
+import '../../../../core/ui/widgets/app_native_ad_card.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/error/error_handler.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -18,6 +20,7 @@ class RouteListScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final routeState = ref.watch(routeExplorerProvider);
     final theme = Theme.of(context);
+    final adService = ref.watch(adServiceProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -79,13 +82,25 @@ class RouteListScreen extends ConsumerWidget {
                 if (routes.isEmpty) {
                   return _buildEmptyState(l10n, theme);
                 }
+                
+                final bool showAds = adService.areAdsEnabled;
+                final bool hasAdSlot = showAds && routes.isNotEmpty;
+
                 return RefreshIndicator(
                   onRefresh: () =>
                       ref.read(routeExplorerProvider.notifier).refresh(),
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: routes.length,
+                    itemCount: routes.length + (hasAdSlot ? 1 : 0),
                     itemBuilder: (context, index) {
+                      if (hasAdSlot) {
+                        final int adIndex = routes.length > 5 ? 4 : routes.length;
+                        if (index == adIndex) {
+                          return const AppNativeAdCard();
+                        }
+                        final routeIndex = index > adIndex ? index - 1 : index;
+                        return RouteCard(route: routes[routeIndex]);
+                      }
                       return RouteCard(route: routes[index]);
                     },
                   ),
