@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,7 +46,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -53,14 +54,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: isDark
-                ? [
-                    const Color(0xFF1E261D),
-                    const Color(0xFF111318),
-                  ]
-                : [
-                    const Color(0xFFE8F5E9),
-                    const Color(0xFFF7FBF1),
-                  ],
+                ? [const Color(0xFF1E261D), const Color(0xFF111318)]
+                : [const Color(0xFFE8F5E9), const Color(0xFFF7FBF1)],
           ),
         ),
         child: SafeArea(
@@ -68,13 +63,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             children: [
               // Top Bar with Language Toggle and Skip Button
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Language Switcher
-                    _buildLanguageToggle(),
-                    
+                    if (kDebugMode) _buildLanguageToggle(),
+
                     // Skip Button
                     AnimatedOpacity(
                       opacity: _currentPage == 2 ? 0.0 : 1.0,
@@ -138,7 +136,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   children: [
                     // Indicator dots
                     Row(
-                      children: List.generate(3, (index) => _buildIndicatorDot(index)),
+                      children: List.generate(
+                        3,
+                        (index) => _buildIndicatorDot(index),
+                      ),
                     ),
 
                     // Navigation Action Button
@@ -168,15 +169,12 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           Expanded(
             flex: 5,
             child: Center(
-              child: AspectRatio(
-                aspectRatio: 1.1,
-                child: illustration,
-              ),
+              child: AspectRatio(aspectRatio: 1.1, child: illustration),
             ),
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Details section
           Expanded(
             flex: 4,
@@ -187,25 +185,25 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   title,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.5,
-                        height: 1.2,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : const Color(0xFF00300A),
-                      ),
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
+                    height: 1.2,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white
+                        : const Color(0xFF00300A),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   description,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFFB0B3BE)
-                            : const Color(0xFF4A5568),
-                        height: 1.5,
-                        fontSize: 16,
-                      ),
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFFB0B3BE)
+                        : const Color(0xFF4A5568),
+                    height: 1.5,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
@@ -226,7 +224,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
       decoration: BoxDecoration(
         color: isActive
             ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.primary.withOpacity(0.2),
+            : Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(4),
       ),
     );
@@ -245,7 +243,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
         borderRadius: BorderRadius.circular(isLastPage ? 16.0 : 30.0),
         boxShadow: [
           BoxShadow(
-            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -296,7 +294,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   Widget _buildLanguageToggle() {
     final settings = ref.watch(settingsProvider);
     final isBangla = settings.locale.languageCode == 'bn';
-    
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).brightness == Brightness.dark
@@ -319,7 +317,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     return GestureDetector(
       onTap: () {
         if (!isSelected) {
-          ref.read(settingsProvider.notifier).setLocale(
+          ref
+              .read(settingsProvider.notifier)
+              .setLocale(
                 label == 'EN' ? const Locale('en') : const Locale('bn'),
               );
         }
@@ -339,8 +339,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             color: isSelected
                 ? Colors.white
                 : Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white70
-                    : Colors.black87,
+                ? Colors.white70
+                : Colors.black87,
             fontWeight: FontWeight.bold,
             fontSize: 12,
           ),
@@ -366,7 +366,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 24,
                 offset: const Offset(0, 8),
               ),
@@ -382,11 +382,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
               children: [
                 // Background grid pattern simulation
                 Positioned.fill(
-                  child: CustomPaint(
-                    painter: GridPainter(isDark: isDark),
-                  ),
+                  child: CustomPaint(painter: GridPainter(isDark: isDark)),
                 ),
-                
+
                 // Transit lines paint
                 Positioned.fill(
                   child: CustomPaint(
@@ -404,13 +402,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   left: 45 + (pulse * 25),
                   top: 75 + (pulse * 15),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.3),
                           blurRadius: 10,
                           offset: const Offset(0, 4),
                         ),
@@ -458,7 +461,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 24,
                 offset: const Offset(0, 8),
               ),
@@ -474,18 +477,29 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             children: [
               // "From" Stop field
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withOpacity(0.04) : const Color(0xFFF7FBF1),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.04)
+                      : const Color(0xFFF7FBF1),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.15),
                     width: 1,
                   ),
                 ),
                 child: Row(
                   children: [
-                    Icon(Icons.trip_origin_rounded, color: Theme.of(context).colorScheme.primary, size: 18),
+                    Icon(
+                      Icons.trip_origin_rounded,
+                      color: Theme.of(context).colorScheme.primary,
+                      size: 18,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -500,7 +514,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   ],
                 ),
               ),
-              
+
               // Winding Connecting line
               Padding(
                 padding: const EdgeInsets.only(left: 24.0),
@@ -510,7 +524,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     height: 24,
                     width: 2,
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(1),
                     ),
                   ),
@@ -519,18 +535,29 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 
               // "To" Stop field
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.white.withOpacity(0.04) : const Color(0xFFF7FBF1),
+                  color: isDark
+                      ? Colors.white.withValues(alpha: 0.04)
+                      : const Color(0xFFF7FBF1),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withValues(alpha: 0.15),
                     width: 1,
                   ),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.location_on_rounded, color: Colors.redAccent, size: 18),
+                    const Icon(
+                      Icons.location_on_rounded,
+                      color: Colors.redAccent,
+                      size: 18,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -545,14 +572,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 16),
 
               // Floating Calculated Fare Card
               Transform.translate(
                 offset: Offset(0, -5 + (pulse * 8)),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 18,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: isDark
@@ -562,13 +592,15 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.withOpacity(isDark ? 0.15 : 0.25),
+                        color: Colors.green.withValues(
+                          alpha: isDark ? 0.15 : 0.25,
+                        ),
                         blurRadius: 16,
                         offset: const Offset(0, 4),
                       ),
                     ],
                     border: Border.all(
-                      color: Colors.green.withOpacity(0.3),
+                      color: Colors.green.withValues(alpha: 0.3),
                       width: 1,
                     ),
                   ),
@@ -595,7 +627,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                             "Official Fare",
                             style: TextStyle(
                               fontSize: 10,
-                              color: isDark ? Colors.white70 : const Color(0xFF1B5E20),
+                              color: isDark
+                                  ? Colors.white70
+                                  : const Color(0xFF1B5E20),
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -633,7 +667,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
             borderRadius: BorderRadius.circular(28),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.08),
+                color: Colors.black.withValues(alpha: 0.08),
                 blurRadius: 24,
                 offset: const Offset(0, 8),
               ),
@@ -655,7 +689,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.white.withOpacity(0.03) : const Color(0xFFF7FBF1),
+                    color: isDark
+                        ? Colors.white.withValues(alpha: 0.03)
+                        : const Color(0xFFF7FBF1),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
                       color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
@@ -667,7 +703,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFD600).withOpacity(0.15),
+                          color: const Color(
+                            0xFFFFD600,
+                          ).withValues(alpha: 0.15),
                           shape: BoxShape.circle,
                         ),
                         child: Transform.scale(
@@ -711,13 +749,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
               Positioned(
                 bottom: 25,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 10,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.3),
                         blurRadius: 12,
                         offset: const Offset(0, 4),
                       ),
@@ -756,16 +799,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 // Custom Grid background painter for map illustration
 class GridPainter extends CustomPainter {
   final bool isDark;
+
   GridPainter({required this.isDark});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = isDark ? Colors.white.withOpacity(0.03) : Colors.black.withOpacity(0.03)
+      ..color = isDark
+          ? Colors.white.withValues(alpha: 0.03)
+          : Colors.black.withValues(alpha: 0.03)
       ..strokeWidth = 1.0;
 
     const double step = 20.0;
-    
+
     for (double i = 0; i < size.width; i += step) {
       canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
     }
@@ -819,13 +865,13 @@ class TransitMapPainter extends CustomPainter {
       );
 
     final linePaint1 = Paint()
-      ..color = primaryColor.withOpacity(0.5)
+      ..color = primaryColor.withValues(alpha: 0.5)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 6.0
       ..strokeCap = StrokeCap.round;
 
     final linePaint2 = Paint()
-      ..color = accentColor.withOpacity(0.6)
+      ..color = accentColor.withValues(alpha: 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round;
@@ -842,7 +888,9 @@ class TransitMapPainter extends CustomPainter {
 
     void drawStop(Offset offset, Color color, double radius) {
       // Glow ring
-      outerRingPaint.color = color.withOpacity(0.3 + (0.5 * (1 - pulseValue)));
+      outerRingPaint.color = color.withValues(
+        alpha: 0.3 + (0.5 * (1 - pulseValue)),
+      );
       canvas.drawCircle(offset, radius + (6 * pulseValue), outerRingPaint);
 
       // Inner solid stop
