@@ -116,6 +116,30 @@ abstract class AppLocalizations {
   /// **'Find fares across Dhaka City'**
   String get homeSubtitle;
 
+  /// No description provided for @homeMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeMenu;
+
+  /// No description provided for @routesMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Routes'**
+  String get routesMenu;
+
+  /// No description provided for @docsMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Charts'**
+  String get docsMenu;
+
+  /// No description provided for @bookmarksMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get bookmarksMenu;
+
   /// No description provided for @currencySign.
   ///
   /// In en, this message translates to:
@@ -533,7 +557,7 @@ abstract class AppLocalizations {
   /// No description provided for @disclaimerHeader.
   ///
   /// In en, this message translates to:
-  /// **'Data Source & Note'**
+  /// **'Disclaimer'**
   String get disclaimerHeader;
 
   /// No description provided for @governmentDisclaimer.
@@ -577,6 +601,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An unexpected error occurred. Please try again.'**
   String get errorGeneric;
+
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Jatayat App'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Navigate Dhaka city\'s bus routes, stoppages, and official fares easily.'**
+  String get onboardingWelcomeDesc;
+
+  /// No description provided for @onboardingSearchTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart Fare Finder'**
+  String get onboardingSearchTitle;
+
+  /// No description provided for @onboardingSearchDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Select departure and destination stops to instantly find official government-authorized fares.'**
+  String get onboardingSearchDesc;
+
+  /// No description provided for @onboardingBookmarksTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved Commutes'**
+  String get onboardingBookmarksTitle;
+
+  /// No description provided for @onboardingBookmarksDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Save your daily commute routes to access fare and transit details instantly in one tap.'**
+  String get onboardingBookmarksDesc;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
 }
 
 class _AppLocalizationsDelegate

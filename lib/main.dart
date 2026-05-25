@@ -44,9 +44,11 @@ void main() async {
   // Load saved settings before first frame to prevent flash of defaults
   final savedTheme = await LocalDatabase.instance.getSetting('theme_mode');
   final savedLocale = await LocalDatabase.instance.getSetting('locale');
+  final savedOnboarding = await LocalDatabase.instance.getSetting('has_seen_onboarding');
   setInitialSettings(SettingsState(
     themeMode: SettingsNotifier.themeModeFromString(savedTheme),
     locale: savedLocale != null ? Locale(savedLocale) : const Locale('en'),
+    hasSeenOnboarding: savedOnboarding == 'true',
   ));
 
   runApp(
