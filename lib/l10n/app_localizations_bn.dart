@@ -18,6 +18,18 @@ class AppLocalizationsBn extends AppLocalizations {
   String get homeSubtitle => 'ঢাকা শহরের বাসের ভাড়া দেখুন';
 
   @override
+  String get homeMenu => 'হোম';
+
+  @override
+  String get routesMenu => 'রুটসমূহ';
+
+  @override
+  String get docsMenu => 'চার্টলিস্ট';
+
+  @override
+  String get bookmarksMenu => 'বুকমার্ক';
+
+  @override
   String get currencySign => '৳';
 
   @override
@@ -230,7 +242,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get errorLoadingPdf => 'ডকুমেন্টটি প্রদর্শন করা যায়নি';
 
   @override
-  String get disclaimerHeader => 'তথ্যের উৎস ও নোট';
+  String get disclaimerHeader => 'সতর্কতা';
 
   @override
   String get governmentDisclaimer =>
@@ -258,4 +270,34 @@ class AppLocalizationsBn extends AppLocalizations {
   @override
   String get errorGeneric =>
       'একটি অপ্রত্যাশিত সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
+
+  @override
+  String get onboardingWelcomeTitle => 'যাতায়াত অ্যাপে স্বাগতম';
+
+  @override
+  String get onboardingWelcomeDesc =>
+      'ঢাকার সব বাস রুট, স্টপেজ এবং সরকারি ভাড়ার তালিকা দেখুন সহজেই';
+
+  @override
+  String get onboardingSearchTitle => 'স্মার্ট ভাড়া অনুসন্ধান';
+
+  @override
+  String get onboardingSearchDesc =>
+      'যাত্রার শুরু ও গন্তব্য স্টপেজ সিলেক্ট করে সহজেই খুঁজে নিন অফিসিয়াল সরকারি ভাড়া।';
+
+  @override
+  String get onboardingBookmarksTitle => 'অফলাইন বুকমার্কস';
+
+  @override
+  String get onboardingBookmarksDesc =>
+      'আপনার নিয়মিত যাত্রার রুট ও ভাড়া বুকমার্ক করে রাখুন এবং যেকোনো সময় ইন্টারনেট ছাড়াই এক ট্যাপে দেখুন।';
+
+  @override
+  String get onboardingSkip => 'এড়িয়ে যান';
+
+  @override
+  String get onboardingNext => 'পরবর্তী';
+
+  @override
+  String get onboardingGetStarted => 'শুরু করুন';
 }

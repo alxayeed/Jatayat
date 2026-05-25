@@ -8,16 +8,23 @@ import '../database/local_database.dart';
 class SettingsState {
   final ThemeMode themeMode;
   final Locale locale;
+  final bool hasSeenOnboarding;
 
   const SettingsState({
     this.themeMode = ThemeMode.light,
     this.locale = const Locale('en'),
+    this.hasSeenOnboarding = false,
   });
 
-  SettingsState copyWith({ThemeMode? themeMode, Locale? locale}) {
+  SettingsState copyWith({
+    ThemeMode? themeMode,
+    Locale? locale,
+    bool? hasSeenOnboarding,
+  }) {
     return SettingsState(
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,
+      hasSeenOnboarding: hasSeenOnboarding ?? this.hasSeenOnboarding,
     );
   }
 }
@@ -35,6 +42,11 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   void setLocale(Locale locale) {
     state = state.copyWith(locale: locale);
     _db.setSetting('locale', locale.languageCode);
+  }
+
+  void completeOnboarding() {
+    state = state.copyWith(hasSeenOnboarding: true);
+    _db.setSetting('has_seen_onboarding', 'true');
   }
 
   // ── Helpers ──────────────────────────────────────────────────────────────

@@ -7,13 +7,16 @@ import 'package:jatayat/features/documents/presentation/screens/documents_screen
 import '../../features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
 import '../../features/fare_finder/presentation/screens/fare_details_screen.dart';
 import '../../features/fare_finder/presentation/screens/fare_finder_screen.dart';
+import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
 import '../../features/route_explorer/presentation/screens/route_details_screen.dart';
 import '../../features/route_explorer/presentation/screens/route_list_screen.dart';
+import '../providers/settings_provider.dart';
 import '../ui/screens/main_screen.dart';
 import '../ui/screens/settings_screen.dart';
 import '../ui/widgets/app_pdf_viewer.dart';
 
 class AppRoutes {
+  static const String onboarding = '/onboarding';
   static const String fareSearch = '/fare-search';
   static const String routeExplorer = '/route-explorer';
   static const String documents = '/documents';
@@ -28,8 +31,9 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
+  final settings = ref.read(settingsProvider);
   return GoRouter(
-    initialLocation: AppRoutes.fareSearch,
+    initialLocation: settings.hasSeenOnboarding ? AppRoutes.fareSearch : AppRoutes.onboarding,
     navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
@@ -55,6 +59,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        path: AppRoutes.onboarding,
+        builder: (context, state) => const OnboardingScreen(),
+      ),
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
         path: AppRoutes.fareDetails,

@@ -18,6 +18,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeSubtitle => 'Find fares across Dhaka City';
 
   @override
+  String get homeMenu => 'Home';
+
+  @override
+  String get routesMenu => 'Routes';
+
+  @override
+  String get docsMenu => 'Charts';
+
+  @override
+  String get bookmarksMenu => 'Bookmarks';
+
+  @override
   String get currencySign => '৳';
 
   @override
@@ -231,7 +243,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorLoadingPdf => 'Failed to display the document';
 
   @override
-  String get disclaimerHeader => 'Data Source & Note';
+  String get disclaimerHeader => 'Disclaimer';
 
   @override
   String get governmentDisclaimer =>
@@ -255,4 +267,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorGeneric => 'An unexpected error occurred. Please try again.';
+
+  @override
+  String get onboardingWelcomeTitle => 'Welcome to Jatayat App';
+
+  @override
+  String get onboardingWelcomeDesc =>
+      'Navigate Dhaka city\'s bus routes, stoppages, and official fares easily.';
+
+  @override
+  String get onboardingSearchTitle => 'Smart Fare Finder';
+
+  @override
+  String get onboardingSearchDesc =>
+      'Select departure and destination stops to instantly find official government-authorized fares.';
+
+  @override
+  String get onboardingBookmarksTitle => 'Saved Commutes';
+
+  @override
+  String get onboardingBookmarksDesc =>
+      'Save your daily commute routes to access fare and transit details instantly in one tap.';
+
+  @override
+  String get onboardingSkip => 'Skip';
+
+  @override
+  String get onboardingNext => 'Next';
+
+  @override
+  String get onboardingGetStarted => 'Get Started';
 }
