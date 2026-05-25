@@ -1,4 +1,5 @@
 import 'package:feedback/feedback.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,6 +27,8 @@ void main() async {
     await dotenv.load(fileName: envFile);
     debugPrint('🚀 Environment initialized successfully from: $envFile');
 
+    await Firebase.initializeApp();
+
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
       anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
@@ -44,12 +47,16 @@ void main() async {
   // Load saved settings before first frame to prevent flash of defaults
   final savedTheme = await LocalDatabase.instance.getSetting('theme_mode');
   final savedLocale = await LocalDatabase.instance.getSetting('locale');
-  final savedOnboarding = await LocalDatabase.instance.getSetting('has_seen_onboarding');
-  setInitialSettings(SettingsState(
-    themeMode: SettingsNotifier.themeModeFromString(savedTheme),
-    locale: savedLocale != null ? Locale(savedLocale) : const Locale('en'),
-    hasSeenOnboarding: savedOnboarding == 'true',
-  ));
+  final savedOnboarding = await LocalDatabase.instance.getSetting(
+    'has_seen_onboarding',
+  );
+  setInitialSettings(
+    SettingsState(
+      themeMode: SettingsNotifier.themeModeFromString(savedTheme),
+      locale: savedLocale != null ? Locale(savedLocale) : const Locale('en'),
+      hasSeenOnboarding: savedOnboarding == 'true',
+    ),
+  );
 
   runApp(
     const ProviderScope(

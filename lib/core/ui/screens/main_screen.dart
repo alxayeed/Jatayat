@@ -3,9 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
+import '../../providers/upgrade_provider.dart';
 import '../../router/app_router.dart';
 import '../widgets/app_feedback_button.dart';
 import '../widgets/app_nav_item.dart';
+import '../widgets/update_bottom_sheet.dart';
 
 class MainScreen extends ConsumerWidget {
   final Widget child;
@@ -17,6 +19,22 @@ class MainScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final String location = GoRouterState.of(context).uri.path;
     final theme = Theme.of(context);
+
+    ref.listen<AsyncValue<bool>>(appUpgradeProvider, (previous, next) {
+      next.whenOrNull(
+        data: (needsUpdate) {
+          if (needsUpdate) {
+            showModalBottomSheet(
+              context: context,
+              isDismissible: false,
+              enableDrag: false,
+              backgroundColor: Colors.transparent,
+              builder: (context) => const UpdateBottomSheet(),
+            );
+          }
+        },
+      );
+    });
 
     return Scaffold(
       body: child,
