@@ -8,11 +8,7 @@ class SearchStopsUseCase {
 
   SearchStopsUseCase(this.repository);
 
-  Future<Either<Failure, List<StopEntity>>> call(String query) async {
-    //TODO: add input validation here if needed (e.g., minimum 2 characters)
-    if (query.trim().isEmpty) {
-      return const Right([]);
-    }
-    return await repository.searchStops(query);
+  Future<Either<Failure, List<StopEntity>>> call(String query, {String? region}) async {
+    return await repository.searchStops(query, region: region);
   }
 }

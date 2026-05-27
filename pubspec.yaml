@@ -23,20 +23,20 @@ dependencies:
   supabase_flutter: ^2.8.2
   
   # Data Modeling & JSON
-  freezed_annotation: ^2.4.4
+  freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
-  
+
   # Utilities
   flutter_svg: ^2.0.17
   intl: ^0.20.2
-  google_fonts: ^6.2.1
+  google_fonts: ^8.1.0
   flutter_dotenv: ^6.0.1
   dartz: ^0.10.1
   firebase_core: ^4.7.0
   #  syncfusion_flutter_pdfviewer: ^33.2.3
   flutter_downloader: ^1.11.6
   path_provider: ^2.1.2
-  permission_handler: ^11.3.1
+  permission_handler: ^12.0.1
   #  change_app_package_name: ^1.5.0
   shimmer: ^3.0.0
   flutter_pdfview: ^1.4.4
@@ -55,9 +55,9 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   
   # Code Generation
-  build_runner: ^2.4.15 # dart run build_runner build --delete-conflicting-outputs
-  freezed: ^2.5.7
-  json_serializable: ^6.9.3
+  build_runner: ^2.4.16 # dart run build_runner build --delete-conflicting-outputs
+  freezed: ^3.2.5
+  json_serializable: ^6.9.5
 
 flutter:
   generate: true
@@ -78,6 +78,7 @@ flutter:
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-VariableFont_opsz,wght.ttf
+          style: normal
         - asset: assets/fonts/Inter-Italic-VariableFont_opsz,wght.ttf
           style: italic
 
@@ -89,3 +90,6 @@ flutter:
           weight: 600
         - asset: assets/fonts/HindSiliguri-Bold.ttf
           weight: 700
+
+dependency_overrides:
+  app_links: 7.0.0

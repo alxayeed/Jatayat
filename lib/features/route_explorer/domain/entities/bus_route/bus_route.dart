@@ -5,7 +5,7 @@ part 'bus_route.g.dart';
 
 // 1. The Stop Entity (Represents the sequential stops)
 @freezed
-class RouteStop with _$RouteStop {
+abstract class RouteStop with _$RouteStop {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory RouteStop({
     required String stopId,
@@ -22,7 +22,7 @@ class RouteStop with _$RouteStop {
 
 // 2. The Main Route Entity
 @freezed
-class BusRoute with _$BusRoute {
+abstract class BusRoute with _$BusRoute {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory BusRoute({
     required String id, // Strongly recommended to keep for DB lookups

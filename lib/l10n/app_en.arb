@@ -95,5 +95,8 @@
   "onboardingBookmarksDesc": "Save your daily commute routes to access fare and transit details instantly in one tap.",
   "onboardingSkip": "Skip",
   "onboardingNext": "Next",
-  "onboardingGetStarted": "Get Started"
+  "onboardingGetStarted": "Get Started",
+  "regionDhaka": "Dhaka",
+  "regionChittagong": "Chittagong",
+  "selectRegion": "Select Region"
 }

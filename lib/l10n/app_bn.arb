@@ -95,5 +95,8 @@
   "onboardingBookmarksDesc": "আপনার নিয়মিত যাত্রার রুট ও ভাড়া বুকমার্ক করে রাখুন এবং যেকোনো সময় ইন্টারনেট ছাড়াই এক ট্যাপে দেখুন।",
   "onboardingSkip": "এড়িয়ে যান",
   "onboardingNext": "পরবর্তী",
-  "onboardingGetStarted": "শুরু করুন"
+  "onboardingGetStarted": "শুরু করুন",
+  "regionDhaka": "ঢাকা",
+  "regionChittagong": "চট্টগ্রাম",
+  "selectRegion": "অঞ্চল নির্বাচন করুন"
 }

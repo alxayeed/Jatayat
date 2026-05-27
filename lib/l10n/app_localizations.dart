@@ -655,6 +655,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Started'**
   String get onboardingGetStarted;
+
+  /// No description provided for @regionDhaka.
+  ///
+  /// In en, this message translates to:
+  /// **'Dhaka'**
+  String get regionDhaka;
+
+  /// No description provided for @regionChittagong.
+  ///
+  /// In en, this message translates to:
+  /// **'Chittagong'**
+  String get regionChittagong;
+
+  /// No description provided for @selectRegion.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Region'**
+  String get selectRegion;
 }
 
 class _AppLocalizationsDelegate

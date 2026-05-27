@@ -6,7 +6,7 @@ part 'fare_result_model.freezed.dart';
 part 'fare_result_model.g.dart';
 
 @freezed
-class FareResultModel with _$FareResultModel {
+abstract class FareResultModel with _$FareResultModel {
   const FareResultModel._();
 
   const factory FareResultModel({

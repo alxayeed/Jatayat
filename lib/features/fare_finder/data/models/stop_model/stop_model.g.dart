@@ -6,14 +6,13 @@ part of 'stop_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$StopModelImpl _$$StopModelImplFromJson(Map<String, dynamic> json) =>
-    _$StopModelImpl(
-      id: json['id'] as String,
-      nameBn: json['name_bn'] as String,
-      nameEn: json['name_en'] as String?,
-    );
+_StopModel _$StopModelFromJson(Map<String, dynamic> json) => _StopModel(
+  id: json['id'] as String,
+  nameBn: json['name_bn'] as String,
+  nameEn: json['name_en'] as String?,
+);
 
-Map<String, dynamic> _$$StopModelImplToJson(_$StopModelImpl instance) =>
+Map<String, dynamic> _$StopModelToJson(_StopModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name_bn': instance.nameBn,

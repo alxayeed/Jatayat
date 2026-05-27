@@ -5,7 +5,7 @@ part 'stop_model.freezed.dart';
 part 'stop_model.g.dart';
 
 @freezed
-class StopModel with _$StopModel {
+abstract class StopModel with _$StopModel {
   const StopModel._();
 
   @JsonSerializable(fieldRename: FieldRename.snake)

@@ -297,4 +297,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'Get Started';
+
+  @override
+  String get regionDhaka => 'Dhaka';
+
+  @override
+  String get regionChittagong => 'Chittagong';
+
+  @override
+  String get selectRegion => 'Select Region';
 }

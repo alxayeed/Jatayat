@@ -12,9 +12,9 @@ class FareRepositoryImpl implements FareRepository {
   FareRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<Either<Failure, List<StopEntity>>> searchStops(String query) async {
+  Future<Either<Failure, List<StopEntity>>> searchStops(String query, {String? region}) async {
     try {
-      final models = await remoteDataSource.searchStops(query);
+      final models = await remoteDataSource.searchStops(query, region: region);
       final entities = models.map((model) => model.toEntity()).toList();
       return Right(entities);
     } on PostgrestException catch (e) {
