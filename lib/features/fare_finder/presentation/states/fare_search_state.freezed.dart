@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FareSearchState {
 
- List<StopEntity> get originSuggestions; List<StopEntity> get destinationSuggestions; List<FareResultEntity> get fareResults; StopEntity? get selectedOrigin; StopEntity? get selectedDestination; bool get isLoading; String? get errorMessage; String get selectedRegion;
+ List<StopEntity> get originSuggestions; List<StopEntity> get destinationSuggestions; List<FareResultEntity> get fareResults; StopEntity? get selectedOrigin; StopEntity? get selectedDestination; bool get isLoading; String? get errorMessage; TransitRegion get selectedRegion;
 /// Create a copy of FareSearchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $FareSearchStateCopyWith<$Res>  {
   factory $FareSearchStateCopyWith(FareSearchState value, $Res Function(FareSearchState) _then) = _$FareSearchStateCopyWithImpl;
 @useResult
 $Res call({
- List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, String? errorMessage, String selectedRegion
+ List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, String? errorMessage, TransitRegion selectedRegion
 });
 
 
@@ -72,7 +72,7 @@ as StopEntity?,selectedDestination: freezed == selectedDestination ? _self.selec
 as StopEntity?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,selectedRegion: null == selectedRegion ? _self.selectedRegion : selectedRegion // ignore: cast_nullable_to_non_nullable
-as String,
+as TransitRegion,
   ));
 }
 /// Create a copy of FareSearchState
@@ -181,7 +181,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  String? errorMessage,  String selectedRegion)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  String? errorMessage,  TransitRegion selectedRegion)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FareSearchState() when $default != null:
 return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.errorMessage,_that.selectedRegion);case _:
@@ -202,7 +202,7 @@ return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareR
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  String? errorMessage,  String selectedRegion)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  String? errorMessage,  TransitRegion selectedRegion)  $default,) {final _that = this;
 switch (_that) {
 case _FareSearchState():
 return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.errorMessage,_that.selectedRegion);case _:
@@ -222,7 +222,7 @@ return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareR
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  String? errorMessage,  String selectedRegion)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  String? errorMessage,  TransitRegion selectedRegion)?  $default,) {final _that = this;
 switch (_that) {
 case _FareSearchState() when $default != null:
 return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.errorMessage,_that.selectedRegion);case _:
@@ -237,7 +237,7 @@ return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareR
 
 
 class _FareSearchState implements FareSearchState {
-  const _FareSearchState({final  List<StopEntity> originSuggestions = const [], final  List<StopEntity> destinationSuggestions = const [], final  List<FareResultEntity> fareResults = const [], this.selectedOrigin, this.selectedDestination, this.isLoading = false, this.errorMessage, this.selectedRegion = 'DHAKA METRO'}): _originSuggestions = originSuggestions,_destinationSuggestions = destinationSuggestions,_fareResults = fareResults;
+  const _FareSearchState({final  List<StopEntity> originSuggestions = const [], final  List<StopEntity> destinationSuggestions = const [], final  List<FareResultEntity> fareResults = const [], this.selectedOrigin, this.selectedDestination, this.isLoading = false, this.errorMessage, this.selectedRegion = TransitRegion.dhakaMetro}): _originSuggestions = originSuggestions,_destinationSuggestions = destinationSuggestions,_fareResults = fareResults;
   
 
  final  List<StopEntity> _originSuggestions;
@@ -265,7 +265,7 @@ class _FareSearchState implements FareSearchState {
 @override final  StopEntity? selectedDestination;
 @override@JsonKey() final  bool isLoading;
 @override final  String? errorMessage;
-@override@JsonKey() final  String selectedRegion;
+@override@JsonKey() final  TransitRegion selectedRegion;
 
 /// Create a copy of FareSearchState
 /// with the given fields replaced by the non-null parameter values.
@@ -297,7 +297,7 @@ abstract mixin class _$FareSearchStateCopyWith<$Res> implements $FareSearchState
   factory _$FareSearchStateCopyWith(_FareSearchState value, $Res Function(_FareSearchState) _then) = __$FareSearchStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, String? errorMessage, String selectedRegion
+ List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, String? errorMessage, TransitRegion selectedRegion
 });
 
 
@@ -324,7 +324,7 @@ as StopEntity?,selectedDestination: freezed == selectedDestination ? _self.selec
 as StopEntity?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,selectedRegion: null == selectedRegion ? _self.selectedRegion : selectedRegion // ignore: cast_nullable_to_non_nullable
-as String,
+as TransitRegion,
   ));
 }
 

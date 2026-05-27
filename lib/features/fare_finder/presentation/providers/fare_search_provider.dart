@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/constants/transit_region.dart';
 import '../../../../core/database/local_database.dart';
 import '../../../../core/di/usecase_providers.dart';
 import '../../domain/usecases/get_connected_stops_usecase.dart';
@@ -37,20 +38,20 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
 
   Future<void> init() async {
     if (!kDebugMode) {
-      state = state.copyWith(selectedRegion: 'DHAKA METRO');
+      state = state.copyWith(selectedRegion: TransitRegion.dhakaMetro);
       await loadAllStops();
       return;
     }
     final savedRegion = await LocalDatabase.instance.getSetting('selected_region');
     if (savedRegion != null) {
-      state = state.copyWith(selectedRegion: savedRegion);
+      state = state.copyWith(selectedRegion: TransitRegion.fromValue(savedRegion));
     }
     await loadAllStops();
   }
 
   Future<void> loadAllStops() async {
     state = state.copyWith(isLoading: true, errorMessage: null);
-    final result = await _searchStops('', region: state.selectedRegion);
+    final result = await _searchStops('', region: state.selectedRegion.value);
     result.fold(
       (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
       (stops) {
@@ -66,7 +67,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     );
   }
 
-  Future<void> selectRegion(String region) async {
+  Future<void> selectRegion(TransitRegion region) async {
     if (!kDebugMode) return;
     state = state.copyWith(
       selectedRegion: region,
@@ -77,7 +78,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       fareResults: [],
       errorMessage: null,
     );
-    await LocalDatabase.instance.setSetting('selected_region', region);
+    await LocalDatabase.instance.setSetting('selected_region', region.value);
     await loadAllStops();
   }
 
