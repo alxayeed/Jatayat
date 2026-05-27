@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'fare_result_entity.freezed.dart';
 
 @freezed
-class FareResultEntity with _$FareResultEntity {
+abstract class FareResultEntity with _$FareResultEntity {
   const factory FareResultEntity({
     required String fareId,
     required double fareAmount,

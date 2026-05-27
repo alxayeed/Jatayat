@@ -300,4 +300,13 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get onboardingGetStarted => 'শুরু করুন';
+
+  @override
+  String get regionDhaka => 'ঢাকা';
+
+  @override
+  String get regionChittagong => 'চট্টগ্রাম';
+
+  @override
+  String get selectRegion => 'অঞ্চল নির্বাচন করুন';
 }

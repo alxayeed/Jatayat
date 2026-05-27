@@ -5,7 +5,7 @@ import '../entities/stop_entity/stop_entity.dart';
 
 abstract class FareRepository {
   /// 1. Fuzzy search for origin stops
-  Future<Either<Failure, List<StopEntity>>> searchStops(String query);
+  Future<Either<Failure, List<StopEntity>>> searchStops(String query, {String? region});
 
   /// 2. Fetch valid destination stops
   Future<Either<Failure, List<StopEntity>>> getConnectedStops(String originStopId);

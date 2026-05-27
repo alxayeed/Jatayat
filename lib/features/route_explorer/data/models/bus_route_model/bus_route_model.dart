@@ -6,7 +6,7 @@ part 'bus_route_model.g.dart';
 
 // --- 1. Route Stop Model ---
 @freezed
-class RouteStopModel with _$RouteStopModel {
+abstract class RouteStopModel with _$RouteStopModel {
   const RouteStopModel._();
 
   @JsonSerializable(fieldRename: FieldRename.snake)
@@ -48,7 +48,7 @@ class RouteStopModel with _$RouteStopModel {
 
 // --- 2. Bus Route Model ---
 @freezed
-class BusRouteModel with _$BusRouteModel {
+abstract class BusRouteModel with _$BusRouteModel {
   const BusRouteModel._();
 
   @JsonSerializable(fieldRename: FieldRename.snake)

@@ -6,19 +6,18 @@ part of 'route_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RouteModelImpl _$$RouteModelImplFromJson(Map<String, dynamic> json) =>
-    _$RouteModelImpl(
-      id: json['id'] as String,
-      routeCode: json['route_code'] as String,
-      nameBn: json['name_bn'] as String,
-      nameEn: json['name_en'] as String?,
-      totalDistanceKm: (json['total_distance_km'] as num).toDouble(),
-      documentId: json['document_id'] as String,
-      pdfPageNumber: (json['pdf_page_number'] as num).toInt(),
-      documents: json['documents'] as Map<String, dynamic>,
-    );
+_RouteModel _$RouteModelFromJson(Map<String, dynamic> json) => _RouteModel(
+  id: json['id'] as String,
+  routeCode: json['route_code'] as String,
+  nameBn: json['name_bn'] as String,
+  nameEn: json['name_en'] as String?,
+  totalDistanceKm: (json['total_distance_km'] as num).toDouble(),
+  documentId: json['document_id'] as String,
+  pdfPageNumber: (json['pdf_page_number'] as num).toInt(),
+  documents: json['documents'] as Map<String, dynamic>,
+);
 
-Map<String, dynamic> _$$RouteModelImplToJson(_$RouteModelImpl instance) =>
+Map<String, dynamic> _$RouteModelToJson(_RouteModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'route_code': instance.routeCode,

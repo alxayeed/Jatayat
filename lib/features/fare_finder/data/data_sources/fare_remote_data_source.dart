@@ -12,16 +12,23 @@ class FareRemoteDataSourceImpl implements FareRemoteDataSource {
   FareRemoteDataSourceImpl({required this.supabase});
 
   @override
-  Future<List<StopModel>> searchStops(String query) async {
+  Future<List<StopModel>> searchStops(String query, {String? region}) async {
     final stopwatch = Stopwatch()..start();
-    developer.log('🔼 Req: [searchStops] query: "$query"', name: 'Supabase');
+    developer.log('🔼 Req: [searchStops] query: "$query", region: "$region"', name: 'Supabase');
 
     try {
-      final response = await supabase
-          .from('stops')
-          .select()
-          .or('name_en.ilike.%$query%,name_bn.ilike.%$query%')
-          .limit(10);
+      var queryBuilder = supabase.from('stops').select();
+      if (region != null) {
+        queryBuilder = queryBuilder.eq('region', region);
+      }
+      
+      final dynamic response;
+      if (query.isEmpty) {
+        response = await queryBuilder;
+      } else {
+        response = await queryBuilder
+            .or('name_en.ilike.%$query%,name_bn.ilike.%$query%');
+      }
 
       final results = (response as List)
           .map((json) => StopModel.fromJson(json))

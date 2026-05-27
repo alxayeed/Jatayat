@@ -5,7 +5,7 @@ import '../../domain/entities/stop_entity/stop_entity.dart';
 part 'fare_search_state.freezed.dart';
 
 @freezed
-class FareSearchState with _$FareSearchState {
+abstract class FareSearchState with _$FareSearchState {
   const factory FareSearchState({
     @Default([]) List<StopEntity> originSuggestions,
     @Default([]) List<StopEntity> destinationSuggestions,
@@ -14,5 +14,6 @@ class FareSearchState with _$FareSearchState {
     StopEntity? selectedDestination,
     @Default(false) bool isLoading,
     String? errorMessage,
+    @Default('DHAKA METRO') String selectedRegion,
   }) = _FareSearchState;
 }

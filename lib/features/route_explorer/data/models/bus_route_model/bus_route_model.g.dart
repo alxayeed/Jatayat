@@ -6,8 +6,8 @@ part of 'bus_route_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$RouteStopModelImpl _$$RouteStopModelImplFromJson(Map<String, dynamic> json) =>
-    _$RouteStopModelImpl(
+_RouteStopModel _$RouteStopModelFromJson(Map<String, dynamic> json) =>
+    _RouteStopModel(
       stopId: json['stop_id'] as String,
       nameBn: json['name_bn'] as String,
       sequenceOrder: (json['sequence_order'] as num).toInt(),
@@ -17,20 +17,19 @@ _$RouteStopModelImpl _$$RouteStopModelImplFromJson(Map<String, dynamic> json) =>
       lng: (json['lng'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$$RouteStopModelImplToJson(
-  _$RouteStopModelImpl instance,
-) => <String, dynamic>{
-  'stop_id': instance.stopId,
-  'name_bn': instance.nameBn,
-  'sequence_order': instance.sequenceOrder,
-  'cumulative_distance_km': instance.cumulativeDistanceKm,
-  'name_en': instance.nameEn,
-  'lat': instance.lat,
-  'lng': instance.lng,
-};
+Map<String, dynamic> _$RouteStopModelToJson(_RouteStopModel instance) =>
+    <String, dynamic>{
+      'stop_id': instance.stopId,
+      'name_bn': instance.nameBn,
+      'sequence_order': instance.sequenceOrder,
+      'cumulative_distance_km': instance.cumulativeDistanceKm,
+      'name_en': instance.nameEn,
+      'lat': instance.lat,
+      'lng': instance.lng,
+    };
 
-_$BusRouteModelImpl _$$BusRouteModelImplFromJson(Map<String, dynamic> json) =>
-    _$BusRouteModelImpl(
+_BusRouteModel _$BusRouteModelFromJson(Map<String, dynamic> json) =>
+    _BusRouteModel(
       id: json['id'] as String,
       routeCode: json['route_code'] as String,
       nameBn: json['name_bn'] as String,
@@ -53,7 +52,7 @@ _$BusRouteModelImpl _$$BusRouteModelImplFromJson(Map<String, dynamic> json) =>
           const [],
     );
 
-Map<String, dynamic> _$$BusRouteModelImplToJson(_$BusRouteModelImpl instance) =>
+Map<String, dynamic> _$BusRouteModelToJson(_BusRouteModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'route_code': instance.routeCode,

@@ -6,8 +6,8 @@ part of 'document_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$DocumentModelImpl _$$DocumentModelImplFromJson(Map<String, dynamic> json) =>
-    _$DocumentModelImpl(
+_DocumentModel _$DocumentModelFromJson(Map<String, dynamic> json) =>
+    _DocumentModel(
       id: json['id'] as String,
       title: json['title'] as String,
       btrcUrl: json['btrc_url'] as String,
@@ -18,7 +18,7 @@ _$DocumentModelImpl _$$DocumentModelImplFromJson(Map<String, dynamic> json) =>
       notes: json['notes'] as String?,
     );
 
-Map<String, dynamic> _$$DocumentModelImplToJson(_$DocumentModelImpl instance) =>
+Map<String, dynamic> _$DocumentModelToJson(_DocumentModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'title': instance.title,

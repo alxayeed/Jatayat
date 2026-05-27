@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -265,6 +266,88 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       ),
       child: Column(
         children: [
+          if (kDebugMode) ...[
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ChoiceChip(
+                    label: Text(l10n.regionDhaka),
+                    selected: state.selectedRegion == 'DHAKA METRO',
+                    showCheckmark: false,
+                    labelStyle: TextStyle(
+                      fontSize: 12,
+                      fontWeight: state.selectedRegion == 'DHAKA METRO'
+                          ? FontWeight.bold
+                          : FontWeight.w600,
+                      color: state.selectedRegion == 'DHAKA METRO'
+                          ? theme.colorScheme.onPrimary
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                    ),
+                    selectedColor: theme.colorScheme.primary,
+                    backgroundColor: theme.colorScheme.surface,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: const VisualDensity(horizontal: -2, vertical: -4),
+                    shape: StadiumBorder(
+                      side: BorderSide(
+                        color: state.selectedRegion == 'DHAKA METRO'
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                        width: 1.5,
+                      ),
+                    ),
+                    onSelected: (selected) {
+                      if (selected) {
+                        notifier.selectRegion('DHAKA METRO');
+                        originController.clear();
+                        destinationController.clear();
+                      }
+                    },
+                  ),
+                  const SizedBox(width: 8),
+                  ChoiceChip(
+                    label: Text(l10n.regionChittagong),
+                    selected: state.selectedRegion == 'CTG METRO',
+                    showCheckmark: false,
+                    labelStyle: TextStyle(
+                      fontSize: 12,
+                      fontWeight: state.selectedRegion == 'CTG METRO'
+                          ? FontWeight.bold
+                          : FontWeight.w600,
+                      color: state.selectedRegion == 'CTG METRO'
+                          ? theme.colorScheme.onPrimary
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                    ),
+                    selectedColor: theme.colorScheme.primary,
+                    backgroundColor: theme.colorScheme.surface,
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: const VisualDensity(horizontal: -2, vertical: -4),
+                    shape: StadiumBorder(
+                      side: BorderSide(
+                        color: state.selectedRegion == 'CTG METRO'
+                            ? theme.colorScheme.primary
+                            : theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                        width: 1.5,
+                      ),
+                    ),
+                    onSelected: (selected) {
+                      if (selected) {
+                        notifier.selectRegion('CTG METRO');
+                        originController.clear();
+                        destinationController.clear();
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
           Column(
             children: [
               AppTextField(
@@ -272,6 +355,9 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 prefixIcon: Icons.my_location,
                 controller: originController,
                 onChanged: notifier.searchOrigin,
+                onTap: () {
+                  notifier.searchOrigin(originController.text);
+                },
               ),
               if (state.originSuggestions.isNotEmpty)
                 AppSuggestionList(
