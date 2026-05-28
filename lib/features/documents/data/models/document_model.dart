@@ -10,7 +10,7 @@ abstract class DocumentModel with _$DocumentModel {
   const factory DocumentModel({
     required String id,
     required String title,
-    @JsonKey(name: 'btrc_url') required String btrcUrl,
+    @JsonKey(name: 'btrc_url') String? btrcUrl,
     @JsonKey(name: 'pdf_url') required String pdfUrl, // Added
     @JsonKey(name: 'created_at') required DateTime createdAt,
     @JsonKey(name: 'version_name') required String versionName,

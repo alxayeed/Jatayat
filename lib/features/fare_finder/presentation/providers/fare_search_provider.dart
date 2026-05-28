@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/constants/transit_region.dart';
-import '../../../../core/database/local_database.dart';
 import '../../../../core/di/usecase_providers.dart';
+import '../../../../core/providers/settings_provider.dart';
 import '../../domain/usecases/get_connected_stops_usecase.dart';
 import '../../domain/usecases/get_fares_usecase.dart';
 import '../../domain/usecases/search_stops_usecase.dart';
@@ -10,10 +9,13 @@ import '../states/fare_search_state.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 
 final fareSearchProvider = StateNotifierProvider<FareSearchNotifier, FareSearchState>((ref) {
+  final settingsState = ref.watch(settingsProvider);
   final notifier = FareSearchNotifier(
     searchStops: ref.watch(searchStopsUseCaseProvider),
     getConnectedStops: ref.watch(getConnectedStopsUseCaseProvider),
     getFares: ref.watch(getFaresUseCaseProvider),
+    initialRegion: settingsState.selectedRegion,
+    settingsNotifier: ref.read(settingsProvider.notifier),
   );
   notifier.init();
   return notifier;
@@ -23,6 +25,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
   final SearchStopsUseCase _searchStops;
   final GetConnectedStopsUseCase _getConnectedStops;
   final GetFaresUseCase _getFares;
+  final SettingsNotifier _settingsNotifier;
 
   List<StopEntity> _allStopsCache = [];
   List<StopEntity> _connectedStopsCache = [];
@@ -31,21 +34,15 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     required SearchStopsUseCase searchStops,
     required GetConnectedStopsUseCase getConnectedStops,
     required GetFaresUseCase getFares,
+    required TransitRegion initialRegion,
+    required SettingsNotifier settingsNotifier,
   })  : _searchStops = searchStops,
         _getConnectedStops = getConnectedStops,
         _getFares = getFares,
-        super(const FareSearchState());
+        _settingsNotifier = settingsNotifier,
+        super(FareSearchState(selectedRegion: initialRegion));
 
   Future<void> init() async {
-    if (!kDebugMode) {
-      state = state.copyWith(selectedRegion: TransitRegion.dhakaMetro);
-      await loadAllStops();
-      return;
-    }
-    final savedRegion = await LocalDatabase.instance.getSetting('selected_region');
-    if (savedRegion != null) {
-      state = state.copyWith(selectedRegion: TransitRegion.fromValue(savedRegion));
-    }
     await loadAllStops();
   }
 
@@ -68,7 +65,6 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
   }
 
   Future<void> selectRegion(TransitRegion region) async {
-    if (!kDebugMode) return;
     state = state.copyWith(
       selectedRegion: region,
       selectedOrigin: null,
@@ -78,7 +74,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       fareResults: [],
       errorMessage: null,
     );
-    await LocalDatabase.instance.setSetting('selected_region', region.value);
+    _settingsNotifier.setRegion(region);
     await loadAllStops();
   }
 

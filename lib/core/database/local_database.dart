@@ -20,18 +20,14 @@ class LocalDatabase {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3,
       onCreate: _createDB,
       onUpgrade: _upgradeDB,
     );
   }
 
   Future _createDB(Database db, int version) async {
-    // 🛠️ Unified Bookmarks Table
-    // id: TEXT PRIMARY KEY (Route ID or Fare ID)
-    // type: TEXT (e.g., 'route' or 'fare')
-    // data: TEXT (Serialized JSON of BusRoute or FareResultEntity)
-    // created_at: INTEGER (Timestamp for sorting)
+    // Unified Bookmarks Table
     await db.execute('''
       CREATE TABLE bookmarks (
         id TEXT PRIMARY KEY,
@@ -41,24 +37,119 @@ class LocalDatabase {
       )
     ''');
 
-    // 🛠️ Settings Table (key-value store for user preferences)
+    // Settings Table (key-value store for user preferences)
     await db.execute('''
       CREATE TABLE settings (
         key TEXT PRIMARY KEY,
         value TEXT NOT NULL
       )
     ''');
+
+    // local-first schema tables
+    await _createLocalFirstTables(db);
+  }
+
+  Future _createLocalFirstTables(Database db) async {
+    await db.execute('''
+      CREATE TABLE stops (
+        id TEXT PRIMARY KEY,
+        name_bn TEXT,
+        name_en TEXT,
+        lat REAL,
+        lng REAL,
+        search_terms TEXT,
+        region TEXT,
+        route_codes TEXT,
+        aliases_bn TEXT,
+        is_active INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE routes (
+        id TEXT PRIMARY KEY,
+        route_code TEXT,
+        name_bn TEXT,
+        name_en TEXT,
+        total_distance_km REAL,
+        document_id TEXT,
+        pdf_page_number INTEGER,
+        region TEXT,
+        total_stops INTEGER,
+        revision_id TEXT,
+        is_active INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE route_stops (
+        id TEXT PRIMARY KEY,
+        route_id TEXT,
+        stop_id TEXT,
+        sequence_order INTEGER,
+        cumulative_distance_km REAL,
+        revision_id TEXT,
+        is_active INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE fares (
+        id TEXT PRIMARY KEY,
+        route_id TEXT,
+        from_stop_id TEXT,
+        to_stop_id TEXT,
+        fare_amount INTEGER,
+        travel_distance_km REAL,
+        revision_id TEXT,
+        is_active INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE documents (
+        id TEXT PRIMARY KEY,
+        title TEXT,
+        pdf_url TEXT,
+        btrc_url TEXT,
+        issued_date TEXT,
+        last_revised TEXT,
+        total_pages INTEGER,
+        region TEXT,
+        notes TEXT,
+        created_at TEXT,
+        updated_at TEXT,
+        revision_id TEXT,
+        is_active INTEGER
+      )
+    ''');
+
+    await db.execute('''
+      CREATE TABLE revisions (
+        id TEXT PRIMARY KEY,
+        name TEXT,
+        base_fare_per_km REAL,
+        minimum_fare INTEGER,
+        effective_date TEXT,
+        is_active INTEGER,
+        created_at TEXT,
+        updated_at TEXT,
+        data_updated_at TEXT
+      )
+    ''');
   }
 
   Future _upgradeDB(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < 2) {
-      // Migration: Add settings table for existing users
       await db.execute('''
         CREATE TABLE settings (
           key TEXT PRIMARY KEY,
           value TEXT NOT NULL
         )
       ''');
+    }
+    if (oldVersion < 3) {
+      await _createLocalFirstTables(db);
     }
   }
 

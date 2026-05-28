@@ -10,7 +10,7 @@ _DocumentModel _$DocumentModelFromJson(Map<String, dynamic> json) =>
     _DocumentModel(
       id: json['id'] as String,
       title: json['title'] as String,
-      btrcUrl: json['btrc_url'] as String,
+      btrcUrl: json['btrc_url'] as String?,
       pdfUrl: json['pdf_url'] as String,
       createdAt: DateTime.parse(json['created_at'] as String),
       versionName: json['version_name'] as String,

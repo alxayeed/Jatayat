@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DocumentModel {
 
- String get id; String get title;@JsonKey(name: 'btrc_url') String get btrcUrl;@JsonKey(name: 'pdf_url') String get pdfUrl;// Added
+ String get id; String get title;@JsonKey(name: 'btrc_url') String? get btrcUrl;@JsonKey(name: 'pdf_url') String get pdfUrl;// Added
 @JsonKey(name: 'created_at') DateTime get createdAt;@JsonKey(name: 'version_name') String get versionName; String? get region;// Added (Nullable)
  String? get notes;
 /// Create a copy of DocumentModel
@@ -50,7 +50,7 @@ abstract mixin class $DocumentModelCopyWith<$Res>  {
   factory $DocumentModelCopyWith(DocumentModel value, $Res Function(DocumentModel) _then) = _$DocumentModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String title,@JsonKey(name: 'btrc_url') String btrcUrl,@JsonKey(name: 'pdf_url') String pdfUrl,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'version_name') String versionName, String? region, String? notes
+ String id, String title,@JsonKey(name: 'btrc_url') String? btrcUrl,@JsonKey(name: 'pdf_url') String pdfUrl,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'version_name') String versionName, String? region, String? notes
 });
 
 
@@ -67,12 +67,12 @@ class _$DocumentModelCopyWithImpl<$Res>
 
 /// Create a copy of DocumentModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? btrcUrl = null,Object? pdfUrl = null,Object? createdAt = null,Object? versionName = null,Object? region = freezed,Object? notes = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? btrcUrl = freezed,Object? pdfUrl = null,Object? createdAt = null,Object? versionName = null,Object? region = freezed,Object? notes = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,btrcUrl: null == btrcUrl ? _self.btrcUrl : btrcUrl // ignore: cast_nullable_to_non_nullable
-as String,pdfUrl: null == pdfUrl ? _self.pdfUrl : pdfUrl // ignore: cast_nullable_to_non_nullable
+as String,btrcUrl: freezed == btrcUrl ? _self.btrcUrl : btrcUrl // ignore: cast_nullable_to_non_nullable
+as String?,pdfUrl: null == pdfUrl ? _self.pdfUrl : pdfUrl // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,versionName: null == versionName ? _self.versionName : versionName // ignore: cast_nullable_to_non_nullable
 as String,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title, @JsonKey(name: 'btrc_url')  String btrcUrl, @JsonKey(name: 'pdf_url')  String pdfUrl, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'version_name')  String versionName,  String? region,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title, @JsonKey(name: 'btrc_url')  String? btrcUrl, @JsonKey(name: 'pdf_url')  String pdfUrl, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'version_name')  String versionName,  String? region,  String? notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DocumentModel() when $default != null:
 return $default(_that.id,_that.title,_that.btrcUrl,_that.pdfUrl,_that.createdAt,_that.versionName,_that.region,_that.notes);case _:
@@ -183,7 +183,7 @@ return $default(_that.id,_that.title,_that.btrcUrl,_that.pdfUrl,_that.createdAt,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title, @JsonKey(name: 'btrc_url')  String btrcUrl, @JsonKey(name: 'pdf_url')  String pdfUrl, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'version_name')  String versionName,  String? region,  String? notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title, @JsonKey(name: 'btrc_url')  String? btrcUrl, @JsonKey(name: 'pdf_url')  String pdfUrl, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'version_name')  String versionName,  String? region,  String? notes)  $default,) {final _that = this;
 switch (_that) {
 case _DocumentModel():
 return $default(_that.id,_that.title,_that.btrcUrl,_that.pdfUrl,_that.createdAt,_that.versionName,_that.region,_that.notes);case _:
@@ -203,7 +203,7 @@ return $default(_that.id,_that.title,_that.btrcUrl,_that.pdfUrl,_that.createdAt,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title, @JsonKey(name: 'btrc_url')  String btrcUrl, @JsonKey(name: 'pdf_url')  String pdfUrl, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'version_name')  String versionName,  String? region,  String? notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title, @JsonKey(name: 'btrc_url')  String? btrcUrl, @JsonKey(name: 'pdf_url')  String pdfUrl, @JsonKey(name: 'created_at')  DateTime createdAt, @JsonKey(name: 'version_name')  String versionName,  String? region,  String? notes)?  $default,) {final _that = this;
 switch (_that) {
 case _DocumentModel() when $default != null:
 return $default(_that.id,_that.title,_that.btrcUrl,_that.pdfUrl,_that.createdAt,_that.versionName,_that.region,_that.notes);case _:
@@ -218,12 +218,12 @@ return $default(_that.id,_that.title,_that.btrcUrl,_that.pdfUrl,_that.createdAt,
 @JsonSerializable()
 
 class _DocumentModel extends DocumentModel {
-  const _DocumentModel({required this.id, required this.title, @JsonKey(name: 'btrc_url') required this.btrcUrl, @JsonKey(name: 'pdf_url') required this.pdfUrl, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'version_name') required this.versionName, this.region, this.notes}): super._();
+  const _DocumentModel({required this.id, required this.title, @JsonKey(name: 'btrc_url') this.btrcUrl, @JsonKey(name: 'pdf_url') required this.pdfUrl, @JsonKey(name: 'created_at') required this.createdAt, @JsonKey(name: 'version_name') required this.versionName, this.region, this.notes}): super._();
   factory _DocumentModel.fromJson(Map<String, dynamic> json) => _$DocumentModelFromJson(json);
 
 @override final  String id;
 @override final  String title;
-@override@JsonKey(name: 'btrc_url') final  String btrcUrl;
+@override@JsonKey(name: 'btrc_url') final  String? btrcUrl;
 @override@JsonKey(name: 'pdf_url') final  String pdfUrl;
 // Added
 @override@JsonKey(name: 'created_at') final  DateTime createdAt;
@@ -265,7 +265,7 @@ abstract mixin class _$DocumentModelCopyWith<$Res> implements $DocumentModelCopy
   factory _$DocumentModelCopyWith(_DocumentModel value, $Res Function(_DocumentModel) _then) = __$DocumentModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title,@JsonKey(name: 'btrc_url') String btrcUrl,@JsonKey(name: 'pdf_url') String pdfUrl,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'version_name') String versionName, String? region, String? notes
+ String id, String title,@JsonKey(name: 'btrc_url') String? btrcUrl,@JsonKey(name: 'pdf_url') String pdfUrl,@JsonKey(name: 'created_at') DateTime createdAt,@JsonKey(name: 'version_name') String versionName, String? region, String? notes
 });
 
 
@@ -282,12 +282,12 @@ class __$DocumentModelCopyWithImpl<$Res>
 
 /// Create a copy of DocumentModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? btrcUrl = null,Object? pdfUrl = null,Object? createdAt = null,Object? versionName = null,Object? region = freezed,Object? notes = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? btrcUrl = freezed,Object? pdfUrl = null,Object? createdAt = null,Object? versionName = null,Object? region = freezed,Object? notes = freezed,}) {
   return _then(_DocumentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,btrcUrl: null == btrcUrl ? _self.btrcUrl : btrcUrl // ignore: cast_nullable_to_non_nullable
-as String,pdfUrl: null == pdfUrl ? _self.pdfUrl : pdfUrl // ignore: cast_nullable_to_non_nullable
+as String,btrcUrl: freezed == btrcUrl ? _self.btrcUrl : btrcUrl // ignore: cast_nullable_to_non_nullable
+as String?,pdfUrl: null == pdfUrl ? _self.pdfUrl : pdfUrl // ignore: cast_nullable_to_non_nullable
 as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,versionName: null == versionName ? _self.versionName : versionName // ignore: cast_nullable_to_non_nullable
 as String,region: freezed == region ? _self.region : region // ignore: cast_nullable_to_non_nullable

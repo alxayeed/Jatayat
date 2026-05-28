@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/usecase_providers.dart'; // Assume you added the new use case here
+import '../../../../core/providers/settings_provider.dart';
 import '../../domain/entities/bus_route/bus_route.dart';
 import '../../domain/usecases/get_all_routes.dart';
 import '../../domain/usecases/get_route_details.dart'; // Import the new use case
@@ -20,16 +21,24 @@ class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
   @override
   FutureOr<List<BusRoute>> build() async {
     _getAllRoutes = ref.watch(getAllRoutesUseCaseProvider);
+    // Watch selectedRegion to reactively rebuild when user switches regions
+    ref.watch(settingsProvider.select((s) => s.selectedRegion));
     return _fetchInitialRoutes();
   }
 
   Future<List<BusRoute>> _fetchInitialRoutes() async {
+    final selectedRegion = ref.read(settingsProvider).selectedRegion;
     final result = await _getAllRoutes();
     return result.fold(
-          (failure) => throw failure.message,
-          (routes) {
-        _allRoutesCache = routes;
-        return routes;
+      (failure) => throw failure.message,
+      (routes) {
+        // Filter routes in memory to match selected region
+        final filtered = routes.where((route) {
+          return route.region.toUpperCase() == selectedRegion.value.toUpperCase();
+        }).toList();
+
+        _allRoutesCache = filtered;
+        return filtered;
       },
     );
   }

@@ -258,7 +258,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     ThemeData theme,
     bool isBn,
   ) {
-    bool showChoices = kDebugMode;
+    bool showChoices = true;
     return Container(
       key: const ValueKey('search_card_view'),
       padding: const EdgeInsets.all(12),

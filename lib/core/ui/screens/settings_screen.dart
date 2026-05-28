@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../di/core_providers.dart';
 import '../widgets/custom_app_bar.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final cs = Theme.of(context).colorScheme;
     final tt = Theme.of(context).textTheme;
@@ -59,6 +61,51 @@ class SettingsScreen extends StatelessWidget {
                         ).showSnackBar(SnackBar(content: Text(l10n.upToDate)));
                       },
                     ),
+                    if (dotenv.env['ENABLE_LOCAL_DB_SYNC'] == 'true') ...[
+                      _buildDivider(context),
+                      _buildTappableTile(
+                        context,
+                        icon: Icons.sync_rounded,
+                        title: 'Sync with DB',
+                        onTap: () async {
+                          // Show interactive loading modal indicator
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) => const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+
+                          try {
+                            final syncService = ref.read(databaseSyncServiceProvider);
+                            final synced = await syncService.checkAndSync();
+                            if (context.mounted) {
+                              Navigator.pop(context); // Dismiss loading dialog
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    synced
+                                        ? 'Local database synced successfully!'
+                                        : 'Database is already up to date.',
+                                  ),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              Navigator.pop(context); // Dismiss loading dialog
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Database sync failed: $e'),
+                                  backgroundColor: cs.error,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                      ),
+                    ],
                   ], label: l10n.general),
                   const SizedBox(height: 24),
                   _buildSettingsGroup(context, [
