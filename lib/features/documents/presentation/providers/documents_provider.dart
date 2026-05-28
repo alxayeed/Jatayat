@@ -7,11 +7,11 @@ import '../../domain/entities/document_entity.dart';
 import '../../domain/usecases/get_active_documents_use_case.dart';
 
 final documentsProvider =
-    AsyncNotifierProvider<DocumentsNotifier, List<DocumentEntity>>(() {
+    AsyncNotifierProvider.autoDispose<DocumentsNotifier, List<DocumentEntity>>(() {
       return DocumentsNotifier();
     });
 
-class DocumentsNotifier extends AsyncNotifier<List<DocumentEntity>> {
+class DocumentsNotifier extends AutoDisposeAsyncNotifier<List<DocumentEntity>> {
   late final GetActiveDocumentsUseCase _getActiveDocumentsUseCase;
   List<DocumentEntity> _allDocumentsCache = [];
 

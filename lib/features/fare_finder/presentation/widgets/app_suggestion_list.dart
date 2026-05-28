@@ -36,42 +36,45 @@ class AppSuggestionList extends ConsumerWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: ListView.separated(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          itemCount: suggestions.length,
-          separatorBuilder: (context, index) => Divider(
-            height: 1,
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.1),
-          ),
-          itemBuilder: (context, index) {
-            final stop = suggestions[index];
-            final displayName = isBn
-                ? (stop.nameBn ?? stop.nameEn)
-                : (stop.nameEn ?? stop.nameBn);
+        child: Material(
+          color: Colors.transparent,
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemCount: suggestions.length,
+            separatorBuilder: (context, index) => Divider(
+              height: 1,
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.1),
+            ),
+            itemBuilder: (context, index) {
+              final stop = suggestions[index];
+              final displayName = isBn
+                  ? (stop.nameBn ?? stop.nameEn)
+                  : (stop.nameEn ?? stop.nameBn);
 
-            return ListTile(
-              leading: Icon(
-                Icons.history,
-                size: 18,
-                color: theme.colorScheme.outline,
-              ),
-              title: Text(
-                displayName ?? "",
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontFamily: isBn ? 'HindSiliguri' : null,
-                  fontSize: 16,
-                  color: theme.colorScheme.onSurface,
+              return ListTile(
+                leading: Icon(
+                  Icons.history,
+                  size: 18,
+                  color: theme.colorScheme.outline,
                 ),
-              ),
-              trailing: Icon(
-                Icons.north_west_rounded,
-                size: 14,
-                color: theme.colorScheme.outline,
-              ),
-              onTap: () => onSelected(stop),
-            );
-          },
+                title: Text(
+                  displayName ?? "",
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontFamily: isBn ? 'HindSiliguri' : null,
+                    fontSize: 16,
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.north_west_rounded,
+                  size: 14,
+                  color: theme.colorScheme.outline,
+                ),
+                onTap: () => onSelected(stop),
+              );
+            },
+          ),
         ),
       ),
     );

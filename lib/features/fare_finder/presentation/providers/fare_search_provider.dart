@@ -47,16 +47,17 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
   }
 
   Future<void> loadAllStops() async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
+    if (!mounted) return;
+    state = state.copyWith(errorMessage: null);
     final result = await _searchStops('', region: state.selectedRegion.value);
+    if (!mounted) return;
     result.fold(
-      (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
+      (failure) => state = state.copyWith(errorMessage: failure.message),
       (stops) {
         final sorted = List<StopEntity>.from(stops)
           ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
         _allStopsCache = sorted;
         state = state.copyWith(
-          isLoading: false,
           originSuggestions: [],
           errorMessage: null,
         );
@@ -75,6 +76,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       errorMessage: null,
     );
     _settingsNotifier.setRegion(region);
+    if (!mounted) return;
     await loadAllStops();
   }
 
@@ -113,23 +115,22 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       originSuggestions: [],
       destinationSuggestions: [],
       fareResults: [],
-      isLoading: true,
       errorMessage: null,
     );
 
     final result = await _getConnectedStops(stop.id);
+    if (!mounted) return;
 
     result.fold(
-          (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
+          (failure) => state = state.copyWith(errorMessage: failure.message),
           (destinations) {
         if (destinations.isEmpty) {
-          state = state.copyWith(isLoading: false, errorMessage: noRoutesError);
+          state = state.copyWith(errorMessage: noRoutesError);
         } else {
           final sortedDestinations = List<StopEntity>.from(destinations)
             ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
           _connectedStopsCache = sortedDestinations;
           state = state.copyWith(
-            isLoading: false,
             destinationSuggestions: sortedDestinations,
           );
         }
@@ -176,19 +177,18 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       originSuggestions: [],
       destinationSuggestions: [],
       fareResults: [],
-      isLoading: true,
     );
 
     final result = await _getConnectedStops(oldDestination.id);
+    if (!mounted) return;
 
     result.fold(
-          (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
+          (failure) => state = state.copyWith(errorMessage: failure.message),
           (destinations) {
         final sortedDestinations = List<StopEntity>.from(destinations)
           ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
         _connectedStopsCache = sortedDestinations;
         state = state.copyWith(
-          isLoading: false,
           destinationSuggestions: sortedDestinations,
         );
       },
@@ -210,6 +210,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       originId: state.selectedOrigin!.id,
       destinationId: state.selectedDestination!.id,
     );
+    if (!mounted) return;
 
     result.fold(
           (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
@@ -220,6 +221,13 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
           state = state.copyWith(isLoading: false, fareResults: fares);
         }
       },
+    );
+  }
+
+  void clearSuggestions() {
+    state = state.copyWith(
+      originSuggestions: [],
+      destinationSuggestions: [],
     );
   }
 

@@ -17,9 +17,6 @@ class RouteRepositoryImpl implements RouteRepository {
   });
 
   Future<RouteDataSource> _getDataSource() async {
-    if (await syncService.isLocalDatabaseSynced()) {
-      return localDataSource;
-    }
     return remoteDataSource;
   }
 

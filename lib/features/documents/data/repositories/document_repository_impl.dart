@@ -15,9 +15,6 @@ class DocumentRepositoryImpl implements DocumentRepository {
   );
 
   Future<DocumentRemoteDataSource> _getDataSource() async {
-    if (await _syncService.isLocalDatabaseSynced()) {
-      return _localDataSource;
-    }
     return _remoteDataSource;
   }
 

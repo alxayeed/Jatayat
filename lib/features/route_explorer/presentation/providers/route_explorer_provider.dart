@@ -7,11 +7,11 @@ import '../../domain/usecases/get_all_routes.dart';
 import '../../domain/usecases/get_route_details.dart'; // Import the new use case
 
 // --- 1. The Master List Provider (Unchanged, it's already great) ---
-final routeExplorerProvider = AsyncNotifierProvider<RouteExplorerNotifier, List<BusRoute>>(() {
+final routeExplorerProvider = AsyncNotifierProvider.autoDispose<RouteExplorerNotifier, List<BusRoute>>(() {
   return RouteExplorerNotifier();
 });
 
-class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
+class RouteExplorerNotifier extends AutoDisposeAsyncNotifier<List<BusRoute>> {
   late final GetAllRoutesUseCase _getAllRoutes;
 // Kept in case you want server-search later
 
@@ -67,18 +67,7 @@ class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
 // but you can remove autoDispose if you want it to cache the stops permanently during the session.
 
 final routeDetailsProvider = FutureProvider.autoDispose.family<BusRoute, String>((ref, routeId) async {
-  // 1. Try fetching from the local SQLite cache first for offline-first support
-  try {
-    final getCachedRoute = ref.watch(getCachedRouteUseCaseProvider);
-    final cachedRoute = await getCachedRoute(routeId);
-    if (cachedRoute != null) {
-      return cachedRoute;
-    }
-  } catch (_) {
-    // Fail silently and proceed to remote fetch
-  }
-
-  // 2. Fetch from Supabase backend as fallback
+  // Fetch from Supabase backend
   final getRouteDetails = ref.watch(getRouteDetailsUseCaseProvider);
   final result = await getRouteDetails(GetRouteDetailsParams(routeId: routeId));
 
