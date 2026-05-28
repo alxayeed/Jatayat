@@ -3,28 +3,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../constants/transit_region.dart';
 import '../database/local_database.dart';
 
 class SettingsState {
   final ThemeMode themeMode;
   final Locale locale;
   final bool hasSeenOnboarding;
+  final TransitRegion selectedRegion;
 
   const SettingsState({
     this.themeMode = ThemeMode.light,
     this.locale = const Locale('en'),
     this.hasSeenOnboarding = false,
+    this.selectedRegion = TransitRegion.dhakaMetro,
   });
 
   SettingsState copyWith({
     ThemeMode? themeMode,
     Locale? locale,
     bool? hasSeenOnboarding,
+    TransitRegion? selectedRegion,
   }) {
     return SettingsState(
       themeMode: themeMode ?? this.themeMode,
       locale: locale ?? this.locale,
       hasSeenOnboarding: hasSeenOnboarding ?? this.hasSeenOnboarding,
+      selectedRegion: selectedRegion ?? this.selectedRegion,
     );
   }
 }
@@ -42,6 +47,11 @@ class SettingsNotifier extends StateNotifier<SettingsState> {
   void setLocale(Locale locale) {
     state = state.copyWith(locale: locale);
     _db.setSetting('locale', locale.languageCode);
+  }
+
+  void setRegion(TransitRegion region) {
+    state = state.copyWith(selectedRegion: region);
+    _db.setSetting('selected_region', region.value);
   }
 
   void completeOnboarding() {

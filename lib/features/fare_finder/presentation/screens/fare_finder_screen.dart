@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,6 +25,12 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
 
   bool _isCollapsed = false;
   bool _manuallyExpanded = false;
+
+  @override
+  void deactivate() {
+    ref.read(fareSearchProvider.notifier).clearSuggestions();
+    super.deactivate();
+  }
 
   @override
   void dispose() {
@@ -71,8 +76,13 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
         state.originSuggestions.isEmpty &&
         state.destinationSuggestions.isEmpty;
 
-    return Scaffold(
-      body: CustomScrollView(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+        notifier.clearSuggestions();
+      },
+      child: Scaffold(
+        body: CustomScrollView(
         slivers: [
           const CustomAppBar(title: AppStrings.appName),
           SliverToBoxAdapter(
@@ -142,8 +152,9 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildGovernmentDisclaimer(AppLocalizations l10n, ThemeData theme) {
     return Container(
@@ -258,7 +269,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     ThemeData theme,
     bool isBn,
   ) {
-    bool showChoices = kDebugMode;
+    bool showChoices = true;
     return Container(
       key: const ValueKey('search_card_view'),
       padding: const EdgeInsets.all(12),
@@ -408,6 +419,28 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 onTap: () {
                   if (state.selectedOrigin != null) {
                     notifier.searchDestination(destinationController.text);
+                  } else {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          isBn
+                              ? 'অনুগ্রহ করে প্রথমে যাত্রা শুরুর স্থান নির্বাচন করুন'
+                              : 'Please select the starting point first',
+                          style: TextStyle(
+                            fontFamily: isBn ? 'HindSiliguri' : null,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        backgroundColor: theme.colorScheme.errorContainer,
+                        // textColor: theme.colorScheme.onErrorContainer,
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    );
                   }
                 },
                 suffixIcon: destinationController.text.isNotEmpty

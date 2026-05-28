@@ -1,16 +1,17 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/di/usecase_providers.dart'; // Assume you added the new use case here
+import '../../../../core/providers/settings_provider.dart';
 import '../../domain/entities/bus_route/bus_route.dart';
 import '../../domain/usecases/get_all_routes.dart';
 import '../../domain/usecases/get_route_details.dart'; // Import the new use case
 
 // --- 1. The Master List Provider (Unchanged, it's already great) ---
-final routeExplorerProvider = AsyncNotifierProvider<RouteExplorerNotifier, List<BusRoute>>(() {
+final routeExplorerProvider = AsyncNotifierProvider.autoDispose<RouteExplorerNotifier, List<BusRoute>>(() {
   return RouteExplorerNotifier();
 });
 
-class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
+class RouteExplorerNotifier extends AutoDisposeAsyncNotifier<List<BusRoute>> {
   late final GetAllRoutesUseCase _getAllRoutes;
 // Kept in case you want server-search later
 
@@ -20,16 +21,24 @@ class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
   @override
   FutureOr<List<BusRoute>> build() async {
     _getAllRoutes = ref.watch(getAllRoutesUseCaseProvider);
+    // Watch selectedRegion to reactively rebuild when user switches regions
+    ref.watch(settingsProvider.select((s) => s.selectedRegion));
     return _fetchInitialRoutes();
   }
 
   Future<List<BusRoute>> _fetchInitialRoutes() async {
+    final selectedRegion = ref.read(settingsProvider).selectedRegion;
     final result = await _getAllRoutes();
     return result.fold(
-          (failure) => throw failure.message,
-          (routes) {
-        _allRoutesCache = routes;
-        return routes;
+      (failure) => throw failure.message,
+      (routes) {
+        // Filter routes in memory to match selected region
+        final filtered = routes.where((route) {
+          return route.region.toUpperCase() == selectedRegion.value.toUpperCase();
+        }).toList();
+
+        _allRoutesCache = filtered;
+        return filtered;
       },
     );
   }
@@ -58,18 +67,7 @@ class RouteExplorerNotifier extends AsyncNotifier<List<BusRoute>> {
 // but you can remove autoDispose if you want it to cache the stops permanently during the session.
 
 final routeDetailsProvider = FutureProvider.autoDispose.family<BusRoute, String>((ref, routeId) async {
-  // 1. Try fetching from the local SQLite cache first for offline-first support
-  try {
-    final getCachedRoute = ref.watch(getCachedRouteUseCaseProvider);
-    final cachedRoute = await getCachedRoute(routeId);
-    if (cachedRoute != null) {
-      return cachedRoute;
-    }
-  } catch (_) {
-    // Fail silently and proceed to remote fetch
-  }
-
-  // 2. Fetch from Supabase backend as fallback
+  // Fetch from Supabase backend
   final getRouteDetails = ref.watch(getRouteDetailsUseCaseProvider);
   final result = await getRouteDetails(GetRouteDetailsParams(routeId: routeId));
 

@@ -8,7 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'core/database/local_database.dart';
+import 'core/database/database_sync_service.dart';
 import 'core/providers/settings_provider.dart';
+import 'core/constants/transit_region.dart';
 import 'core/router/app_router.dart';
 import 'core/styles/app_theme.dart';
 import 'core/ui/screens/custom_feedback_sheet.dart';
@@ -42,7 +44,22 @@ void main() async {
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
   // Pre-initialize the local database (triggers migration if needed)
-  await LocalDatabase.instance.database;
+  final localDb = LocalDatabase.instance;
+  await localDb.database;
+
+  // Trigger background sync check asynchronously so we don't block the first frame layout
+  DatabaseSyncService(
+    supabase: Supabase.instance.client,
+    localDB: localDb,
+  ).checkAndSync().then((synced) {
+    if (synced) {
+      debugPrint('🔄 Local-first database sync check completed with updates.');
+    } else {
+      debugPrint('✅ Local-first database sync check completed: Up-to-date.');
+    }
+  }).catchError((e) {
+    debugPrint('❌ Local-first database sync failed: $e');
+  });
 
   // Load saved settings before first frame to prevent flash of defaults
   final savedTheme = await LocalDatabase.instance.getSetting('theme_mode');
@@ -50,11 +67,13 @@ void main() async {
   final savedOnboarding = await LocalDatabase.instance.getSetting(
     'has_seen_onboarding',
   );
+  final savedRegion = await LocalDatabase.instance.getSetting('selected_region');
   setInitialSettings(
     SettingsState(
       themeMode: SettingsNotifier.themeModeFromString(savedTheme),
       locale: savedLocale != null ? Locale(savedLocale) : const Locale('en'),
       hasSeenOnboarding: savedOnboarding == 'true',
+      selectedRegion: TransitRegion.fromValue(savedRegion),
     ),
   );
 

@@ -11,6 +11,7 @@ import '../../features/fare_finder/domain/repository/fare_repository.dart';
 import '../../features/route_explorer/data/repositories/route_repository_impl.dart';
 import '../../features/route_explorer/domain/repositories/route_repository.dart';
 // Data Source Providers
+import 'core_providers.dart';
 import 'data_source_providers.dart';
 
 // ==========================================
@@ -19,7 +20,9 @@ import 'data_source_providers.dart';
 
 final documentRepositoryProvider = Provider<DocumentRepository>((ref) {
   final remoteDataSource = ref.watch(documentRemoteDataSourceProvider);
-  return DocumentRepositoryImpl(remoteDataSource);
+  final localDataSource = ref.watch(localDocumentDataSourceProvider);
+  final syncService = ref.watch(databaseSyncServiceProvider);
+  return DocumentRepositoryImpl(remoteDataSource, localDataSource, syncService);
 });
 
 // ==========================================
@@ -28,7 +31,13 @@ final documentRepositoryProvider = Provider<DocumentRepository>((ref) {
 
 final fareRepositoryProvider = Provider<FareRepository>((ref) {
   final remoteDataSource = ref.watch(fareRemoteDataSourceProvider);
-  return FareRepositoryImpl(remoteDataSource: remoteDataSource);
+  final localDataSource = ref.watch(localFareDataSourceProvider);
+  final syncService = ref.watch(databaseSyncServiceProvider);
+  return FareRepositoryImpl(
+    remoteDataSource: remoteDataSource,
+    localDataSource: localDataSource,
+    syncService: syncService,
+  );
 });
 
 // ==========================================
@@ -36,10 +45,15 @@ final fareRepositoryProvider = Provider<FareRepository>((ref) {
 // ==========================================
 
 final routeRepositoryProvider = Provider<RouteRepository>((ref) {
-  // Watching the abstract RouteDataSource (currently SupabaseRouteDataSourceImpl)
-  final supabaseDataSource = ref.watch(routeDataSourceProvider);
+  final remoteDataSource = ref.watch(routeDataSourceProvider);
+  final localDataSource = ref.watch(localRouteDataSourceProvider);
+  final syncService = ref.watch(databaseSyncServiceProvider);
 
-  return RouteRepositoryImpl(supabaseDataSource: supabaseDataSource);
+  return RouteRepositoryImpl(
+    remoteDataSource: remoteDataSource,
+    localDataSource: localDataSource,
+    syncService: syncService,
+  );
 });
 
 // ==========================================

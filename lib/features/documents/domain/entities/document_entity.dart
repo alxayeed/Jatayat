@@ -7,7 +7,7 @@ abstract class DocumentEntity with _$DocumentEntity {
   const factory DocumentEntity({
     required String id,
     required String title,
-    required String btrcUrl,
+    String? btrcUrl,
     required DateTime createdAt,
     required String versionName,
     required String pdfUrl,

@@ -1,31 +1,40 @@
 import 'dart:async';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/di/usecase_providers.dart';
+import '../../../../core/providers/settings_provider.dart';
 import '../../domain/entities/document_entity.dart';
 import '../../domain/usecases/get_active_documents_use_case.dart';
 
 final documentsProvider =
-    AsyncNotifierProvider<DocumentsNotifier, List<DocumentEntity>>(() {
+    AsyncNotifierProvider.autoDispose<DocumentsNotifier, List<DocumentEntity>>(() {
       return DocumentsNotifier();
     });
 
-class DocumentsNotifier extends AsyncNotifier<List<DocumentEntity>> {
+class DocumentsNotifier extends AutoDisposeAsyncNotifier<List<DocumentEntity>> {
   late final GetActiveDocumentsUseCase _getActiveDocumentsUseCase;
   List<DocumentEntity> _allDocumentsCache = [];
 
   @override
   FutureOr<List<DocumentEntity>> build() async {
     _getActiveDocumentsUseCase = ref.watch(getActiveDocumentsUseCaseProvider);
+    // Watch selectedRegion to reactively rebuild when user switches regions
+    ref.watch(settingsProvider.select((s) => s.selectedRegion));
     return _fetchDocuments();
   }
 
   /// Internal method to handle the data fetch
   Future<List<DocumentEntity>> _fetchDocuments() async {
+    final selectedRegion = ref.read(settingsProvider).selectedRegion;
     final documents = await _getActiveDocumentsUseCase();
-    _allDocumentsCache = documents;
-    return documents;
+    
+    // Filter active documents in memory to match selected region
+    final filtered = documents.where((doc) {
+      return doc.region?.toUpperCase() == selectedRegion.value.toUpperCase();
+    }).toList();
+
+    _allDocumentsCache = filtered;
+    return filtered;
   }
 
   /// Locally filters the document titles in memory instantly
