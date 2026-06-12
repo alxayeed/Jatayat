@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,6 +18,7 @@ class RouteListScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final routeState = ref.watch(routeExplorerProvider);
     final theme = Theme.of(context);
+    final showSettings = dotenv.env['SHOW_SETTINGS_BUTTON'] == 'true';
 
     return Scaffold(
       appBar: AppBar(
@@ -26,7 +27,7 @@ class RouteListScreen extends ConsumerWidget {
           style: theme.textTheme.titleLarge?.copyWith(fontSize: 20),
         ),
         actions: [
-          if (kDebugMode)
+          if (showSettings)
             InkWell(
               onTap: () => context.push(AppRoutes.settings),
               child: Icon(

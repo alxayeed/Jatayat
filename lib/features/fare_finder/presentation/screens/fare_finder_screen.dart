@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -269,7 +270,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     ThemeData theme,
     bool isBn,
   ) {
-    bool showChoices = true;
+    final bool showChoices = dotenv.env['ALLOW_REGION_CHANGING'] == 'true';
     return Container(
       key: const ValueKey('search_card_view'),
       padding: const EdgeInsets.all(12),
