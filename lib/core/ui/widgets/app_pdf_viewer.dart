@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:feedback_github/feedback_github.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +11,6 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../../core/styles/app_colors.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../error/error_handler.dart';
-import 'app_feedback_button.dart'; // Adjust path if necessary
 
 class AppPdfViewer extends StatefulWidget {
   final String pdfUrl;
@@ -149,7 +149,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
         ],
       ),
       body: _buildBody(theme, l10n),
-      floatingActionButton: const AppFeedbackButton(),
+      floatingActionButton: FeedbackButton(),
     );
   }
 

@@ -1,4 +1,4 @@
-import 'package:feedback/feedback.dart';
+import 'package:feedback_github/feedback_github.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +7,12 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'core/database/local_database.dart';
-import 'core/database/database_sync_service.dart';
-import 'core/providers/settings_provider.dart';
 import 'core/constants/transit_region.dart';
+import 'core/database/database_sync_service.dart';
+import 'core/database/local_database.dart';
+import 'core/providers/settings_provider.dart';
 import 'core/router/app_router.dart';
 import 'core/styles/app_theme.dart';
-import 'core/ui/screens/custom_feedback_sheet.dart';
 import 'core/utils/supabase_logger.dart';
 import 'l10n/app_localizations.dart';
 
@@ -48,18 +47,22 @@ void main() async {
   await localDb.database;
 
   // Trigger background sync check asynchronously so we don't block the first frame layout
-  DatabaseSyncService(
-    supabase: Supabase.instance.client,
-    localDB: localDb,
-  ).checkAndSync().then((synced) {
-    if (synced) {
-      debugPrint('🔄 Local-first database sync check completed with updates.');
-    } else {
-      debugPrint('✅ Local-first database sync check completed: Up-to-date.');
-    }
-  }).catchError((e) {
-    debugPrint('❌ Local-first database sync failed: $e');
-  });
+  DatabaseSyncService(supabase: Supabase.instance.client, localDB: localDb)
+      .checkAndSync()
+      .then((synced) {
+        if (synced) {
+          debugPrint(
+            '🔄 Local-first database sync check completed with updates.',
+          );
+        } else {
+          debugPrint(
+            '✅ Local-first database sync check completed: Up-to-date.',
+          );
+        }
+      })
+      .catchError((e) {
+        debugPrint('❌ Local-first database sync failed: $e');
+      });
 
   // Load saved settings before first frame to prevent flash of defaults
   final savedTheme = await LocalDatabase.instance.getSetting('theme_mode');
@@ -67,7 +70,9 @@ void main() async {
   final savedOnboarding = await LocalDatabase.instance.getSetting(
     'has_seen_onboarding',
   );
-  final savedRegion = await LocalDatabase.instance.getSetting('selected_region');
+  final savedRegion = await LocalDatabase.instance.getSetting(
+    'selected_region',
+  );
   setInitialSettings(
     SettingsState(
       themeMode: SettingsNotifier.themeModeFromString(savedTheme),
@@ -78,10 +83,18 @@ void main() async {
   );
 
   runApp(
-    const ProviderScope(
-      child: BetterFeedback(
-        feedbackBuilder: _customFeedbackBuilder,
-        child: JatayatApp(),
+    ProviderScope(
+      child: GithubFeedback(
+        config: FeedbackConfig(
+          enabled: kDebugMode, // hide in production
+          backend: GitHubFeedbackBackend(
+            token: dotenv.env['GITHUB_TOKEN'] ?? '',
+            repoOwner: 'alxayeed',
+            repoName: 'Jatayat',
+            branch: 'feature/feedback',
+          ),
+        ),
+        child: const JatayatApp(),
       ),
     ),
   );
@@ -109,15 +122,4 @@ class JatayatApp extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
     );
   }
-}
-
-Widget _customFeedbackBuilder(
-  BuildContext context,
-  OnSubmit onSubmit,
-  ScrollController? scrollController,
-) {
-  return CustomFeedbackSheet(
-    submit: onSubmit,
-    scrollController: scrollController,
-  );
 }

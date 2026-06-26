@@ -1,10 +1,10 @@
+import 'package:feedback_github/feedback_github.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../../core/ui/widgets/app_feedback_button.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -64,18 +64,28 @@ class FareDetailsScreen extends ConsumerWidget {
             actions: [
               IconButton(
                 icon: Icon(
-                  isSaved ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+                  isSaved
+                      ? Icons.bookmark_rounded
+                      : Icons.bookmark_outline_rounded,
                   color: isSaved
                       ? theme.colorScheme.primary
-                      : (theme.brightness == Brightness.dark ? Colors.white : theme.colorScheme.primary),
+                      : (theme.brightness == Brightness.dark
+                            ? Colors.white
+                            : theme.colorScheme.primary),
                 ),
                 onPressed: () {
-                  final bookmarksNotifier = ref.read(bookmarksProvider.notifier);
+                  final bookmarksNotifier = ref.read(
+                    bookmarksProvider.notifier,
+                  );
                   if (isSaved) {
                     bookmarksNotifier.removeBookmark(fare.fareId);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(isBn ? 'ভাড়ার বিবরণ বুকমার্ক থেকে মুছে ফেলা হয়েছে' : 'Fare details removed from bookmarks'),
+                        content: Text(
+                          isBn
+                              ? 'ভাড়ার বিবরণ বুকমার্ক থেকে মুছে ফেলা হয়েছে'
+                              : 'Fare details removed from bookmarks',
+                        ),
                         duration: const Duration(seconds: 2),
                       ),
                     );
@@ -84,7 +94,11 @@ class FareDetailsScreen extends ConsumerWidget {
                     bookmarksNotifier.addFareBookmark(fare, route);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(isBn ? 'ভাড়ার বিবরণ বুকমার্ক করা হয়েছে' : 'Fare details added to bookmarks'),
+                        content: Text(
+                          isBn
+                              ? 'ভাড়ার বিবরণ বুকমার্ক করা হয়েছে'
+                              : 'Fare details added to bookmarks',
+                        ),
                         duration: const Duration(seconds: 2),
                       ),
                     );
@@ -246,7 +260,7 @@ class FareDetailsScreen extends ConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: const AppFeedbackButton(),
+      floatingActionButton: FeedbackButton(),
     );
   }
 
@@ -273,7 +287,9 @@ class FareDetailsScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          l10n.localeName == 'bn' ? fare.routeNameBn : (fare.routeNameEn ?? fare.routeNameBn),
+          l10n.localeName == 'bn'
+              ? fare.routeNameBn
+              : (fare.routeNameEn ?? fare.routeNameBn),
           style: theme.textTheme.headlineSmall?.copyWith(
             fontFamily: l10n.localeName == 'bn' ? 'HindSiliguri' : null,
             fontWeight: FontWeight.bold,

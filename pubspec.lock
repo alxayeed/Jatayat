@@ -241,6 +241,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
+  feedback_github:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "151c89ac5906e6a29786e33c7d6f28807e30a299"
+      url: "https://github.com/alxayeed/feedback_github"
+    source: git
+    version: "0.0.1"
   ffi:
     dependency: transitive
     description:
