@@ -39,7 +39,9 @@ class MainScreen extends ConsumerWidget {
 
     return Scaffold(
       body: child,
-      floatingActionButton: dotenv.env['SHOW_FEEDBACK_BUTTON'] == 'true' ? FeedbackButton() : null,
+      floatingActionButton: dotenv.env['SHOW_FEEDBACK_BUTTON'] == 'true'
+          ? FeedbackButton(backgroundColor: Colors.amberAccent)
+          : null,
       bottomNavigationBar: Container(
         height: 85,
         decoration: BoxDecoration(

@@ -254,10 +254,10 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: cc3416ec3c0d96856aeb94df06f6a67b92cd1eb7
+      resolved-ref: "58cb4264e2f5aa1a29ea622d1852d93339aebf5e"
       url: "https://github.com/alxayeed/feedback_github"
     source: git
-    version: "0.0.3"
+    version: "0.0.4"
   ffi:
     dependency: transitive
     description:
