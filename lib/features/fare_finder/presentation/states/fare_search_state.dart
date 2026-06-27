@@ -14,6 +14,7 @@ abstract class FareSearchState with _$FareSearchState {
     StopEntity? selectedOrigin,
     StopEntity? selectedDestination,
     @Default(false) bool isLoading,
+    @Default(false) bool isDestinationsLoading,
     String? errorMessage,
     @Default(TransitRegion.dhakaMetro) TransitRegion selectedRegion,
   }) = _FareSearchState;

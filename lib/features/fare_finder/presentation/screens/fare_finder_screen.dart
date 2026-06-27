@@ -29,7 +29,10 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
 
   @override
   void deactivate() {
-    ref.read(fareSearchProvider.notifier).clearSuggestions();
+    final notifier = ref.read(fareSearchProvider.notifier);
+    Future.microtask(() {
+      notifier.clearSuggestions();
+    });
     super.deactivate();
   }
 
@@ -120,7 +123,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                           );
                         },
                     child: _isCollapsed
-                        ? _buildCollapsedSummary(state, l10n, theme, isBn)
+                        ? _buildCollapsedSummary(state, notifier, l10n, theme, isBn)
                         : _buildSearchCard(state, notifier, l10n, theme, isBn),
                   ),
                   const SizedBox(height: 32),
@@ -203,6 +206,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
 
   Widget _buildCollapsedSummary(
     FareSearchState state,
+    FareSearchNotifier notifier,
     AppLocalizations l10n,
     ThemeData theme,
     bool isBn,
@@ -246,6 +250,21 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
             ),
           ),
           const SizedBox(width: 8),
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _isCollapsed = false;
+                _manuallyExpanded = false;
+              });
+              originController.clear();
+              destinationController.clear();
+              notifier.resetSearch();
+            },
+            icon: const Icon(Icons.delete_outline_rounded),
+            color: theme.colorScheme.error,
+            visualDensity: VisualDensity.compact,
+            tooltip: isBn ? 'সার্চ মুছুন' : 'Clear Search',
+          ),
           IconButton(
             onPressed: () {
               setState(() {
@@ -395,6 +414,16 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 onTap: () {
                   notifier.searchOrigin(originController.text);
                 },
+                suffixIcon: originController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, size: 20),
+                        onPressed: () {
+                          originController.clear();
+                          destinationController.clear();
+                          notifier.resetSearch();
+                        },
+                      )
+                    : null,
               ),
               if (state.originSuggestions.isNotEmpty)
                 AppSuggestionList(
@@ -490,6 +519,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               notifier.calculateFare(
                 noSelectionError: l10n.calculatedFareErrorMessage,
                 noResultsError: l10n.fareSearchErrorMessage,
+                loadingStopsError: l10n.loadingStopsError,
               );
             },
             child: state.isLoading

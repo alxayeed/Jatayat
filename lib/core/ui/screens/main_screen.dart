@@ -1,11 +1,12 @@
+import 'package:feedback_github/feedback_github.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../l10n/app_localizations.dart';
 import '../../providers/upgrade_provider.dart';
 import '../../router/app_router.dart';
-import '../widgets/app_feedback_button.dart';
 import '../widgets/app_nav_item.dart';
 import '../widgets/update_bottom_sheet.dart';
 
@@ -38,7 +39,7 @@ class MainScreen extends ConsumerWidget {
 
     return Scaffold(
       body: child,
-      floatingActionButton: const AppFeedbackButton(),
+      floatingActionButton: dotenv.env['SHOW_FEEDBACK_BUTTON'] == 'true' ? FeedbackButton() : null,
       bottomNavigationBar: Container(
         height: 85,
         decoration: BoxDecoration(

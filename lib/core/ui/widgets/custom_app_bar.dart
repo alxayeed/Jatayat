@@ -9,11 +9,7 @@ class CustomAppBar extends StatelessWidget {
   final String title;
   final List<Widget>? actions;
 
-  const CustomAppBar({
-    super.key,
-    required this.title,
-    this.actions,
-  });
+  const CustomAppBar({super.key, required this.title, this.actions});
 
   @override
   Widget build(BuildContext context) {

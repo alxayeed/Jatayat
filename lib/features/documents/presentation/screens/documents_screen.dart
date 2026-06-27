@@ -3,9 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/router/app_router.dart';
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/providers/settings_provider.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../providers/documents_provider.dart';
 import '../widgets/document_card.dart';

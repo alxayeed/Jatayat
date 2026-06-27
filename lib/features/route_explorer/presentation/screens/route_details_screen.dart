@@ -1,11 +1,13 @@
+import 'package:feedback_github/feedback_github.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatayat/core/ui/widgets/custom_app_bar.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
-import '../../../../core/ui/widgets/app_feedback_button.dart';
 import '../../../../core/ui/widgets/reference_action_button.dart';
 import '../../../../core/ui/widgets/route_timeline.dart';
 import '../../../../l10n/app_localizations.dart';
@@ -37,7 +39,7 @@ class RouteDetailsScreen extends ConsumerWidget {
         error: (error, stackTrace) => _buildErrorView(ref, error, l10n, theme),
         data: (route) => _buildRouteContent(context, ref, route, l10n, theme),
       ),
-      floatingActionButton: const AppFeedbackButton(),
+      floatingActionButton: FeedbackButton(),
     );
   }
 
@@ -64,10 +66,14 @@ class RouteDetailsScreen extends ConsumerWidget {
           actions: [
             IconButton(
               icon: Icon(
-                isSaved ? Icons.bookmark_rounded : Icons.bookmark_outline_rounded,
+                isSaved
+                    ? Icons.bookmark_rounded
+                    : Icons.bookmark_outline_rounded,
                 color: isSaved
                     ? theme.colorScheme.primary
-                    : (theme.brightness == Brightness.dark ? Colors.white : theme.colorScheme.primary),
+                    : (theme.brightness == Brightness.dark
+                          ? Colors.white
+                          : theme.colorScheme.primary),
               ),
               onPressed: () {
                 final bookmarksNotifier = ref.read(bookmarksProvider.notifier);
@@ -75,7 +81,11 @@ class RouteDetailsScreen extends ConsumerWidget {
                   bookmarksNotifier.removeBookmark(route.id);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(isBn ? 'রুটটি বুকমার্ক থেকে মুছে ফেলা হয়েছে' : 'Route removed from bookmarks'),
+                      content: Text(
+                        isBn
+                            ? 'রুটটি বুকমার্ক থেকে মুছে ফেলা হয়েছে'
+                            : 'Route removed from bookmarks',
+                      ),
                       duration: const Duration(seconds: 2),
                     ),
                   );
@@ -83,7 +93,11 @@ class RouteDetailsScreen extends ConsumerWidget {
                   bookmarksNotifier.addRouteBookmark(route);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(isBn ? 'রুটটি বুকমার্ক করা হয়েছে' : 'Route added to bookmarks'),
+                      content: Text(
+                        isBn
+                            ? 'রুটটি বুকমার্ক করা হয়েছে'
+                            : 'Route added to bookmarks',
+                      ),
                       duration: const Duration(seconds: 2),
                     ),
                   );
@@ -130,18 +144,19 @@ class RouteDetailsScreen extends ConsumerWidget {
                         label: l10n.brtaLink,
                         icon: Icons.open_in_new_rounded,
                         color: theme.colorScheme.onSurfaceVariant,
-                        onTap: () {
+                        onTap: () async {
                           if (route.btrcUrl != null &&
                               route.btrcUrl!.isNotEmpty) {
-                            context.push(
-                              AppRoutes.pdfViewer,
-                              extra: {
-                                'url': route.btrcUrl,
-                                'page': route.pdfPageNumber ?? 1,
-                                'title':
-                                    '${route.routeCode} - ${l10n.brtaDocument}',
-                              },
-                            );
+                            final uri = Uri.parse(route.btrcUrl!);
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(l10n.noBrtaLink)),
+                                );
+                              }
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(l10n.noBrtaLink)),

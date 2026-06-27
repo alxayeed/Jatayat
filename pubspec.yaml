@@ -1,7 +1,9 @@
 name: jatayat
 description: "A bus transport utility app for Dhaka."
 publish_to: 'none'
-version: 1.0.0+13
+
+version: 1.0.0+14
+
 
 environment:
   sdk: ^3.11.1
@@ -46,8 +48,13 @@ dependencies:
   sqflite: ^2.3.0
   path: ^1.9.0
   firebase_remote_config: ^6.5.1
-  package_info_plus: ^10.1.0
+  package_info_plus: ^10.2.0
   url_launcher: ^6.3.2
+
+  feedback_github:
+    git:
+      url: https://github.com/alxayeed/feedback_github
+      ref: main
 
 dev_dependencies:
   flutter_test:
@@ -91,5 +98,5 @@ flutter:
         - asset: assets/fonts/HindSiliguri-Bold.ttf
           weight: 700
 
-dependency_overrides:
-  app_links: 7.0.0
+#dependency_overrides:
+#  app_links: 7.2.0

@@ -93,6 +93,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please select a departure and destination stop first.';
 
   @override
+  String get loadingStopsError => 'Loading destination stops, please wait...';
+
+  @override
   String get fareDetailsTitle => 'Fare Details';
 
   @override

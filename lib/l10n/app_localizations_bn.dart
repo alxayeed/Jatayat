@@ -92,6 +92,10 @@ class AppLocalizationsBn extends AppLocalizations {
       'প্রথমে যাত্রা শুরু এবং গন্তব্যস্থান নির্বাচন করুন';
 
   @override
+  String get loadingStopsError =>
+      'গন্তব্য স্টপেজ লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...';
+
+  @override
   String get fareDetailsTitle => 'ভাড়ার বিস্তারিত';
 
   @override
