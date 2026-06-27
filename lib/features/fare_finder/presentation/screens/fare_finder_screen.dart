@@ -29,7 +29,10 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
 
   @override
   void deactivate() {
-    ref.read(fareSearchProvider.notifier).clearSuggestions();
+    final notifier = ref.read(fareSearchProvider.notifier);
+    Future.microtask(() {
+      notifier.clearSuggestions();
+    });
     super.deactivate();
   }
 
