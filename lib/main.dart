@@ -86,7 +86,7 @@ void main() async {
     ProviderScope(
       child: GithubFeedback(
         config: FeedbackConfig(
-          enabled: kDebugMode, // hide in production
+          enabled: dotenv.env['SHOW_FEEDBACK_BUTTON'] == 'true',
           backend: GitHubFeedbackBackend(
             token: dotenv.env['GITHUB_TOKEN'] ?? '',
             repoOwner: 'alxayeed',
