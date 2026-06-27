@@ -68,6 +68,7 @@ class BookmarksRepositoryImpl implements BookmarksRepository {
       'route_id': fare.routeId,
       'route_code': fare.routeCode,
       'route_name_bn': fare.routeNameBn,
+      'route_name_en': fare.routeNameEn,
       'route_total_distance': fare.routeTotalDistance,
       'pdf_page_number': fare.pdfPage,
       'pdf_url': fare.pdfUrl,
