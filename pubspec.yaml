@@ -52,6 +52,7 @@ dependencies:
   feedback_github:
     git:
       url: https://github.com/alxayeed/feedback_github
+      ref: main
 
 dev_dependencies:
   flutter_test:
