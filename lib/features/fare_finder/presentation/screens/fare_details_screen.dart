@@ -210,6 +210,8 @@ class FareDetailsScreen extends ConsumerWidget {
                               'url': fare.pdfUrl,
                               'page': fare.pdfPage,
                               'title': '${fare.routeCode} - ${l10n.fareList}',
+                              'origin': displayOriginName,
+                              'destination': displayDestName,
                             },
                           ),
                         ),

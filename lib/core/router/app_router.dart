@@ -91,6 +91,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             pdfUrl: data['url'],
             initialPage: data['page'],
             title: data['title'] ?? 'Document',
+            origin: data['origin'],
+            destination: data['destination'],
           );
         },
       ),

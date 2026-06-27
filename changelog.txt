@@ -3,3 +3,4 @@ Release 5
 - FIX: #41 fare search now shows proper error message if searched before stops are being loaded
 - UPDATE: #35 clear button added in from stop and search result
 - FIX: #37 brta link open external browser
+- FIX: #36 View pdf button locks the page switching. PDF viewer updated to show zoom, page and orientation controls
