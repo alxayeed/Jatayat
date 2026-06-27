@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,7 +33,7 @@ class DocumentsScreen extends ConsumerWidget {
           ),
         ),
         actions: [
-          if (kDebugMode)
+          if (dotenv.env['SHOW_SETTINGS_BUTTON'] == 'true')
             InkWell(
               onTap: () => context.push(AppRoutes.settings),
               child: Icon(
