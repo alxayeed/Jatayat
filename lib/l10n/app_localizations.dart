@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'Please select a departure and destination stop first.'**
   String get calculatedFareErrorMessage;
 
+  /// No description provided for @loadingStopsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading destination stops, please wait...'**
+  String get loadingStopsError;
+
   /// No description provided for @fareDetailsTitle.
   ///
   /// In en, this message translates to:

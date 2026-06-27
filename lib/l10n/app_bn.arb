@@ -27,6 +27,7 @@
   "stopsSearchErrorMessage": "দুঃখিত, এই স্টপেজের কোনো রুটের তথ্য ডাটাবেসে নেই।",
   "fareSearchErrorMessage": "দুঃখিত, এই তথ্য ডাটাবেসে নেই।",
   "calculatedFareErrorMessage": "প্রথমে যাত্রা শুরু এবং গন্তব্যস্থান নির্বাচন করুন",
+  "loadingStopsError": "গন্তব্য স্টপেজ লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন...",
   "fareDetailsTitle": "ভাড়ার বিস্তারিত",
   "fareRatePrefix": "ভাড়ার হার : প্রতি যাত্রী প্রতি কিলোমিটার",
   "routeDistancePrefix": "রুটের মোট দূরত্ব",

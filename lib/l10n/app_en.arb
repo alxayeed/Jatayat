@@ -27,6 +27,7 @@
   "stopsSearchErrorMessage": "Sorry, no route data found for this stop in the database.",
   "fareSearchErrorMessage": "Sorry, this information is not available in the database.",
   "calculatedFareErrorMessage": "Please select a departure and destination stop first.",
+  "loadingStopsError": "Loading destination stops, please wait...",
   "fareDetailsTitle": "Fare Details",
   "fareRatePrefix": "Fare rate: per passenger per kilometer",
   "routeDistancePrefix": "Total route distance",

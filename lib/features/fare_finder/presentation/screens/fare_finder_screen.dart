@@ -493,6 +493,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
               notifier.calculateFare(
                 noSelectionError: l10n.calculatedFareErrorMessage,
                 noResultsError: l10n.fareSearchErrorMessage,
+                loadingStopsError: l10n.loadingStopsError,
               );
             },
             child: state.isLoading
