@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
@@ -222,21 +224,25 @@ class FareDetailsScreen extends ConsumerWidget {
                               ? Colors.white70
                               : theme.colorScheme.onSurfaceVariant,
                           theme,
-                          () {
+                          () async {
                             if (fare.btrcUrl != null &&
                                 fare.btrcUrl!.isNotEmpty) {
-                              // Route the Oracle Cloud/BRTA copy directly inside your smooth native viewer!
-                              context.push(
-                                AppRoutes.pdfViewer,
-                                extra: {
-                                  'url': fare.btrcUrl,
-                                  'page': 1,
-                                  // Default to first page for the main legal document
-                                  'title': isBn
-                                      ? 'গেজেট অনুলিপি'
-                                      : 'Official Ministry Gazette',
-                                },
-                              );
+                              final uri = Uri.parse(fare.btrcUrl!);
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(uri, mode: LaunchMode.externalApplication);
+                              } else {
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        isBn
+                                            ? 'লিঙ্কটি খোলা সম্ভব হয়নি'
+                                            : 'Could not launch link',
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

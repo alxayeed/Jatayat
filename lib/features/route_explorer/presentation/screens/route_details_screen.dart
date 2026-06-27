@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatayat/core/ui/widgets/custom_app_bar.dart';
 
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/ui/widgets/reference_action_button.dart';
@@ -142,18 +144,19 @@ class RouteDetailsScreen extends ConsumerWidget {
                         label: l10n.brtaLink,
                         icon: Icons.open_in_new_rounded,
                         color: theme.colorScheme.onSurfaceVariant,
-                        onTap: () {
+                        onTap: () async {
                           if (route.btrcUrl != null &&
                               route.btrcUrl!.isNotEmpty) {
-                            context.push(
-                              AppRoutes.pdfViewer,
-                              extra: {
-                                'url': route.btrcUrl,
-                                'page': route.pdfPageNumber ?? 1,
-                                'title':
-                                    '${route.routeCode} - ${l10n.brtaDocument}',
-                              },
-                            );
+                            final uri = Uri.parse(route.btrcUrl!);
+                            if (await canLaunchUrl(uri)) {
+                              await launchUrl(uri, mode: LaunchMode.externalApplication);
+                            } else {
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text(l10n.noBrtaLink)),
+                                );
+                              }
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text(l10n.noBrtaLink)),
