@@ -569,7 +569,7 @@ abstract class AppLocalizations {
   /// No description provided for @governmentDisclaimer.
   ///
   /// In en, this message translates to:
-  /// **'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This is an independent platform designed to help you view transit data easily and does not represent any government entity.'**
+  /// **'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This independent platform does not represent any government entity. Because data follows official documents strictly, some local stop names may be missing; please try searching for nearby major intersections or alternative names if yours is not found.'**
   String get governmentDisclaimer;
 
   /// No description provided for @errorNetwork.

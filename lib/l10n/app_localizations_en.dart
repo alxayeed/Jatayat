@@ -250,7 +250,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get governmentDisclaimer =>
-      'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This is an independent platform designed to help you view transit data easily and does not represent any government entity.';
+      'All fare schedules in Jatayat are sourced accurately from public BRTA gazette publications. This independent platform does not represent any government entity. Because data follows official documents strictly, some local stop names may be missing; please try searching for nearby major intersections or alternative names if yours is not found.';
 
   @override
   String get errorNetwork =>

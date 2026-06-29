@@ -46,6 +46,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final banglaL10n = lookupAppLocalizations(const Locale('bn'));
     final state = ref.watch(fareSearchProvider);
     final notifier = ref.read(fareSearchProvider.notifier);
     final theme = Theme.of(context);
@@ -87,78 +88,90 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       },
       child: Scaffold(
         body: CustomScrollView(
-        slivers: [
-          const CustomAppBar(title: AppStrings.appName),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.homeTitle,
-                    style: theme.textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onSurface,
+          slivers: [
+            const CustomAppBar(title: AppStrings.appName),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.homeTitle,
+                      style: theme.textTheme.displaySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
                     ),
-                  ),
-                  Text(
-                    l10n.homeSubtitle,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w600,
+                    Text(
+                      l10n.homeSubtitle,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 350),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SizeTransition(
-                              sizeFactor: animation,
-                              child: child,
+                    const SizedBox(height: 12),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 350),
+                      transitionBuilder:
+                          (Widget child, Animation<double> animation) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: SizeTransition(
+                                sizeFactor: animation,
+                                child: child,
+                              ),
+                            );
+                          },
+                      child: _isCollapsed
+                          ? _buildCollapsedSummary(
+                              state,
+                              notifier,
+                              l10n,
+                              theme,
+                              isBn,
+                            )
+                          : _buildSearchCard(
+                              state,
+                              notifier,
+                              l10n,
+                              theme,
+                              isBn,
                             ),
-                          );
-                        },
-                    child: _isCollapsed
-                        ? _buildCollapsedSummary(state, notifier, l10n, theme, isBn)
-                        : _buildSearchCard(state, notifier, l10n, theme, isBn),
-                  ),
-                  const SizedBox(height: 32),
-                  if (state.fareResults.isNotEmpty)
-                    _buildResultHeader(state, l10n, theme),
-                ],
+                    ),
+                    const SizedBox(height: 32),
+                    if (state.fareResults.isNotEmpty)
+                      _buildResultHeader(state, l10n, theme),
+                  ],
+                ),
               ),
             ),
-          ),
-          _buildFareResults(state),
+            _buildFareResults(state),
 
-          // Show the disclaimer card dynamically at the bottom if the view is idle
-          if (isIdleState)
-            SliverFillRemaining(
-              hasScrollBody: false,
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 20.0,
-                  right: 20.0,
-                  bottom: 24.0,
-                  top: 12.0,
+            // Show the disclaimer card dynamically at the bottom if the view is idle
+            if (isIdleState)
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    bottom: 24.0,
+                    top: 12.0,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [_buildGovernmentDisclaimer(banglaL10n, theme)],
+                  ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [_buildGovernmentDisclaimer(l10n, theme)],
-                ),
-              ),
-            )
-          else
-            const SliverToBoxAdapter(child: SizedBox(height: 100)),
-        ],
+              )
+            else
+              const SliverToBoxAdapter(child: SizedBox(height: 100)),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildGovernmentDisclaimer(AppLocalizations l10n, ThemeData theme) {
     return Container(

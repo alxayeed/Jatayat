@@ -1,2 +1,9 @@
+Release 16
+[29/6/2026]
+- UPDATE: Fare card UI
+- UPDATE: Disclaimer text updated to inform about stops
+- UPDATE: Disclaimer always bangla
+
+
 Release 15
 - UPDATE: Feedback Github package

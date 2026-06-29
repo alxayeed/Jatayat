@@ -36,43 +36,16 @@ class FareCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      '${l10n.routeCode}: ${fare.routeCode}',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    '${l10n.gazzette}: ${l10n.page} ${fare.pdfPage ?? '-'}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
               Text(
-                l10n.localeName == 'bn' ? fare.routeNameBn : (fare.routeNameEn ?? fare.routeNameBn),
+                l10n.localeName == 'bn'
+                    ? '${fare.originNameBn} ➔ ${fare.destinationNameBn ?? fare.originNameBn}'
+                    : '${fare.originNameEn ?? fare.originNameBn} ➔ ${fare.destinationNameEn ?? fare.destinationNameBn ?? fare.originNameBn}',
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontFamily: l10n.localeName == 'bn' ? 'HindSiliguri' : null,
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface,
                 ),
-                maxLines: 1,
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
               Divider(height: 24, color: theme.dividerTheme.color),
@@ -125,6 +98,47 @@ class FareCard extends StatelessWidget {
                     ],
                   ),
                 ],
+              ),
+              Divider(height: 24, color: theme.dividerTheme.color),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        // Replaces spacing
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          '${l10n.routeCode}: ${fare.routeCode}',
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.onPrimaryContainer,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextSpan(
+                      text: l10n.localeName == 'bn'
+                          ? fare.routeNameBn
+                          : (fare.routeNameEn ?? fare.routeNameBn),
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontFamily: l10n.localeName == 'bn'
+                            ? 'HindSiliguri'
+                            : null,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.onSurface,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
