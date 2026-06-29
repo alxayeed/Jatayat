@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatayat/core/providers/settings_provider.dart';
 import 'package:jatayat/core/router/app_router.dart';
+import 'package:jatayat/features/fare_finder/domain/entities/fair_result_entity/fare_result_entity.dart';
+import 'package:jatayat/features/fare_finder/presentation/widgets/fare_card.dart';
 import 'package:jatayat/l10n/app_localizations.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -71,7 +73,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Language Switcher
-                    if (dotenv.env['ALLOW_LANGUAGE_SWITCHING'] == 'true') _buildLanguageToggle(),
+                    if (dotenv.env['ALLOW_LANGUAGE_SWITCHING'] == 'true')
+                      _buildLanguageToggle(),
 
                     // Skip Button
                     AnimatedOpacity(
@@ -169,11 +172,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           Expanded(
             flex: 5,
             child: Center(
-              child: AspectRatio(aspectRatio: 1.1, child: illustration),
+              child: AspectRatio(aspectRatio: 1.4, child: illustration),
             ),
           ),
 
-          const SizedBox(height: 16),
+          // const SizedBox(height: 16),
 
           // Details section
           Expanded(
@@ -349,449 +352,455 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
     );
   }
 
-  // ==========================================
-  // --- High-Fidelity Custom Illustrations ---
-  // ==========================================
-
-  // 1. Slide 1 Welcome Illustration (Dhaka Transit Route map mockup)
+  // 1. Slide 1 Welcome Illustration (Mock Search Screen)
   Widget _buildWelcomeIllustration() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return AnimatedBuilder(
-      animation: _pulseController,
-      builder: (context, child) {
-        final double pulse = _pulseController.value;
-        return Container(
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E2028) : Colors.white,
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-              ),
-            ],
-            border: Border.all(
-              color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
-              width: 1.5,
-            ),
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    final isBn = l10n.localeName == 'bn';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2028) : Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
-            child: Stack(
+        ],
+        border: Border.all(
+          color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+          width: 1.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(10.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // "From" Stop field
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.04)
+                  : const Color(0xFFF7FBF1),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                width: 1,
+              ),
+            ),
+            child: Row(
               children: [
-                // Background grid pattern simulation
-                Positioned.fill(
-                  child: CustomPaint(painter: GridPainter(isDark: isDark)),
+                Icon(
+                  Icons.my_location,
+                  color: theme.colorScheme.primary,
+                  size: 18,
                 ),
-
-                // Transit lines paint
-                Positioned.fill(
-                  child: CustomPaint(
-                    painter: TransitMapPainter(
-                      pulseValue: pulse,
-                      isDark: isDark,
-                      primaryColor: Theme.of(context).colorScheme.primary,
-                      accentColor: const Color(0xFFFFD600),
-                    ),
-                  ),
-                ),
-
-                // Floating Bus Card icon
-                Positioned(
-                  left: 45 + (pulse * 25),
-                  top: 75 + (pulse * 15),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withValues(alpha: 0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.directions_bus_filled_rounded,
-                          color: Colors.white,
-                          size: 18,
-                        ),
-                        SizedBox(width: 6),
-                        Text(
-                          "Dhaka City",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    isBn ? "আগারগাঁও" : "Agargaon",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white70 : Colors.black87,
+                      fontSize: 14,
+                      fontFamily: isBn ? 'HindSiliguri' : null,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-        );
-      },
+
+          // Connecting line
+          Padding(
+            padding: const EdgeInsets.only(left: 24.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                height: 20,
+                width: 2,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(1),
+                ),
+              ),
+            ),
+          ),
+
+          // "To" Stop field
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isDark
+                  ? Colors.white.withValues(alpha: 0.04)
+                  : const Color(0xFFF7FBF1),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: theme.colorScheme.primary.withValues(alpha: 0.15),
+                width: 1,
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.location_on,
+                  color: Colors.redAccent,
+                  size: 18,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    isBn ? "আজিমপুর" : "Azimpur",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white70 : Colors.black87,
+                      fontSize: 14,
+                      fontFamily: isBn ? 'HindSiliguri' : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 20),
+
+          // Search button
+          Container(
+            width: double.infinity,
+            height: 48,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary,
+              borderRadius: BorderRadius.circular(14),
+              boxShadow: [
+                BoxShadow(
+                  color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.search, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  l10n.findBus,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    fontFamily: isBn ? 'HindSiliguri' : null,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  // 2. Slide 2 Search & Fare Illustration
+  // 2. Slide 2 Search & Fare Illustration (FareCard Widget)
   Widget _buildSearchIllustration() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return AnimatedBuilder(
-      animation: _pulseController,
-      builder: (context, child) {
-        final double pulse = _pulseController.value;
-        return Container(
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E2028) : Colors.white,
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    final mockFare = FareResultEntity(
+      fareId: 'mock_fare_1',
+      fareAmount: 19.0,
+      travelDistanceKm: 7.5,
+      fromStopId: 'stop_agargaon',
+      toStopId: 'stop_azimpur',
+      originNameBn: 'আগারগাঁও',
+      originNameEn: 'Agargaon',
+      destinationNameBn: 'আজিমপুর',
+      destinationNameEn: 'Azimpur',
+      routeId: 'route_a_459',
+      routeCode: 'A-459',
+      routeNameBn: 'মানিকদি (ইসিবি মোড়) থেকে আজিমপুর',
+      routeNameEn: 'Manikdi (ECB More) to Azimpur',
+      routeTotalDistance: 15.3,
+      pdfPage: 28,
+      pdfUrl: null,
+      btrcUrl: null,
+      baseRate: 2.53,
+      minFare: 10.0,
+    );
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2028) : Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
+        ],
+        border: Border.all(
+          color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+          width: 1.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(16.0),
+      alignment: Alignment.center,
+      child: FareCard(fare: mockFare),
+    );
+  }
+
+  // 3. Slide 3 Bookmarks & Offline Illustration (Fare Details Card style with bookmark ticked)
+  Widget _buildBookmarksIllustration() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    final isBn = l10n.localeName == 'bn';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E2028) : Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
+        ],
+        border: Border.all(
+          color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+          width: 1.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Mini AppBar
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Icon(
+                Icons.arrow_back_rounded,
+                size: 20,
+                color: isDark ? Colors.white70 : Colors.black87,
+              ),
+              Text(
+                l10n.fareDetailsTitle,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: isBn ? 'HindSiliguri' : null,
+                ),
+              ),
+              Icon(
+                Icons.bookmark_rounded,
+                size: 20,
+                color: theme.colorScheme.primary,
               ),
             ],
-            border: Border.all(
-              color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
-              width: 1.5,
+          ),
+          const SizedBox(height: 10),
+
+          // Top Header text
+          // Text(
+          //   isBn
+          //       ? 'ভাড়ার হার: প্রতি যাত্রী প্রতি কিলোমিটার ২.৫৩ টাকা'
+          //       : 'Fare rate: per passenger per kilometer 2.53 Taka',
+          //   style: TextStyle(
+          //     fontSize: 9,
+          //     fontWeight: FontWeight.bold,
+          //     color: theme.colorScheme.primary,
+          //     fontFamily: isBn ? 'HindSiliguri' : null,
+          //   ),
+          // ),
+          // const SizedBox(height: 2),
+          // Text(
+          //   isBn
+          //       ? 'মোট রুটের দূরত্ব ১৫.৩ কিলোমিটার।'
+          //       : 'Total route distance 15.3 kilometers.',
+          //   style: TextStyle(
+          //     fontSize: 9,
+          //     fontWeight: FontWeight.bold,
+          //     color: isDark ? Colors.white70 : Colors.black87,
+          //     fontFamily: isBn ? 'HindSiliguri' : null,
+          //   ),
+          // ),
+          // const SizedBox(height: 4),
+          Text(
+            isBn
+                ? 'মানিকদি (ইসিবি মোড়) থেকে আজিমপুর'
+                : 'Manikdi (ECB More) to Azimpur',
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black,
+              fontFamily: isBn ? 'HindSiliguri' : null,
             ),
           ),
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // "From" Stop field
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.04)
-                      : const Color(0xFFF7FBF1),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.15),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
+          const SizedBox(height: 6),
+
+          // Main Card
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: theme.colorScheme.outlineVariant),
+            ),
+            child: Column(
+              children: [
+                // Timeline Row
+                Row(
                   children: [
                     Icon(
-                      Icons.trip_origin_rounded,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 18,
+                      Icons.radio_button_checked,
+                      size: 14,
+                      color: theme.colorScheme.primary,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        "Mirpur 12",
+                        isBn ? "আগারগাঁও" : "Agargaon",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white70 : Colors.black87,
-                          fontSize: 14,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: isBn ? 'HindSiliguri' : null,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              // Winding Connecting line
-              Padding(
-                padding: const EdgeInsets.only(left: 24.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    height: 24,
-                    width: 2,
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.4),
-                      borderRadius: BorderRadius.circular(1),
-                    ),
-                  ),
-                ),
-              ),
-
-              // "To" Stop field
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: isDark
-                      ? Colors.white.withValues(alpha: 0.04)
-                      : const Color(0xFFF7FBF1),
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary.withValues(alpha: 0.15),
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  children: [
                     const Icon(
-                      Icons.location_on_rounded,
-                      color: Colors.redAccent,
-                      size: 18,
+                      Icons.arrow_forward,
+                      size: 12,
+                      color: Colors.grey,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        "Motijheel",
+                        isBn ? "আজিমপুর" : "Azimpur",
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white70 : Colors.black87,
-                          fontSize: 14,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: isBn ? 'HindSiliguri' : null,
                         ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    const Icon(
+                      Icons.location_on,
+                      size: 14,
+                      color: Colors.redAccent,
+                    ),
+                  ],
+                ),
+                const Divider(height: 14, thickness: 0.5),
+
+                // Specs Row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildMiniStat(
+                      l10n.travelDistance,
+                      isBn ? '৭.৫ কি.মি.' : '7.5 km',
+                      theme,
+                      isBn,
+                    ),
+                    _buildMiniStat(l10n.routeCode, 'A-459', theme, isBn),
+                    _buildMiniStat(
+                      l10n.reference,
+                      isBn ? 'পৃষ্ঠা ২৮' : 'Page 28',
+                      theme,
+                      isBn,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+
+                // Fare details row
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      l10n.officialFare,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontFamily: isBn ? 'HindSiliguri' : null,
+                      ),
+                    ),
+                    Text(
+                      '${l10n.currencySign}19',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: theme.colorScheme.primary,
                       ),
                     ),
                   ],
                 ),
-              ),
-
-              const SizedBox(height: 16),
-
-              // Floating Calculated Fare Card
-              Transform.translate(
-                offset: Offset(0, -5 + (pulse * 8)),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 18,
-                    vertical: 12,
-                  ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isDark
-                          ? [const Color(0xFF1B5E20), const Color(0xFF0F3A12)]
-                          : [const Color(0xFFE8F5E9), const Color(0xFFC8E6C9)],
+                const SizedBox(height: 2),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      l10n.calculatedFare,
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontFamily: isBn ? 'HindSiliguri' : null,
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.green.withValues(
-                          alpha: isDark ? 0.15 : 0.25,
-                        ),
-                        blurRadius: 16,
-                        offset: const Offset(0, 4),
+                    Text(
+                      '${l10n.currencySign}18.97',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? Colors.white70 : Colors.black87,
                       ),
-                    ],
-                    border: Border.all(
-                      color: Colors.green.withValues(alpha: 0.3),
-                      width: 1,
                     ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Colors.white24,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(
-                          Icons.payments_outlined,
-                          color: Colors.green,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Official Fare",
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: isDark
-                                  ? Colors.white70
-                                  : const Color(0xFF1B5E20),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const Text(
-                            "৳ 45.00",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.green,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        );
-      },
+        ],
+      ),
     );
   }
 
-  // 3. Slide 3 Bookmarks & Offline Illustration
-  Widget _buildBookmarksIllustration() {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    return AnimatedBuilder(
-      animation: _pulseController,
-      builder: (context, child) {
-        final double pulse = _pulseController.value;
-        return Container(
-          decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E2028) : Colors.white,
-            borderRadius: BorderRadius.circular(28),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
-              ),
-            ],
-            border: Border.all(
-              color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
-              width: 1.5,
-            ),
+  Widget _buildMiniStat(
+    String label,
+    String value,
+    ThemeData theme,
+    bool isBn,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 9,
+            color: theme.colorScheme.onSurfaceVariant,
+            fontFamily: isBn ? 'HindSiliguri' : null,
           ),
-          padding: const EdgeInsets.all(20),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              // Beautiful Glassmorphic Favorite Route Card
-              Positioned(
-                top: 20,
-                left: 10,
-                right: 10,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.03)
-                        : const Color(0xFFF7FBF1),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
-                      width: 1.5,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: const Color(
-                            0xFFFFD600,
-                          ).withValues(alpha: 0.15),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Transform.scale(
-                          scale: 0.9 + (pulse * 0.2),
-                          child: const Icon(
-                            Icons.star_rounded,
-                            color: Color(0xFFFFD600),
-                            size: 24,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Mirpur 12 - Motijheel",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              "Route: A-202 • 15 Stops",
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              // Glowing "100% Offline" Badge overlay
-              Positioned(
-                bottom: 25,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.primary.withValues(alpha: 0.3),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.wifi_off_rounded,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-                      SizedBox(width: 8),
-                      Text(
-                        "100% Offline Guide",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.2,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+        ),
+        const SizedBox(height: 1),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            fontFamily: isBn ? 'HindSiliguri' : null,
           ),
-        );
-      },
+        ),
+      ],
     );
   }
 }
