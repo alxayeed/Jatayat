@@ -27,14 +27,14 @@ class AppRoutes {
   static const String pdfViewer = '/pdf-viewer';
 }
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
   final settings = ref.read(settingsProvider);
   return GoRouter(
     initialLocation: settings.hasSeenOnboarding ? AppRoutes.fareSearch : AppRoutes.onboarding,
-    navigatorKey: _rootNavigatorKey,
+    navigatorKey: rootNavigatorKey,
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -60,12 +60,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingScreen(),
       ),
       GoRoute(
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: AppRoutes.fareDetails,
         builder: (context, state) {
           final fare = state.extra as FareResultEntity;
@@ -73,7 +73,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '${AppRoutes.routeDetails}/:id',
         builder: (context, state) {
           final routeId = state.pathParameters['id']!;
@@ -83,7 +83,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: AppRoutes.pdfViewer,
         builder: (context, state) {
           final data = state.extra as Map<String, dynamic>;
@@ -97,7 +97,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        parentNavigatorKey: _rootNavigatorKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: AppRoutes.settings,
         builder: (context, state) => const SettingsScreen(),
       ),

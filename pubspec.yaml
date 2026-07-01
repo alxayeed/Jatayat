@@ -55,6 +55,9 @@ dependencies:
     git:
       url: https://github.com/alxayeed/feedback_github
       ref: main
+  firebase_crashlytics: ^5.2.4
+  firebase_analytics: ^12.4.3
+  firebase_messaging: ^16.4.1
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +76,7 @@ flutter:
     - assets/
     - .env.dev
     - .env.prod
+    - shorebird.yaml
   fonts:
     - family: WorkSans
       fonts:

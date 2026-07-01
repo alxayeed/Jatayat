@@ -1,5 +1,6 @@
 import 'package:feedback_github/feedback_github.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -12,6 +13,7 @@ import 'core/database/database_sync_service.dart';
 import 'core/database/local_database.dart';
 import 'core/providers/settings_provider.dart';
 import 'core/router/app_router.dart';
+import 'core/services/notification_service.dart';
 import 'core/styles/app_theme.dart';
 import 'core/utils/supabase_logger.dart';
 import 'l10n/app_localizations.dart';
@@ -29,6 +31,16 @@ void main() async {
     debugPrint('🚀 Environment initialized successfully from: $envFile');
 
     await Firebase.initializeApp();
+    NotificationService.instance.initialize();
+
+    FlutterError.onError = (errorDetails) {
+      FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+    };
+    // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
 
     await Supabase.initialize(
       url: dotenv.env['SUPABASE_URL']!,
