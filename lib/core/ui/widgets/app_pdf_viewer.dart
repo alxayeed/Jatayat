@@ -1,10 +1,9 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
-import 'package:flutter/services.dart';
-
 import 'package:feedback_github/feedback_github.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -187,38 +186,36 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
       body: Column(
         children: [
           _buildJourneyHeader(theme, l10n),
-          Expanded(
-            child: _buildBody(theme, l10n),
-          ),
+          Expanded(child: _buildBody(theme, l10n)),
         ],
       ),
       floatingActionButton: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FloatingActionButton.small(
-            heroTag: 'orientation_fab',
-            backgroundColor: theme.colorScheme.secondaryContainer,
-            foregroundColor: theme.colorScheme.onSecondaryContainer,
-            shape: const CircleBorder(),
-            onPressed: () {
-              setState(() {
-                _swipeHorizontal = !_swipeHorizontal;
-              });
-              if (_swipeHorizontal) {
-                SystemChrome.setPreferredOrientations([
-                  DeviceOrientation.landscapeLeft,
-                  DeviceOrientation.landscapeRight,
-                ]);
-              } else {
-                SystemChrome.setPreferredOrientations([
-                  DeviceOrientation.portraitUp,
-                  DeviceOrientation.portraitDown,
-                ]);
-              }
-            },
-            child: Icon(_swipeHorizontal ? Icons.portrait_rounded : Icons.landscape_rounded),
-          ),
-          const SizedBox(height: 8),
+          // FloatingActionButton.small(
+          //   heroTag: 'orientation_fab',
+          //   backgroundColor: theme.colorScheme.secondaryContainer,
+          //   foregroundColor: theme.colorScheme.onSecondaryContainer,
+          //   shape: const CircleBorder(),
+          //   onPressed: () {
+          //     setState(() {
+          //       _swipeHorizontal = !_swipeHorizontal;
+          //     });
+          //     if (_swipeHorizontal) {
+          //       SystemChrome.setPreferredOrientations([
+          //         DeviceOrientation.landscapeLeft,
+          //         DeviceOrientation.landscapeRight,
+          //       ]);
+          //     } else {
+          //       SystemChrome.setPreferredOrientations([
+          //         DeviceOrientation.portraitUp,
+          //         DeviceOrientation.portraitDown,
+          //       ]);
+          //     }
+          //   },
+          //   child: Icon(_swipeHorizontal ? Icons.portrait_rounded : Icons.landscape_rounded),
+          // ),
+          // const SizedBox(height: 8),
           FloatingActionButton.small(
             heroTag: 'zoom_in_fab',
             backgroundColor: theme.colorScheme.primary,
@@ -228,7 +225,8 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
               final currentMatrix = _transformationController.value;
               final currentScale = currentMatrix.getMaxScaleOnAxis();
               if (currentScale < 4.0) {
-                _transformationController.value = currentMatrix * Matrix4.diagonal3Values(1.2, 1.2, 1.0);
+                _transformationController.value =
+                    currentMatrix * Matrix4.diagonal3Values(1.2, 1.2, 1.0);
               }
             },
             child: const Icon(Icons.zoom_in),
@@ -247,7 +245,8 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
                 if (targetScale < 1.0) {
                   _transformationController.value = Matrix4.identity();
                 } else {
-                  _transformationController.value = currentMatrix * Matrix4.diagonal3Values(0.8, 0.8, 1.0);
+                  _transformationController.value =
+                      currentMatrix * Matrix4.diagonal3Values(0.8, 0.8, 1.0);
                 }
               }
             },
@@ -366,10 +365,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: theme.colorScheme.outlineVariant,
-          width: 0.5,
-        ),
+        border: Border.all(color: theme.colorScheme.outlineVariant, width: 0.5),
         boxShadow: [
           BoxShadow(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.02),
@@ -398,13 +394,13 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Icon(Icons.arrow_forward_rounded, size: 14, color: Colors.grey),
+            child: Icon(
+              Icons.arrow_forward_rounded,
+              size: 14,
+              color: Colors.grey,
+            ),
           ),
-          Icon(
-            Icons.location_on,
-            size: 16,
-            color: theme.colorScheme.error,
-          ),
+          Icon(Icons.location_on, size: 16, color: theme.colorScheme.error),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
