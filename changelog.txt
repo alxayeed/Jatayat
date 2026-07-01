@@ -1,6 +1,7 @@
 Release 17
 01/7/2026]
 - UPDATE: Orientation button removed from pdf viewer
+- ADD: Crashlytics, Shorebird, Push notification
 
 
 Release 16
@@ -9,7 +10,6 @@ Release 16
 - UPDATE: Disclaimer text updated to inform about stops
 - UPDATE: Disclaimer always bangla
 - UPDATE: Onboarding screen
-- ADD: Crashlytics
 
 
 Release 15
