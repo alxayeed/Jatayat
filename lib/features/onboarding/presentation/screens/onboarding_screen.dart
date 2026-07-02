@@ -172,7 +172,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           Expanded(
             flex: 5,
             child: Center(
-              child: AspectRatio(aspectRatio: 1.4, child: illustration),
+              child: AspectRatio(aspectRatio: 1.3, child: illustration),
             ),
           ),
 

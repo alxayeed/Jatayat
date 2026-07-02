@@ -1,5 +1,13 @@
+1.0.0+20
+[02/7/2026]
+- ADD: AD-ID permission
+
+1.0.0+18, 1.0.0+19
+[02/7/2026]
+Play console Submission issue due to AD-ID
+
 Release 17
-01/7/2026]
+[01/7/2026]
 - UPDATE: Orientation button removed from pdf viewer
 - ADD: Crashlytics, Shorebird, Push notification
 
