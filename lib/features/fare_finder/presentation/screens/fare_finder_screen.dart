@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/transit_region.dart';
+import '../../../../core/providers/settings_provider.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
-import '../../../../core/providers/settings_provider.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
@@ -90,6 +89,11 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       if (_manuallyExpanded) {
         _manuallyExpanded = false;
       }
+      if (_isCollapsed) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) setState(() => _isCollapsed = false);
+        });
+      }
     }
 
     // Idle state check: No active loading, no results, and no open autocomplete suggestion drop-downs
@@ -108,19 +112,29 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
-            const CustomAppBar(title: AppStrings.appName),
+            CustomAppBar(title: l10n.appName),
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      l10n.homeTitle,
-                      style: theme.textTheme.displaySmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.onSurface,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            l10n.homeTitle,
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 26,
+                              color: theme.colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                        _buildRegionSwitcher(state, notifier, l10n, theme),
+                      ],
                     ),
                     Text(
                       l10n.homeSubtitle,
@@ -165,10 +179,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 ),
               ),
             ),
-            _buildFareResults(state),
-
-            // Show the disclaimer card dynamically at the bottom if the view is idle
-            if (isIdleState)
+            if (state.fareResults.isEmpty)
               SliverFillRemaining(
                 hasScrollBody: false,
                 child: Padding(
@@ -185,7 +196,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 ),
               )
             else
-              const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              _buildFareResults(state, banglaL10n, theme),
           ],
         ),
       ),
@@ -330,180 +341,78 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       ),
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.centerRight,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ChoiceChip(
-                  label: Text(l10n.regionDhaka),
-                  selected: state.selectedRegion == TransitRegion.dhakaMetro,
-                  showCheckmark: false,
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    fontWeight: state.selectedRegion == TransitRegion.dhakaMetro
-                        ? FontWeight.bold
-                        : FontWeight.w600,
-                    color: state.selectedRegion == TransitRegion.dhakaMetro
-                        ? theme.colorScheme.onPrimary
-                        : theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                  ),
-                  selectedColor: theme.colorScheme.primary,
-                  backgroundColor: theme.colorScheme.surface,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 2,
-                  ),
-                  labelPadding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 0,
-                  ),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: const VisualDensity(
-                    horizontal: -2,
-                    vertical: -4,
-                  ),
-                  shape: StadiumBorder(
-                    side: BorderSide(
-                      color: state.selectedRegion == TransitRegion.dhakaMetro
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                      width: 1.5,
-                    ),
-                  ),
-                  onSelected: (selected) {
-                    if (selected) {
-                      notifier.selectRegion(TransitRegion.dhakaMetro);
-                      originController.clear();
-                      destinationController.clear();
-                    }
-                  },
-                ),
-                const SizedBox(width: 8),
-                ChoiceChip(
-                  label: Text(l10n.regionChittagong),
-                  selected: state.selectedRegion == TransitRegion.ctgMetro,
-                  showCheckmark: false,
-                  labelStyle: TextStyle(
-                    fontSize: 12,
-                    fontWeight: state.selectedRegion == TransitRegion.ctgMetro
-                        ? FontWeight.bold
-                        : FontWeight.w600,
-                    color: state.selectedRegion == TransitRegion.ctgMetro
-                        ? theme.colorScheme.onPrimary
-                        : theme.colorScheme.onSurface.withValues(alpha: 0.8),
-                  ),
-                  selectedColor: theme.colorScheme.primary,
-                  backgroundColor: theme.colorScheme.surface,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 2,
-                  ),
-                  labelPadding: const EdgeInsets.symmetric(
-                    horizontal: 4,
-                    vertical: 0,
-                  ),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  visualDensity: const VisualDensity(
-                    horizontal: -2,
-                    vertical: -4,
-                  ),
-                  shape: StadiumBorder(
-                    side: BorderSide(
-                      color: state.selectedRegion == TransitRegion.ctgMetro
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                      width: 1.5,
-                    ),
-                  ),
-                  onSelected: (selected) {
-                    if (selected) {
-                      notifier.selectRegion(TransitRegion.ctgMetro);
-                      originController.clear();
-                      destinationController.clear();
-                    }
-                  },
-                ),
-              ],
-            ),
+          AppSearchableDropdown(
+            hintText: l10n.fromStop,
+            prefixIcon: Icons.my_location,
+            controller: originController,
+            isOpen: state.isOriginDropdownOpen,
+            isLoading: state.isLoading,
+            suggestions: state.originSuggestions,
+            onChanged: notifier.searchOrigin,
+            onTap: notifier.openOriginDropdown,
+            onSelected: (stop) {
+              originController.text = isBn
+                  ? stop.nameBn
+                  : (stop.nameEn ?? stop.nameBn);
+              notifier.selectOrigin(
+                stop,
+                noRoutesError: l10n.stopsSearchErrorMessage,
+              );
+            },
+            onClear: () {
+              originController.clear();
+              destinationController.clear();
+              notifier.resetSearch();
+            },
           ),
           const SizedBox(height: 12),
-          Column(
-            children: [
-              AppSearchableDropdown(
-                hintText: l10n.fromStop,
-                prefixIcon: Icons.my_location,
-                controller: originController,
-                isOpen: state.isOriginDropdownOpen,
-                isLoading: state.isLoading,
-                suggestions: state.originSuggestions,
-                onChanged: notifier.searchOrigin,
-                onTap: notifier.openOriginDropdown,
-                onSelected: (stop) {
-                  originController.text = isBn
-                      ? stop.nameBn
-                      : (stop.nameEn ?? stop.nameBn);
-                  notifier.selectOrigin(
-                    stop,
-                    noRoutesError: l10n.stopsSearchErrorMessage,
-                  );
-                },
-                onClear: () {
-                  originController.clear();
-                  destinationController.clear();
-                  notifier.resetSearch();
-                },
-              ),
-              const SizedBox(height: 12),
-              AppSearchableDropdown(
-                hintText: l10n.toStop,
-                prefixIcon: Icons.location_on,
-                controller: destinationController,
-                readOnly: state.selectedOrigin == null,
-                isOpen: state.isDestinationDropdownOpen,
-                isLoading: state.isDestinationsLoading,
-                errorMessage: state.errorMessage,
-                suggestions: state.destinationSuggestions,
-                onChanged: notifier.searchDestination,
-                onTap: () {
-                  if (state.selectedOrigin != null) {
-                    notifier.openDestinationDropdown();
-                  } else {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          isBn
-                              ? 'অনুগ্রহ করে প্রথমে যাত্রা শুরুর স্থান নির্বাচন করুন'
-                              : 'Please select the starting point first',
-                          style: TextStyle(
-                            fontFamily: isBn ? 'HindSiliguri' : null,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        backgroundColor: theme.colorScheme.errorContainer,
-                        behavior: SnackBarBehavior.floating,
-                        duration: const Duration(seconds: 2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+          AppSearchableDropdown(
+            hintText: l10n.toStop,
+            prefixIcon: Icons.location_on,
+            controller: destinationController,
+            readOnly: state.selectedOrigin == null,
+            isOpen: state.isDestinationDropdownOpen,
+            isLoading: state.isDestinationsLoading,
+            errorMessage: state.errorMessage,
+            suggestions: state.destinationSuggestions,
+            onChanged: notifier.searchDestination,
+            onTap: () {
+              if (state.selectedOrigin != null) {
+                notifier.openDestinationDropdown();
+              } else {
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      isBn
+                          ? 'অনুগ্রহ করে প্রথমে যাত্রা শুরুর স্থান নির্বাচন করুন'
+                          : 'Please select the starting point first',
+                      style: TextStyle(
+                        fontFamily: isBn ? 'HindSiliguri' : null,
+                        fontWeight: FontWeight.w600,
                       ),
-                    );
-                  }
-                },
-                onSelected: (stop) {
-                  destinationController.text = isBn
-                      ? stop.nameBn
-                      : (stop.nameEn ?? stop.nameBn);
-                  notifier.selectDestination(stop);
-                },
-                onClear: () {
-                  destinationController.clear();
-                  notifier.searchDestination('');
-                  notifier.selectDestination(StopEntity(id: '', nameBn: ''));
-                },
-              ),
-            ],
+                    ),
+                    backgroundColor: theme.colorScheme.errorContainer,
+                    behavior: SnackBarBehavior.floating,
+                    duration: const Duration(seconds: 2),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                );
+              }
+            },
+            onSelected: (stop) {
+              destinationController.text = isBn
+                  ? stop.nameBn
+                  : (stop.nameEn ?? stop.nameBn);
+              notifier.selectDestination(stop);
+            },
+            onClear: () {
+              destinationController.clear();
+              notifier.searchDestination('');
+              notifier.selectDestination(StopEntity(id: '', nameBn: ''));
+            },
           ),
           const SizedBox(height: 24),
           ElevatedButton(
@@ -515,7 +424,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                 loadingStopsError: l10n.loadingStopsError,
               );
             },
-            child: state.isLoading
+            child: state.isCalculatingFare
                 ? SizedBox(
                     height: 20,
                     width: 20,
@@ -535,6 +444,98 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildRegionSwitcher(
+    FareSearchState state,
+    FareSearchNotifier notifier,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ChoiceChip(
+          label: Text(l10n.regionDhaka),
+          selected: state.selectedRegion == TransitRegion.dhakaMetro,
+          showCheckmark: false,
+          labelStyle: TextStyle(
+            fontSize: 12,
+            fontWeight: state.selectedRegion == TransitRegion.dhakaMetro
+                ? FontWeight.bold
+                : FontWeight.w600,
+            color: state.selectedRegion == TransitRegion.dhakaMetro
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+          ),
+          selectedColor: theme.colorScheme.primary,
+          backgroundColor: theme.colorScheme.surface,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: const VisualDensity(horizontal: -2, vertical: -4),
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: state.selectedRegion == TransitRegion.dhakaMetro
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              width: 1.5,
+            ),
+          ),
+          onSelected: (selected) {
+            if (selected) {
+              setState(() {
+                _isCollapsed = false;
+                _manuallyExpanded = false;
+              });
+              notifier.selectRegion(TransitRegion.dhakaMetro);
+              originController.clear();
+              destinationController.clear();
+            }
+          },
+        ),
+        const SizedBox(width: 6),
+        ChoiceChip(
+          label: Text(l10n.regionChittagong),
+          selected: state.selectedRegion == TransitRegion.ctgMetro,
+          showCheckmark: false,
+          labelStyle: TextStyle(
+            fontSize: 12,
+            fontWeight: state.selectedRegion == TransitRegion.ctgMetro
+                ? FontWeight.bold
+                : FontWeight.w600,
+            color: state.selectedRegion == TransitRegion.ctgMetro
+                ? theme.colorScheme.onPrimary
+                : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+          ),
+          selectedColor: theme.colorScheme.primary,
+          backgroundColor: theme.colorScheme.surface,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+          labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: const VisualDensity(horizontal: -2, vertical: -4),
+          shape: StadiumBorder(
+            side: BorderSide(
+              color: state.selectedRegion == TransitRegion.ctgMetro
+                  ? theme.colorScheme.primary
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.3),
+              width: 1.5,
+            ),
+          ),
+          onSelected: (selected) {
+            if (selected) {
+              setState(() {
+                _isCollapsed = false;
+                _manuallyExpanded = false;
+              });
+              notifier.selectRegion(TransitRegion.ctgMetro);
+              originController.clear();
+              destinationController.clear();
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -563,13 +564,28 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     );
   }
 
-  Widget _buildFareResults(FareSearchState state) {
+  Widget _buildFareResults(
+    FareSearchState state,
+    AppLocalizations l10n,
+    ThemeData theme,
+  ) {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(20),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
-          (context, index) => FareCard(fare: state.fareResults[index]),
-          childCount: state.fareResults.length,
+          (context, index) {
+            if (index < state.fareResults.length) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: FareCard(fare: state.fareResults[index]),
+              );
+            }
+            return Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 24),
+              child: _buildGovernmentDisclaimer(l10n, theme),
+            );
+          },
+          childCount: state.fareResults.length + 1,
         ),
       ),
     );

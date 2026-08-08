@@ -265,7 +265,7 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       return;
     }
 
-    state = state.copyWith(isLoading: true, fareResults: [], errorMessage: null);
+    state = state.copyWith(isCalculatingFare: true, fareResults: [], errorMessage: null);
 
     final result = await _getFares(
       originId: state.selectedOrigin!.id,
@@ -274,12 +274,12 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     if (!mounted) return;
 
     result.fold(
-          (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
-          (fares) {
+      (failure) => state = state.copyWith(isCalculatingFare: false, errorMessage: failure.message),
+      (fares) {
         if (fares.isEmpty) {
-          state = state.copyWith(isLoading: false, errorMessage: noResultsError);
+          state = state.copyWith(isCalculatingFare: false, errorMessage: noResultsError);
         } else {
-          state = state.copyWith(isLoading: false, fareResults: fares);
+          state = state.copyWith(isCalculatingFare: false, fareResults: fares);
         }
       },
     );

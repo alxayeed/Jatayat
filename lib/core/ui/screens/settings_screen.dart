@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:package_info_plus/package_info_plus.dart';
+
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../di/core_providers.dart';
@@ -109,11 +111,19 @@ class SettingsScreen extends ConsumerWidget {
                   ], label: l10n.general),
                   const SizedBox(height: 24),
                   _buildSettingsGroup(context, [
-                    _buildInfoTile(
-                      context,
-                      icon: Icons.info_outline_rounded,
-                      title: l10n.version,
-                      value: '1.0.0',
+                    FutureBuilder<PackageInfo>(
+                      future: PackageInfo.fromPlatform(),
+                      builder: (context, snapshot) {
+                        final versionText = snapshot.hasData
+                            ? '${snapshot.data!.version}+${snapshot.data!.buildNumber}'
+                            : '...';
+                        return _buildInfoTile(
+                          context,
+                          icon: Icons.info_outline_rounded,
+                          title: l10n.version,
+                          value: versionText,
+                        );
+                      },
                     ),
                     _buildDivider(context),
                     Padding(

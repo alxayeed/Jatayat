@@ -35,15 +35,24 @@ class CustomAppBar extends StatelessWidget {
       ],
       actionsPadding: const EdgeInsets.only(right: 16),
       title: Row(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          Image.asset(
+            'assets/icon/transparent_app_logo.png',
+            width: canPop ? 36 : 48,
+            height: canPop ? 36 : 48,
+            fit: BoxFit.contain,
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Text(
               title,
               style: theme.appBarTheme.titleTextStyle?.copyWith(
-                fontSize: canPop ? 20 : 36,
+                fontSize: canPop ? 20 : 32,
                 color: contentColor,
               ),
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
           ),
