@@ -103,7 +103,8 @@ class AppSuggestionList extends ConsumerWidget {
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: Text(
-            emptyMessage ?? (isBn ? 'কোনো স্টপেজ পাওয়া যায়নি' : 'No stops found'),
+            emptyMessage ??
+                (isBn ? 'কোনো স্টপেজ পাওয়া যায়নি' : 'No stops found'),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -122,9 +123,7 @@ class AppSuggestionList extends ConsumerWidget {
       ),
       itemBuilder: (context, index) {
         final stop = suggestions[index];
-        final displayName = isBn
-            ? (stop.nameBn ?? stop.nameEn)
-            : (stop.nameEn ?? stop.nameBn);
+        final displayName = isBn ? (stop.nameBn) : (stop.nameEn ?? stop.nameBn);
 
         return ListTile(
           leading: Icon(
@@ -133,7 +132,7 @@ class AppSuggestionList extends ConsumerWidget {
             color: theme.colorScheme.outline,
           ),
           title: Text(
-            displayName ?? "",
+            displayName,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontFamily: isBn ? 'HindSiliguri' : null,
               fontSize: 16,

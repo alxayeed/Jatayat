@@ -15,7 +15,7 @@ class DocumentCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context)!;
+    AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
     // Watch settings to manage dynamic typography formatting

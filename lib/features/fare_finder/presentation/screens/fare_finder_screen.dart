@@ -5,6 +5,7 @@ import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/transit_region.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../../core/providers/settings_provider.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
@@ -54,6 +55,25 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       if (previous?.selectedDestination != null &&
           next.selectedDestination == null) {
         destinationController.clear();
+      }
+    });
+
+    ref.listen(settingsProvider.select((s) => s.locale), (previous, next) {
+      if (previous != next && next != null) {
+        final isBn = next.languageCode == 'bn';
+        final currentState = ref.read(fareSearchProvider);
+        if (currentState.selectedOrigin != null) {
+          originController.text = isBn
+              ? currentState.selectedOrigin!.nameBn
+              : (currentState.selectedOrigin!.nameEn ??
+                    currentState.selectedOrigin!.nameBn);
+        }
+        if (currentState.selectedDestination != null) {
+          destinationController.text = isBn
+              ? currentState.selectedDestination!.nameBn
+              : (currentState.selectedDestination!.nameEn ??
+                    currentState.selectedDestination!.nameBn);
+        }
       }
     });
 

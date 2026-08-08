@@ -507,7 +507,6 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
   // 2. Slide 2 Search & Fare Illustration (FareCard Widget)
   Widget _buildSearchIllustration() {
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
 
     final mockFare = FareResultEntity(
       fareId: 'mock_fare_1',

@@ -9,7 +9,7 @@ import '../states/fare_search_state.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 
 final fareSearchProvider = StateNotifierProvider<FareSearchNotifier, FareSearchState>((ref) {
-  final settingsState = ref.watch(settingsProvider);
+  final settingsState = ref.read(settingsProvider);
   final notifier = FareSearchNotifier(
     searchStops: ref.watch(searchStopsUseCaseProvider),
     getConnectedStops: ref.watch(getConnectedStopsUseCaseProvider),

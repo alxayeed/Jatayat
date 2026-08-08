@@ -14,7 +14,7 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool canPop = ModalRoute.of(context)?.canPop ?? false;
     final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final _ = theme.brightness == Brightness.dark;
 
     final Color contentColor =
         theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface;
@@ -30,11 +30,7 @@ class CustomAppBar extends StatelessWidget {
         if (!canPop)
           InkWell(
             onTap: () => context.push(AppRoutes.settings),
-            child: Icon(
-              Icons.settings,
-              color: contentColor,
-              size: 24,
-            ),
+            child: Icon(Icons.settings, color: contentColor, size: 24),
           ),
       ],
       actionsPadding: const EdgeInsets.only(right: 16),

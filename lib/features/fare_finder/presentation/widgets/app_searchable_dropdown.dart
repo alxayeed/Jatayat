@@ -42,8 +42,7 @@ class AppSearchableDropdown extends ConsumerStatefulWidget {
       _AppSearchableDropdownState();
 }
 
-class _AppSearchableDropdownState
-    extends ConsumerState<AppSearchableDropdown> {
+class _AppSearchableDropdownState extends ConsumerState<AppSearchableDropdown> {
   final OverlayPortalController _portalController = OverlayPortalController();
   final LayerLink _layerLink = LayerLink();
 
@@ -92,25 +91,23 @@ class _AppSearchableDropdownState
               link: _layerLink,
               showWhenUnlinked: false,
               offset: Offset(0, size.height + 4),
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  constraints: const BoxConstraints(maxHeight: 220),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerLowest,
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.12),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: _buildDropdownBody(context, theme, isBn),
-                  ),
+              child: Container(
+                constraints: const BoxConstraints(maxHeight: 220),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.12),
+                      blurRadius: 20,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Material(
+                  color: theme.colorScheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(16),
+                  clipBehavior: Clip.antiAlias,
+                  child: _buildDropdownBody(context, theme, isBn),
                 ),
               ),
             ),
@@ -136,11 +133,11 @@ class _AppSearchableDropdownState
                   ),
                 )
               : (widget.controller.text.isNotEmpty
-                  ? IconButton(
-                      icon: const Icon(Icons.clear, size: 20),
-                      onPressed: widget.onClear,
-                    )
-                  : null),
+                    ? IconButton(
+                        icon: const Icon(Icons.clear, size: 20),
+                        onPressed: widget.onClear,
+                      )
+                    : null),
         ),
       ),
     );
@@ -220,9 +217,7 @@ class _AppSearchableDropdownState
       ),
       itemBuilder: (context, index) {
         final stop = widget.suggestions[index];
-        final displayName = isBn
-            ? (stop.nameBn ?? stop.nameEn)
-            : (stop.nameEn ?? stop.nameBn);
+        final displayName = isBn ? (stop.nameBn) : (stop.nameEn ?? stop.nameBn);
 
         return ListTile(
           leading: Icon(
@@ -231,7 +226,7 @@ class _AppSearchableDropdownState
             color: theme.colorScheme.outline,
           ),
           title: Text(
-            displayName ?? "",
+            displayName,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontFamily: isBn ? 'HindSiliguri' : null,
               fontSize: 16,
