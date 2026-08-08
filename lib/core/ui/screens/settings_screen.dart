@@ -34,15 +34,13 @@ class SettingsScreen extends ConsumerWidget {
                       title: l10n.theme,
                       child: const _ThemeToggle(),
                     ),
-                    if (dotenv.env['ALLOW_LANGUAGE_SWITCHING'] == 'true') ...[
-                      _buildDivider(context),
-                      _buildOptionTile(
-                        context,
-                        icon: Icons.language_outlined,
-                        title: l10n.language,
-                        child: const _LanguageToggle(),
-                      ),
-                    ],
+                    _buildDivider(context),
+                    _buildOptionTile(
+                      context,
+                      icon: Icons.language_outlined,
+                      title: l10n.language,
+                      child: const _LanguageToggle(),
+                    ),
                   ], label: l10n.appearance),
                   const SizedBox(height: 24),
                   _buildSettingsGroup(context, [

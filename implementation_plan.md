@@ -1,89 +1,93 @@
-# Implementation Plan - Refactoring Bookmarks to Clean Architecture
+# Implementation Plan - Bus-Centric Search & Community Reviews
 
-Refactor the newly implemented Bookmarks feature to strictly adhere to the project's Clean Architecture standards (Domain, Data, and Presentation separation with Riverpod dependency injection).
+Evolve **Jatayat** from a route-number focused fare calculator into a bus-centric commuter assistant, allowing users to search by bus operator names (*Bikash Paribahan*, *Alif Paribahan*), view full itineraries, submit anonymous ratings/reviews, report missing bus data, and keep local SQLite aligned with local & remote Supabase.
+
+---
+
+## Architecture & Database Changes
+
+### 1. Database Schemas (Supabase Local & SQLite `LocalDatabase` v4)
+
+#### `bus_operators` Table
+* `id` (TEXT / UUID PRIMARY KEY)
+* `route_id` (TEXT, Foreign Key to `routes.id`)
+* `name_en` (TEXT NOT NULL)
+* `name_bn` (TEXT NOT NULL)
+* `service_type` (TEXT, e.g. `Sitting`, `Local`, `AC`)
+* `is_active` (INTEGER / BOOLEAN DEFAULT true)
+
+#### `bus_reviews` Table
+* `id` (TEXT / UUID PRIMARY KEY)
+* `bus_operator_id` (TEXT, Foreign Key to `bus_operators.id`)
+* `rating` (INTEGER NOT NULL, 1 to 5 stars)
+* `comment` (TEXT OPTIONAL)
+* `created_at` (TEXT / INTEGER TIMESTAMP)
+
+#### `correction_reports` Table
+* `id` (TEXT / UUID PRIMARY KEY)
+* `bus_operator_id` (TEXT OPTIONAL)
+* `route_id` (TEXT OPTIONAL)
+* `report_type` (TEXT NOT NULL, e.g. `missing_bus`, `wrong_sequence`, `fare_error`)
+* `description` (TEXT NOT NULL)
+* `created_at` (TEXT / INTEGER TIMESTAMP)
+
+---
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Supabase Local & Database Sync Strategy**:
+> 1. We will update `LocalDatabase._createLocalFirstTables` and `_upgradeDB` to version 4 to include `bus_operators`, `bus_reviews`, and `correction_reports`.
+> 2. `DatabaseSyncService` will be updated to fetch and sync `bus_operators` alongside `routes` and `stops`.
+> 3. Anonymous review submissions and correction reports will be written locally to SQLite if offline, and synced directly via Supabase API when internet is available.
 
 ---
 
 ## Proposed Changes
 
-### 1. Domain Layer (Entities & Repository Abstract Interface)
+### Database Layer (Local SQLite & Supabase Sync)
 
-#### [NEW] [bookmark_item.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/entities/bookmark_item.dart)
-* Extract `BookmarkItem` from presentation layer provider to domain entity.
+#### [MODIFY] [local_database.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/database/local_database.dart)
+* Upgrade DB version to 4.
+* Add table creation for `bus_operators`, `bus_reviews`, and `correction_reports`.
+* Add helper methods for inserting/fetching bus operators, reviews, and reporting data.
 
-#### [NEW] [bookmarks_repository.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/repositories/bookmarks_repository.dart)
-* Define `BookmarksRepository` abstract contract:
-  ```dart
-  abstract class BookmarksRepository {
-    Future<List<BookmarkItem>> getBookmarks();
-    Future<void> addRouteBookmark(BusRoute route);
-    Future<void> addFareBookmark(FareResultEntity fare);
-    Future<void> removeBookmark(String id);
-    Future<bool> isBookmarked(String id);
-  }
-  ```
+#### [MODIFY] [database_sync_service.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/database/database_sync_service.dart)
+* Include `bus_operators` in parallel Supabase sync pipeline.
 
 ---
 
-### 2. Domain Layer (Use Cases)
+### Domain Layer (Entities, Repositories & Use Cases)
 
-#### [NEW] [get_bookmarks_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/get_bookmarks_use_case.dart)
-* Retrieves all saved bookmarks.
+#### [NEW] [bus_operator.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/fare_finder/domain/entities/bus_operator.dart)
+* Entity representing a bus operator with ratings summary.
 
-#### [NEW] [add_route_bookmark_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/add_route_bookmark_use_case.dart)
-* Persists a bookmarked bus route.
+#### [NEW] [bus_review.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/fare_finder/domain/entities/bus_review.dart)
+* Entity for rating and qualitative comment.
 
-#### [NEW] [add_fare_bookmark_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/add_fare_bookmark_use_case.dart)
-* Persists a bookmarked fare search result.
-
-#### [NEW] [remove_bookmark_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/remove_bookmark_use_case.dart)
-* Removes a bookmark by ID.
-
-#### [NEW] [is_bookmarked_use_case.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/domain/usecases/is_bookmarked_use_case.dart)
-* Checks bookmark status for details screens.
+#### [NEW] [bus_repository.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/fare_finder/domain/repositories/bus_repository.dart)
+* Contracts for `searchBuses(fromStopId, toStopId)`, `getBusDetails(busId)`, `submitReview(review)`, `submitCorrectionReport(report)`.
 
 ---
 
-### 3. Data Layer (Data Sources & Models)
+### Presentation Layer (Bus-Centric UI & Community Feedback)
 
-#### [NEW] [bookmarks_local_data_source.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/data/datasources/bookmarks_local_data_source.dart)
-* Define local data source abstract and concrete implementation that communicates directly with `LocalDatabase`.
+#### [MODIFY] [fare_finder_screen.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/fare_finder/presentation/screens/fare_finder_screen.dart)
+* Display operator cards (*Bikash*, *Alif*) with fare, distance, via stops, and service badges.
 
-#### [NEW] [bookmarks_repository_impl.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/data/repositories/bookmarks_repository_impl.dart)
-* Implement `BookmarksRepository` contract, handles JSON deserialization/serialization of entities.
-
----
-
-### 4. Dependency Injection (Riverpod)
-
-#### [MODIFY] [core_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/core_providers.dart)
-* Expose `LocalDatabase.instance` as a provider for the data source.
-
-#### [MODIFY] [data_source_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/data_source_providers.dart)
-* Register `bookmarksLocalDataSourceProvider`.
-
-#### [MODIFY] [repository_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/repository_providers.dart)
-* Register `bookmarksRepositoryProvider`.
-
-#### [MODIFY] [usecase_providers.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/core/di/usecase_providers.dart)
-* Register:
-  * `getBookmarksUseCaseProvider`
-  * `addRouteBookmarkUseCaseProvider`
-  * `addFareBookmarkUseCaseProvider`
-  * `removeBookmarkUseCaseProvider`
-  * `isBookmarkedUseCaseProvider`
-
----
-
-### 5. Presentation Layer (Refactoring Providers)
-
-#### [MODIFY] [bookmarks_provider.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/bookmarks/presentation/providers/bookmarks_provider.dart)
-* Clean up definitions of `BookmarkItem` and direct dependency on `LocalDatabase`.
-* Wire up `BookmarksNotifier` to execute the respective Use Cases injected from Riverpod!
+#### [NEW] [bus_details_screen.dart](file:///mnt/BACKUP/WORKSHOP/Personal/Projects/Jatayat/repo/jatayat/lib/features/fare_finder/presentation/screens/bus_details_screen.dart)
+* Full stop itinerary, BRTA legal breakdown, 5-star rating, review submission form, and "Report Correction" button.
 
 ---
 
 ## Verification Plan
 
 ### Automated Tests
-* Run `flutter analyze` to ensure code is clean and compilation succeeds.
+- Run `dart analyze` to ensure zero warnings or errors.
+- Run `flutter test` for model serialization and repository unit tests.
+
+### Manual Verification
+- Test stop-to-stop search showing distinct bus operator cards.
+- Test submitting an anonymous rating and review.
+- Test correction reporting modal.
+

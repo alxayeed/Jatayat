@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatayat/core/router/app_router.dart';
 
@@ -21,8 +20,6 @@ class CustomAppBar extends StatelessWidget {
         ? Colors.white
         : theme.colorScheme.primary;
 
-    final showSettings = dotenv.env['SHOW_SETTINGS_BUTTON'] == 'true';
-
     return SliverAppBar(
       pinned: true,
       expandedHeight: 80,
@@ -31,7 +28,7 @@ class CustomAppBar extends StatelessWidget {
       iconTheme: theme.iconTheme.copyWith(color: contentColor),
       actions: [
         ...?actions,
-        if (!canPop && showSettings)
+        if (!canPop)
           InkWell(
             onTap: () => context.push(AppRoutes.settings),
             child: Icon(

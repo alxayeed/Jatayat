@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_strings.dart';
@@ -302,7 +301,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     ThemeData theme,
     bool isBn,
   ) {
-    final bool showChoices = dotenv.env['ALLOW_REGION_CHANGING'] == 'true';
     return Container(
       key: const ValueKey('search_card_view'),
       padding: const EdgeInsets.all(12),
@@ -312,111 +310,109 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
       ),
       child: Column(
         children: [
-          if (showChoices) ...[
-            Align(
-              alignment: Alignment.centerRight,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ChoiceChip(
-                    label: Text(l10n.regionDhaka),
-                    selected: state.selectedRegion == TransitRegion.dhakaMetro,
-                    showCheckmark: false,
-                    labelStyle: TextStyle(
-                      fontSize: 12,
-                      fontWeight:
-                          state.selectedRegion == TransitRegion.dhakaMetro
-                          ? FontWeight.bold
-                          : FontWeight.w600,
+          Align(
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ChoiceChip(
+                  label: Text(l10n.regionDhaka),
+                  selected: state.selectedRegion == TransitRegion.dhakaMetro,
+                  showCheckmark: false,
+                  labelStyle: TextStyle(
+                    fontSize: 12,
+                    fontWeight:
+                        state.selectedRegion == TransitRegion.dhakaMetro
+                        ? FontWeight.bold
+                        : FontWeight.w600,
+                    color: state.selectedRegion == TransitRegion.dhakaMetro
+                        ? theme.colorScheme.onPrimary
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                  ),
+                  selectedColor: theme.colorScheme.primary,
+                  backgroundColor: theme.colorScheme.surface,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 2,
+                  ),
+                  labelPadding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 0,
+                  ),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: const VisualDensity(
+                    horizontal: -2,
+                    vertical: -4,
+                  ),
+                  shape: StadiumBorder(
+                    side: BorderSide(
                       color: state.selectedRegion == TransitRegion.dhakaMetro
-                          ? theme.colorScheme.onPrimary
-                          : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurface.withValues(
+                              alpha: 0.3,
+                            ),
+                      width: 1.5,
                     ),
-                    selectedColor: theme.colorScheme.primary,
-                    backgroundColor: theme.colorScheme.surface,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 2,
-                    ),
-                    labelPadding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 0,
-                    ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: const VisualDensity(
-                      horizontal: -2,
-                      vertical: -4,
-                    ),
-                    shape: StadiumBorder(
-                      side: BorderSide(
-                        color: state.selectedRegion == TransitRegion.dhakaMetro
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.onSurface.withValues(
-                                alpha: 0.3,
-                              ),
-                        width: 1.5,
-                      ),
-                    ),
-                    onSelected: (selected) {
-                      if (selected) {
-                        notifier.selectRegion(TransitRegion.dhakaMetro);
-                        originController.clear();
-                        destinationController.clear();
-                      }
-                    },
                   ),
-                  const SizedBox(width: 8),
-                  ChoiceChip(
-                    label: Text(l10n.regionChittagong),
-                    selected: state.selectedRegion == TransitRegion.ctgMetro,
-                    showCheckmark: false,
-                    labelStyle: TextStyle(
-                      fontSize: 12,
-                      fontWeight: state.selectedRegion == TransitRegion.ctgMetro
-                          ? FontWeight.bold
-                          : FontWeight.w600,
+                  onSelected: (selected) {
+                    if (selected) {
+                      notifier.selectRegion(TransitRegion.dhakaMetro);
+                      originController.clear();
+                      destinationController.clear();
+                    }
+                  },
+                ),
+                const SizedBox(width: 8),
+                ChoiceChip(
+                  label: Text(l10n.regionChittagong),
+                  selected: state.selectedRegion == TransitRegion.ctgMetro,
+                  showCheckmark: false,
+                  labelStyle: TextStyle(
+                    fontSize: 12,
+                    fontWeight: state.selectedRegion == TransitRegion.ctgMetro
+                        ? FontWeight.bold
+                        : FontWeight.w600,
+                    color: state.selectedRegion == TransitRegion.ctgMetro
+                        ? theme.colorScheme.onPrimary
+                        : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                  ),
+                  selectedColor: theme.colorScheme.primary,
+                  backgroundColor: theme.colorScheme.surface,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 2,
+                  ),
+                  labelPadding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 0,
+                  ),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  visualDensity: const VisualDensity(
+                    horizontal: -2,
+                    vertical: -4,
+                  ),
+                  shape: StadiumBorder(
+                    side: BorderSide(
                       color: state.selectedRegion == TransitRegion.ctgMetro
-                          ? theme.colorScheme.onPrimary
-                          : theme.colorScheme.onSurface.withValues(alpha: 0.8),
+                          ? theme.colorScheme.primary
+                          : theme.colorScheme.onSurface.withValues(
+                              alpha: 0.3,
+                            ),
+                      width: 1.5,
                     ),
-                    selectedColor: theme.colorScheme.primary,
-                    backgroundColor: theme.colorScheme.surface,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 2,
-                    ),
-                    labelPadding: const EdgeInsets.symmetric(
-                      horizontal: 4,
-                      vertical: 0,
-                    ),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    visualDensity: const VisualDensity(
-                      horizontal: -2,
-                      vertical: -4,
-                    ),
-                    shape: StadiumBorder(
-                      side: BorderSide(
-                        color: state.selectedRegion == TransitRegion.ctgMetro
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.onSurface.withValues(
-                                alpha: 0.3,
-                              ),
-                        width: 1.5,
-                      ),
-                    ),
-                    onSelected: (selected) {
-                      if (selected) {
-                        notifier.selectRegion(TransitRegion.ctgMetro);
-                        originController.clear();
-                        destinationController.clear();
-                      }
-                    },
                   ),
-                ],
-              ),
+                  onSelected: (selected) {
+                    if (selected) {
+                      notifier.selectRegion(TransitRegion.ctgMetro);
+                      originController.clear();
+                      destinationController.clear();
+                    }
+                  },
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-          ],
+          ),
+          const SizedBox(height: 12),
           Column(
             children: [
               AppTextField(

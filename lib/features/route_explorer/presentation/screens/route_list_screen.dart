@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/router/app_router.dart';
@@ -18,8 +18,6 @@ class RouteListScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final routeState = ref.watch(routeExplorerProvider);
     final theme = Theme.of(context);
-    final showSettings = dotenv.env['SHOW_SETTINGS_BUTTON'] == 'true';
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,17 +25,16 @@ class RouteListScreen extends ConsumerWidget {
           style: theme.textTheme.titleLarge?.copyWith(fontSize: 20),
         ),
         actions: [
-          if (showSettings)
-            InkWell(
-              onTap: () => context.push(AppRoutes.settings),
-              child: Icon(
-                Icons.settings,
-                color: theme.brightness == Brightness.dark
-                    ? Colors.white
-                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                size: 24,
-              ),
+          InkWell(
+            onTap: () => context.push(AppRoutes.settings),
+            child: Icon(
+              Icons.settings,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+              size: 24,
             ),
+          ),
           const SizedBox(width: 16),
         ],
       ),

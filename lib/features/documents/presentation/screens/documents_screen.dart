@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
 
 import '../../../../core/error/error_handler.dart';
 import '../../../../core/providers/settings_provider.dart';
@@ -22,8 +22,6 @@ class DocumentsScreen extends ConsumerWidget {
     final theme = Theme.of(context);
 
     final isBengali = settings.locale.languageCode == 'bn';
-    final showSettings = dotenv.env['SHOW_SETTINGS_BUTTON'] == 'true';
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -34,17 +32,16 @@ class DocumentsScreen extends ConsumerWidget {
           ),
         ),
         actions: [
-          if (showSettings)
-            InkWell(
-              onTap: () => context.push(AppRoutes.settings),
-              child: Icon(
-                Icons.settings,
-                color: theme.brightness == Brightness.dark
-                    ? Colors.white
-                    : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                size: 24,
-              ),
+          InkWell(
+            onTap: () => context.push(AppRoutes.settings),
+            child: Icon(
+              Icons.settings,
+              color: theme.brightness == Brightness.dark
+                  ? Colors.white
+                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+              size: 24,
             ),
+          ),
           const SizedBox(width: 16),
         ],
       ),

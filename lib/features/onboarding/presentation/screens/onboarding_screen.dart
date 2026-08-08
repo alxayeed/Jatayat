@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jatayat/core/providers/settings_provider.dart';
@@ -73,8 +72,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // Language Switcher
-                    if (dotenv.env['ALLOW_LANGUAGE_SWITCHING'] == 'true')
-                      _buildLanguageToggle(),
+                    _buildLanguageToggle(),
 
                     // Skip Button
                     AnimatedOpacity(
