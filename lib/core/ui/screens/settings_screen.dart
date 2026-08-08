@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../core/providers/settings_provider.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../di/core_providers.dart';
+import '../widgets/app_switch_button.dart';
 import '../widgets/custom_app_bar.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -311,43 +311,17 @@ class _ThemeToggle extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final cs = Theme.of(context).colorScheme;
     final themeMode = ref.watch(settingsProvider).themeMode;
     final notifier = ref.read(settingsProvider.notifier);
 
-    final options = [
-      (value: ThemeMode.light, icon: Icons.light_mode_outlined),
-      (value: ThemeMode.dark, icon: Icons.dark_mode_outlined),
-      (value: ThemeMode.system, icon: Icons.brightness_auto_outlined),
-    ];
-
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: options.map((opt) {
-          final isSelected = themeMode == opt.value;
-          return GestureDetector(
-            onTap: () => notifier.setTheme(opt.value),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              decoration: BoxDecoration(
-                color: isSelected ? cs.primary : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                opt.icon,
-                size: 16,
-                color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
-              ),
-            ),
-          );
-        }).toList(),
-      ),
+    return AppSwitchButton<ThemeMode>(
+      selectedValue: themeMode,
+      options: const [
+        AppSwitchOption(value: ThemeMode.light, icon: Icons.light_mode_outlined),
+        AppSwitchOption(value: ThemeMode.dark, icon: Icons.dark_mode_outlined),
+        AppSwitchOption(value: ThemeMode.system, icon: Icons.brightness_auto_outlined),
+      ],
+      onSelected: notifier.setTheme,
     );
   }
 }
@@ -358,45 +332,16 @@ class _LanguageToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
     final locale = ref.watch(settingsProvider).locale;
     final notifier = ref.read(settingsProvider.notifier);
 
-    final options = [
-      (value: const Locale('en'), label: l10n.langEnglish),
-      (value: const Locale('bn'), label: l10n.langBangla),
-    ];
-
-    return Container(
-      padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: options.map((opt) {
-          final isSelected = locale == opt.value;
-          return GestureDetector(
-            onTap: () => notifier.setLocale(opt.value),
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: isSelected ? cs.primary : Colors.transparent,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                opt.label,
-                style: tt.labelMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? cs.onPrimary : cs.onSurfaceVariant,
-                ),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
+    return AppSwitchButton<Locale>(
+      selectedValue: locale,
+      options: [
+        AppSwitchOption(value: const Locale('en'), label: l10n.langEnglish),
+        AppSwitchOption(value: const Locale('bn'), label: l10n.langBangla),
+      ],
+      onSelected: notifier.setLocale,
     );
   }
 }

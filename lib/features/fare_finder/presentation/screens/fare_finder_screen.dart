@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/transit_region.dart';
 import '../../../../core/providers/settings_provider.dart';
+import '../../../../core/ui/widgets/app_switch_button.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
@@ -95,13 +96,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
         });
       }
     }
-
-    // Idle state check: No active loading, no results, and no open autocomplete suggestion drop-downs
-    final bool isIdleState =
-        !state.isLoading &&
-        state.fareResults.isEmpty &&
-        state.originSuggestions.isEmpty &&
-        state.destinationSuggestions.isEmpty;
 
     return GestureDetector(
       onTap: () {
@@ -453,89 +447,29 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     AppLocalizations l10n,
     ThemeData theme,
   ) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ChoiceChip(
-          label: Text(l10n.regionDhaka),
-          selected: state.selectedRegion == TransitRegion.dhakaMetro,
-          showCheckmark: false,
-          labelStyle: TextStyle(
-            fontSize: 12,
-            fontWeight: state.selectedRegion == TransitRegion.dhakaMetro
-                ? FontWeight.bold
-                : FontWeight.w600,
-            color: state.selectedRegion == TransitRegion.dhakaMetro
-                ? theme.colorScheme.onPrimary
-                : theme.colorScheme.onSurface.withValues(alpha: 0.8),
-          ),
-          selectedColor: theme.colorScheme.primary,
-          backgroundColor: theme.colorScheme.surface,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: const VisualDensity(horizontal: -2, vertical: -4),
-          shape: StadiumBorder(
-            side: BorderSide(
-              color: state.selectedRegion == TransitRegion.dhakaMetro
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.onSurface.withValues(alpha: 0.3),
-              width: 1.5,
-            ),
-          ),
-          onSelected: (selected) {
-            if (selected) {
-              setState(() {
-                _isCollapsed = false;
-                _manuallyExpanded = false;
-              });
-              notifier.selectRegion(TransitRegion.dhakaMetro);
-              originController.clear();
-              destinationController.clear();
-            }
-          },
+    return AppSwitchButton<TransitRegion>(
+      selectedValue: state.selectedRegion,
+      options: [
+        AppSwitchOption(
+          value: TransitRegion.dhakaMetro,
+          label: l10n.regionDhaka,
         ),
-        const SizedBox(width: 6),
-        ChoiceChip(
-          label: Text(l10n.regionChittagong),
-          selected: state.selectedRegion == TransitRegion.ctgMetro,
-          showCheckmark: false,
-          labelStyle: TextStyle(
-            fontSize: 12,
-            fontWeight: state.selectedRegion == TransitRegion.ctgMetro
-                ? FontWeight.bold
-                : FontWeight.w600,
-            color: state.selectedRegion == TransitRegion.ctgMetro
-                ? theme.colorScheme.onPrimary
-                : theme.colorScheme.onSurface.withValues(alpha: 0.8),
-          ),
-          selectedColor: theme.colorScheme.primary,
-          backgroundColor: theme.colorScheme.surface,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-          labelPadding: const EdgeInsets.symmetric(horizontal: 4, vertical: 0),
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          visualDensity: const VisualDensity(horizontal: -2, vertical: -4),
-          shape: StadiumBorder(
-            side: BorderSide(
-              color: state.selectedRegion == TransitRegion.ctgMetro
-                  ? theme.colorScheme.primary
-                  : theme.colorScheme.onSurface.withValues(alpha: 0.3),
-              width: 1.5,
-            ),
-          ),
-          onSelected: (selected) {
-            if (selected) {
-              setState(() {
-                _isCollapsed = false;
-                _manuallyExpanded = false;
-              });
-              notifier.selectRegion(TransitRegion.ctgMetro);
-              originController.clear();
-              destinationController.clear();
-            }
-          },
+        AppSwitchOption(
+          value: TransitRegion.ctgMetro,
+          label: l10n.regionChittagong,
         ),
       ],
+      onSelected: (region) {
+        if (region != state.selectedRegion) {
+          setState(() {
+            _isCollapsed = false;
+            _manuallyExpanded = false;
+          });
+          notifier.selectRegion(region);
+          originController.clear();
+          destinationController.clear();
+        }
+      },
     );
   }
 

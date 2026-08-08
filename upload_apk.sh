@@ -2,11 +2,11 @@
 
 # Build the dev flavor APK
 flutter clean
-flutter build apk --release
+flutter build apk --release --split-per-abi --dart-define=FLAVOR=prod
 
 # Path to the APK
-APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
-APP_ID="1:844581921106:android:a51fb09eafa22c83bd1a8b"
+APK_PATH="build/app/outputs/flutter-apk/app-arm64-v8a-release.apk"
+APP_ID="1:80890607538:android:6944957d81e1f7abbfd6ab"
 RELEASE_NOTES_FILE_PATH="changelog.txt"
 #TESTERS_EMAILS="alxayeed@gmail.com"
 TESTERS_GROUP="dev"
