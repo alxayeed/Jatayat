@@ -32,15 +32,15 @@ class UpdateBottomSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Color appPrimaryColor = Theme.of(context).primaryColor;
+    final theme = Theme.of(context);
 
     return PopScope(
       canPop: false,
       child: Container(
         padding: const EdgeInsets.all(24.0),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
             topRight: Radius.circular(20),
           ),
@@ -50,22 +50,22 @@ class UpdateBottomSheet extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Text(
+              Text(
                 'Update Available',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 0.3,
-                  color: Colors.black,
+                  color: theme.colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 12),
-              const Text(
-                'A new version of Jatayat is ready. Upgrade now to get the latest changes.',
+              Text(
+                'A new version of Jatayat is available on the Google Play Store. Please update the app to continue using the latest features and transit data.',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.black54,
                   height: 1.4,
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 24),
@@ -84,10 +84,10 @@ class UpdateBottomSheet extends ConsumerWidget {
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Cancel',
                         style: TextStyle(
-                          color: Colors.black54,
+                          color: theme.colorScheme.onSurfaceVariant,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -98,7 +98,7 @@ class UpdateBottomSheet extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: _launchPlayStore,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: appPrimaryColor,
+                        backgroundColor: theme.colorScheme.primary,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         elevation: 0,
                         shape: RoundedRectangleBorder(

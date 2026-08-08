@@ -359,7 +359,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2028) : Colors.white,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
@@ -369,7 +369,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           ),
         ],
         border: Border.all(
-          color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
           width: 1.5,
         ),
       ),
@@ -533,7 +533,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2028) : Colors.white,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
@@ -543,7 +543,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           ),
         ],
         border: Border.all(
-          color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
           width: 1.5,
         ),
       ),
@@ -562,7 +562,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E2028) : Colors.white,
+        color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
@@ -572,7 +572,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen>
           ),
         ],
         border: Border.all(
-          color: isDark ? Colors.white10 : const Color(0xFFE2E8F0),
+          color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5),
           width: 1.5,
         ),
       ),

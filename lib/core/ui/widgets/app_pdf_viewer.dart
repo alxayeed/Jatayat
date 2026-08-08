@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../../core/styles/app_colors.dart';
 import '../../../../../l10n/app_localizations.dart';
 import '../../error/error_handler.dart';
 
@@ -141,7 +140,7 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         title: Text(
           widget.title,
@@ -265,11 +264,11 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircularProgressIndicator(color: AppColors.primary),
+            CircularProgressIndicator(color: theme.colorScheme.primary),
             const SizedBox(height: 16),
             Text(
               l10n.loadingGazette, // Localized String
-              style: const TextStyle(color: AppColors.onSurfaceVariant),
+              style: TextStyle(color: theme.colorScheme.onSurfaceVariant),
             ),
           ],
         ),
@@ -309,49 +308,81 @@ class _AppPdfViewerState extends State<AppPdfViewer> {
       );
     }
 
+    final isDark = theme.brightness == Brightness.dark;
+
+    Widget pdfWidget = PDFView(
+      filePath: _localPath,
+      enableSwipe: false,
+      swipeHorizontal: _swipeHorizontal,
+      autoSpacing: true,
+      pageFling: false,
+      pageSnap: false,
+      defaultPage: _currentPage,
+      fitPolicy: _swipeHorizontal ? FitPolicy.HEIGHT : FitPolicy.WIDTH,
+      preventLinkNavigation: false,
+      onRender: (pages) {
+        setState(() {
+          _totalPages = pages ?? 0;
+          _isReady = true;
+        });
+
+        // Runtime Guard: If the native framework missed the defaultPage assignment
+        // layout pass during initial hot boot buffers, force-jump explicitly.
+        if (widget.initialPage > 1) {
+          Future.delayed(const Duration(milliseconds: 100), () {
+            _pdfViewController?.setPage(widget.initialPage - 1);
+          });
+        }
+      },
+      onError: (error) {
+        setState(() => _error = error);
+      },
+      onPageError: (page, error) {
+        developer.log('❌ Page Error: [$page] $error', name: 'PdfViewer');
+      },
+      onViewCreated: (PDFViewController pdfViewController) {
+        _pdfViewController = pdfViewController;
+      },
+      onPageChanged: (int? page, int? total) {
+        if (page != null) {
+          setState(() => _currentPage = page);
+        }
+      },
+    );
+
+    if (isDark) {
+      final bgColor = theme.scaffoldBackgroundColor;
+      final textColor = theme.colorScheme.onSurface;
+
+      final bgR = (bgColor.r * 255).roundToDouble();
+      final bgG = (bgColor.g * 255).roundToDouble();
+      final bgB = (bgColor.b * 255).roundToDouble();
+
+      final textR = (textColor.r * 255).roundToDouble();
+      final textG = (textColor.g * 255).roundToDouble();
+      final textB = (textColor.b * 255).roundToDouble();
+
+      // Matrix transforms white page (255) to bg RGB and black text (0) to theme.colorScheme.onSurface RGB
+      final scaleR = (bgR - textR) / 255.0;
+      final scaleG = (bgG - textG) / 255.0;
+      final scaleB = (bgB - textB) / 255.0;
+
+      pdfWidget = ColorFiltered(
+        colorFilter: ColorFilter.matrix([
+          scaleR,      0,      0, 0, textR,
+               0, scaleG,      0, 0, textG,
+               0,      0, scaleB, 0, textB,
+               0,      0,      0, 1,     0,
+        ]),
+        child: pdfWidget,
+      );
+    }
+
     return InteractiveViewer(
       transformationController: _transformationController,
       minScale: 1.0,
       maxScale: 4.0,
-      child: PDFView(
-        filePath: _localPath,
-        enableSwipe: false,
-        swipeHorizontal: _swipeHorizontal,
-        autoSpacing: true,
-        pageFling: false,
-        pageSnap: false,
-        defaultPage: _currentPage,
-        fitPolicy: _swipeHorizontal ? FitPolicy.HEIGHT : FitPolicy.WIDTH,
-        preventLinkNavigation: false,
-        onRender: (pages) {
-          setState(() {
-            _totalPages = pages ?? 0;
-            _isReady = true;
-          });
-
-          // Runtime Guard: If the native framework missed the defaultPage assignment
-          // layout pass during initial hot boot buffers, force-jump explicitly.
-          if (widget.initialPage > 1) {
-            Future.delayed(const Duration(milliseconds: 100), () {
-              _pdfViewController?.setPage(widget.initialPage - 1);
-            });
-          }
-        },
-        onError: (error) {
-          setState(() => _error = error);
-        },
-        onPageError: (page, error) {
-          developer.log('❌ Page Error: [$page] $error', name: 'PdfViewer');
-        },
-        onViewCreated: (PDFViewController pdfViewController) {
-          _pdfViewController = pdfViewController;
-        },
-        onPageChanged: (int? page, int? total) {
-          if (page != null) {
-            setState(() => _currentPage = page);
-          }
-        },
-      ),
+      child: pdfWidget,
     );
   }
 

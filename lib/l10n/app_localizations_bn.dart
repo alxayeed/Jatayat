@@ -15,7 +15,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get homeTitle => 'কোথায় যাবেন?';
 
   @override
-  String get homeSubtitle => 'ঢাকা শহরের বাসের ভাড়া দেখুন';
+  String get homeSubtitle => 'বাসের অফিশিয়াল ভাড়া ও রুট দেখুন';
 
   @override
   String get homeMenu => 'হোম';
@@ -24,7 +24,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get routesMenu => 'রুটসমূহ';
 
   @override
-  String get docsMenu => 'চার্টলিস্ট';
+  String get docsMenu => 'গ্যাজেট তালিকা';
 
   @override
   String get bookmarksMenu => 'বুকমার্ক';
@@ -48,10 +48,10 @@ class AppLocalizationsBn extends AppLocalizations {
   String get searchFares => 'ভাড়া খুঁজুন';
 
   @override
-  String get fromStop => 'যেখান থেকে';
+  String get fromStop => 'যাত্রার শুরু';
 
   @override
-  String get toStop => 'যেখানে যাবেন';
+  String get toStop => 'গন্তব্য';
 
   @override
   String get findBus => 'ভাড়া দেখুন';
@@ -60,7 +60,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get fareSearchChange => 'পরিবর্তন';
 
   @override
-  String get recentSearches => 'সাম্প্রতিক সার্চ';
+  String get recentSearches => 'সাম্প্রতিক অনুসন্ধান';
 
   @override
   String get results => 'ফলাফল';
@@ -78,18 +78,19 @@ class AppLocalizationsBn extends AppLocalizations {
   String get totalDistance => 'মোট দূরত্ব';
 
   @override
-  String get viewSource => 'অফিসিয়াল ডকুমেন্ট দেখুন';
+  String get viewSource => 'অফিসিয়াল গ্যাজেট দেখুন';
 
   @override
   String get stopsSearchErrorMessage =>
-      'দুঃখিত, এই স্টপেজের কোনো রুটের তথ্য ডাটাবেসে নেই।';
+      'দুঃখিত, এই স্টপেজের জন্য কোনো বাসের তথ্য পাওয়া যায়নি।';
 
   @override
-  String get fareSearchErrorMessage => 'দুঃখিত, এই তথ্য ডাটাবেসে নেই।';
+  String get fareSearchErrorMessage =>
+      'দুঃখিত, এই রুট বা স্টপেজের ভাড়া পাওয়া যায়নি।';
 
   @override
   String get calculatedFareErrorMessage =>
-      'প্রথমে যাত্রা শুরু এবং গন্তব্যস্থান নির্বাচন করুন';
+      'অনুগ্রহ করে শুরু এবং গন্তব্য স্টপেজ নির্বাচন করুন';
 
   @override
   String get loadingStopsError =>
@@ -99,7 +100,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get fareDetailsTitle => 'ভাড়ার বিস্তারিত';
 
   @override
-  String get fareRatePrefix => 'ভাড়ার হার : প্রতি যাত্রী প্রতি কিলোমিটার';
+  String get fareRatePrefix => 'ভাড়ার হার: প্রতি কি.মি. (যাত্রীপ্রতি)';
 
   @override
   String get routeDistancePrefix => 'রুটের মোট দূরত্ব';
@@ -194,7 +195,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get settings => 'সেটিংস';
 
   @override
-  String get appearance => 'পরিদর্শন';
+  String get appearance => 'ডিসপ্লে ও থিম';
 
   @override
   String get theme => 'থিম';
@@ -227,7 +228,7 @@ class AppLocalizationsBn extends AppLocalizations {
   String get checkForUpdates => 'আপডেট চেক করুন';
 
   @override
-  String get about => 'সম্পর্কে';
+  String get about => 'অ্যাপ সম্পর্কে';
 
   @override
   String get version => 'ভার্সন';
@@ -237,7 +238,7 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get appDescription =>
-      'যাতায়াত আপনাকে ঢাকা শহরের বাসের সরকারি ভাড়া জানতে সাহায্য করে।';
+      'বাসের অফিশিয়াল ভাড়া ও রুট সহজে খুঁজে নিন যাতায়াত অ্যাপে।';
 
   @override
   String get loadingGazette => 'গ্যাজেট রেফারেন্স লোড হচ্ছে...';
@@ -254,33 +255,30 @@ class AppLocalizationsBn extends AppLocalizations {
 
   @override
   String get errorNetwork =>
-      'নেটওয়ার্ক সংযোগ সমস্যা। আপনার ইন্টারনেট চেক করুন এবং পুনরায় চেষ্টা করুন।';
+      'ইন্টারনেট সংযোগ পাওয়া যাচ্ছে না। সংযোগ চেক করে আবার চেষ্টা করুন।';
 
   @override
-  String get errorTimeout =>
-      'অনুরোধের সময় পার হয়ে গেছে। দয়া করে আবার চেষ্টা করুন।';
+  String get errorTimeout => 'সময় বেশি লাগছে। দয়া করে আবার চেষ্টা করুন।';
 
   @override
-  String get errorNotFound => 'অনুরোধকৃত তথ্যটি পাওয়া যায়নি।';
+  String get errorNotFound => 'কাঙ্ক্ষিত তথ্যটি পাওয়া যায়নি।';
 
   @override
-  String get errorUnauthorized =>
-      'প্রবেশাধিকার নেই। আপনি এই তথ্য দেখতে অনুমোদিত নন।';
+  String get errorUnauthorized => 'এই তথ্য দেখার অনুমতি নেই।';
 
   @override
   String get errorServer =>
-      'সার্ভার সমস্যা হয়েছে (৫০০)। দয়া করে কিছুক্ষণ পর আবার চেষ্টা করুন।';
+      'সার্ভারে সমস্যা দেখা দিয়েছে। দয়া করে কিছুক্ষণ পর আবার চেষ্টা করুন।';
 
   @override
-  String get errorGeneric =>
-      'একটি অপ্রত্যাশিত সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
+  String get errorGeneric => 'একটি সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।';
 
   @override
   String get onboardingWelcomeTitle => 'যাতায়াত অ্যাপে স্বাগতম';
 
   @override
   String get onboardingWelcomeDesc =>
-      'ঢাকার সব বাস রুট, স্টপেজ এবং সরকারি ভাড়ার তালিকা দেখুন সহজেই';
+      'সব বাস রুট, স্টপেজ এবং সরকারি ভাড়ার তালিকা দেখুন সহজেই';
 
   @override
   String get onboardingSearchTitle => 'স্মার্ট ভাড়া অনুসন্ধান';

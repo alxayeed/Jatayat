@@ -71,9 +71,7 @@ class RouteDetailsScreen extends ConsumerWidget {
                     : Icons.bookmark_outline_rounded,
                 color: isSaved
                     ? theme.colorScheme.primary
-                    : (theme.brightness == Brightness.dark
-                          ? Colors.white
-                          : theme.colorScheme.primary),
+                    : theme.colorScheme.onSurface,
               ),
               onPressed: () {
                 final bookmarksNotifier = ref.read(bookmarksProvider.notifier);

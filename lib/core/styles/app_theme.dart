@@ -319,9 +319,10 @@ class AppTheme {
   static const _darkSurface = Color(0xFF1A1C22);
   static const _darkSurfaceLow = Color(0xFF1E2028);
   static const _darkSurfaceLowest = Color(0xFF16181E);
-  static const _darkOnSurface = Color(0xFFE2E2E9);
-  static const _darkOnSurfaceVariant = Color(0xFF9A9DB0);
+  static const _darkOnSurface = Color(0xFFF5F2EB); // Warm cream / soft beige for body & titles
+  static const _darkOnSurfaceVariant = Color(0xFFC7C5BD); // Soft muted beige-gray for secondary text
   static const _darkOutline = Color(0xFF44464F);
+  static const _darkPrimaryBeige = Color(0xFFF5F2EB);
 
   static ThemeData darkTheme = ThemeData(
     useMaterial3: true,
@@ -331,10 +332,10 @@ class AppTheme {
     fontFamily: 'Inter',
 
     colorScheme: ColorScheme.dark(
-      primary: AppColors.primary,
-      onPrimary: Colors.white,
-      primaryContainer: AppColors.primary.withValues(alpha: 0.2),
-      onPrimaryContainer: AppColors.primary,
+      primary: _darkPrimaryBeige,
+      onPrimary: AppColors.primary,
+      primaryContainer: _darkPrimaryBeige.withValues(alpha: 0.15),
+      onPrimaryContainer: _darkPrimaryBeige,
       secondary: AppColors.secondary,
       onSecondary: Colors.white,
       tertiary: AppColors.tertiaryFixed,
@@ -446,7 +447,7 @@ class AppTheme {
 
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.transparent,
-      foregroundColor: AppColors.primary,
+      foregroundColor: _darkPrimaryBeige,
       elevation: 0,
       centerTitle: false,
       titleTextStyle: TextStyle(
@@ -454,7 +455,7 @@ class AppTheme {
         fontWeight: FontWeight.w900,
         fontStyle: FontStyle.italic,
         fontSize: 24,
-        color: AppColors.primary,
+        color: _darkPrimaryBeige,
       ),
     ),
 

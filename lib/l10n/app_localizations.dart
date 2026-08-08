@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @homeSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Find fares across Dhaka City'**
+  /// **'Find official bus fares & route details'**
   String get homeSubtitle;
 
   /// No description provided for @homeMenu.
@@ -461,7 +461,7 @@ abstract class AppLocalizations {
   /// No description provided for @appearance.
   ///
   /// In en, this message translates to:
-  /// **'Appearance'**
+  /// **'Display & Theme'**
   String get appearance;
 
   /// No description provided for @theme.
@@ -545,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @appDescription.
   ///
   /// In en, this message translates to:
-  /// **'Jatayat helps you find official bus fares across Dhaka city.'**
+  /// **'Jatayat helps you find official bus fares & route details easily.'**
   String get appDescription;
 
   /// No description provided for @loadingGazette.
@@ -617,7 +617,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingWelcomeDesc.
   ///
   /// In en, this message translates to:
-  /// **'Navigate Dhaka city\'s bus routes, stoppages, and official fares easily.'**
+  /// **'Navigate official bus routes, stoppages, and fares easily.'**
   String get onboardingWelcomeDesc;
 
   /// No description provided for @onboardingSearchTitle.

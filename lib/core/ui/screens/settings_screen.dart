@@ -165,7 +165,7 @@ class SettingsScreen extends ConsumerWidget {
             label.toUpperCase(),
             style: tt.labelSmall?.copyWith(
               letterSpacing: 1.2,
-              color: cs.primary,
+              color: cs.onSurface,
               fontWeight: FontWeight.bold,
             ),
           ),

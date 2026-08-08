@@ -15,7 +15,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeTitle => 'Where to?';
 
   @override
-  String get homeSubtitle => 'Find fares across Dhaka City';
+  String get homeSubtitle => 'Find official bus fares & route details';
 
   @override
   String get homeMenu => 'Home';
@@ -194,7 +194,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings => 'Settings';
 
   @override
-  String get appearance => 'Appearance';
+  String get appearance => 'Display & Theme';
 
   @override
   String get theme => 'Theme';
@@ -237,7 +237,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get appDescription =>
-      'Jatayat helps you find official bus fares across Dhaka city.';
+      'Jatayat helps you find official bus fares & route details easily.';
 
   @override
   String get loadingGazette => 'Loading Gazette Reference...';
@@ -276,7 +276,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingWelcomeDesc =>
-      'Navigate Dhaka city\'s bus routes, stoppages, and official fares easily.';
+      'Navigate official bus routes, stoppages, and fares easily.';
 
   @override
   String get onboardingSearchTitle => 'Smart Fare Finder';

@@ -29,9 +29,7 @@ class RouteListScreen extends ConsumerWidget {
             onTap: () => context.push(AppRoutes.settings),
             child: Icon(
               Icons.settings,
-              color: theme.brightness == Brightness.dark
-                  ? Colors.white
-                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+              color: theme.colorScheme.onSurface,
               size: 24,
             ),
           ),

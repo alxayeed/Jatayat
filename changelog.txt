@@ -1,3 +1,9 @@
+1.1.0+21
+[08/8/2026]
+- ADD: Dark theme support
+- ADD: Bangla language support
+- ADD: Chittagong official routes
+
 1.0.0+20
 [02/7/2026]
 - ADD: AD-ID permission

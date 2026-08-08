@@ -71,9 +71,7 @@ class FareDetailsScreen extends ConsumerWidget {
                       : Icons.bookmark_outline_rounded,
                   color: isSaved
                       ? theme.colorScheme.primary
-                      : (theme.brightness == Brightness.dark
-                            ? Colors.white
-                            : theme.colorScheme.primary),
+                      : theme.colorScheme.onSurface,
                 ),
                 onPressed: () {
                   final bookmarksNotifier = ref.read(
@@ -283,14 +281,14 @@ class FareDetailsScreen extends ConsumerWidget {
         Text(
           '${l10n.fareRatePrefix} ${fare.baseRate} ${l10n.taka}',
           style: theme.textTheme.labelLarge?.copyWith(
-            color: isDark ? Colors.white : theme.colorScheme.primary,
+            color: theme.colorScheme.primary,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           '${l10n.routeDistancePrefix} ${fare.routeTotalDistance} ${l10n.kilometerSuffix}',
           style: theme.textTheme.labelLarge?.copyWith(
-            color: isDark ? Colors.white : null,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 12),
@@ -301,7 +299,7 @@ class FareDetailsScreen extends ConsumerWidget {
           style: theme.textTheme.headlineSmall?.copyWith(
             fontFamily: l10n.localeName == 'bn' ? 'HindSiliguri' : null,
             fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : null,
+            color: theme.colorScheme.onSurface,
           ),
         ),
       ],
@@ -392,11 +390,11 @@ class FareDetailsScreen extends ConsumerWidget {
           style: isPrimary
               ? theme.textTheme.displaySmall?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.white : theme.colorScheme.primary,
+                  color: theme.colorScheme.primary,
                 )
               : theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : null,
+                  color: theme.colorScheme.onSurface,
                 ),
         ),
       ],

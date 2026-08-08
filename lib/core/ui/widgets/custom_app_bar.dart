@@ -16,9 +16,8 @@ class CustomAppBar extends StatelessWidget {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final Color contentColor = isDark
-        ? Colors.white
-        : theme.colorScheme.primary;
+    final Color contentColor =
+        theme.appBarTheme.foregroundColor ?? theme.colorScheme.onSurface;
 
     return SliverAppBar(
       pinned: true,
@@ -33,9 +32,7 @@ class CustomAppBar extends StatelessWidget {
             onTap: () => context.push(AppRoutes.settings),
             child: Icon(
               Icons.settings,
-              color: isDark
-                  ? Colors.white
-                  : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+              color: contentColor,
               size: 24,
             ),
           ),
