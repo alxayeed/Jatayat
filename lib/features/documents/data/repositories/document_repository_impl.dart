@@ -5,7 +5,9 @@ import '../datasources/document_data_source.dart';
 
 class DocumentRepositoryImpl implements DocumentRepository {
   final DocumentRemoteDataSource _remoteDataSource;
+  // ignore: unused_field
   final DocumentRemoteDataSource _localDataSource;
+  // ignore: unused_field
   final DatabaseSyncService _syncService;
 
   DocumentRepositoryImpl(

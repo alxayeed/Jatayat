@@ -59,7 +59,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     });
 
     ref.listen(settingsProvider.select((s) => s.locale), (previous, next) {
-      if (previous != next && next != null) {
+      if (previous != next) {
         final isBn = next.languageCode == 'bn';
         final currentState = ref.read(fareSearchProvider);
         if (currentState.selectedOrigin != null) {
