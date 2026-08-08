@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FareSearchState {
 
- List<StopEntity> get originSuggestions; List<StopEntity> get destinationSuggestions; List<FareResultEntity> get fareResults; StopEntity? get selectedOrigin; StopEntity? get selectedDestination; bool get isLoading; bool get isDestinationsLoading; String? get errorMessage; TransitRegion get selectedRegion;
+ List<StopEntity> get originSuggestions; List<StopEntity> get destinationSuggestions; List<FareResultEntity> get fareResults; StopEntity? get selectedOrigin; StopEntity? get selectedDestination; bool get isLoading; bool get isDestinationsLoading; bool get isOriginDropdownOpen; bool get isDestinationDropdownOpen; String? get errorMessage; TransitRegion get selectedRegion;
 /// Create a copy of FareSearchState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $FareSearchStateCopyWith<FareSearchState> get copyWith => _$FareSearchStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FareSearchState&&const DeepCollectionEquality().equals(other.originSuggestions, originSuggestions)&&const DeepCollectionEquality().equals(other.destinationSuggestions, destinationSuggestions)&&const DeepCollectionEquality().equals(other.fareResults, fareResults)&&(identical(other.selectedOrigin, selectedOrigin) || other.selectedOrigin == selectedOrigin)&&(identical(other.selectedDestination, selectedDestination) || other.selectedDestination == selectedDestination)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isDestinationsLoading, isDestinationsLoading) || other.isDestinationsLoading == isDestinationsLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.selectedRegion, selectedRegion) || other.selectedRegion == selectedRegion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FareSearchState&&const DeepCollectionEquality().equals(other.originSuggestions, originSuggestions)&&const DeepCollectionEquality().equals(other.destinationSuggestions, destinationSuggestions)&&const DeepCollectionEquality().equals(other.fareResults, fareResults)&&(identical(other.selectedOrigin, selectedOrigin) || other.selectedOrigin == selectedOrigin)&&(identical(other.selectedDestination, selectedDestination) || other.selectedDestination == selectedDestination)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isDestinationsLoading, isDestinationsLoading) || other.isDestinationsLoading == isDestinationsLoading)&&(identical(other.isOriginDropdownOpen, isOriginDropdownOpen) || other.isOriginDropdownOpen == isOriginDropdownOpen)&&(identical(other.isDestinationDropdownOpen, isDestinationDropdownOpen) || other.isDestinationDropdownOpen == isDestinationDropdownOpen)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.selectedRegion, selectedRegion) || other.selectedRegion == selectedRegion));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(originSuggestions),const DeepCollectionEquality().hash(destinationSuggestions),const DeepCollectionEquality().hash(fareResults),selectedOrigin,selectedDestination,isLoading,isDestinationsLoading,errorMessage,selectedRegion);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(originSuggestions),const DeepCollectionEquality().hash(destinationSuggestions),const DeepCollectionEquality().hash(fareResults),selectedOrigin,selectedDestination,isLoading,isDestinationsLoading,isOriginDropdownOpen,isDestinationDropdownOpen,errorMessage,selectedRegion);
 
 @override
 String toString() {
-  return 'FareSearchState(originSuggestions: $originSuggestions, destinationSuggestions: $destinationSuggestions, fareResults: $fareResults, selectedOrigin: $selectedOrigin, selectedDestination: $selectedDestination, isLoading: $isLoading, isDestinationsLoading: $isDestinationsLoading, errorMessage: $errorMessage, selectedRegion: $selectedRegion)';
+  return 'FareSearchState(originSuggestions: $originSuggestions, destinationSuggestions: $destinationSuggestions, fareResults: $fareResults, selectedOrigin: $selectedOrigin, selectedDestination: $selectedDestination, isLoading: $isLoading, isDestinationsLoading: $isDestinationsLoading, isOriginDropdownOpen: $isOriginDropdownOpen, isDestinationDropdownOpen: $isDestinationDropdownOpen, errorMessage: $errorMessage, selectedRegion: $selectedRegion)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $FareSearchStateCopyWith<$Res>  {
   factory $FareSearchStateCopyWith(FareSearchState value, $Res Function(FareSearchState) _then) = _$FareSearchStateCopyWithImpl;
 @useResult
 $Res call({
- List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, bool isDestinationsLoading, String? errorMessage, TransitRegion selectedRegion
+ List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, bool isDestinationsLoading, bool isOriginDropdownOpen, bool isDestinationDropdownOpen, String? errorMessage, TransitRegion selectedRegion
 });
 
 
@@ -62,7 +62,7 @@ class _$FareSearchStateCopyWithImpl<$Res>
 
 /// Create a copy of FareSearchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? originSuggestions = null,Object? destinationSuggestions = null,Object? fareResults = null,Object? selectedOrigin = freezed,Object? selectedDestination = freezed,Object? isLoading = null,Object? isDestinationsLoading = null,Object? errorMessage = freezed,Object? selectedRegion = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? originSuggestions = null,Object? destinationSuggestions = null,Object? fareResults = null,Object? selectedOrigin = freezed,Object? selectedDestination = freezed,Object? isLoading = null,Object? isDestinationsLoading = null,Object? isOriginDropdownOpen = null,Object? isDestinationDropdownOpen = null,Object? errorMessage = freezed,Object? selectedRegion = null,}) {
   return _then(_self.copyWith(
 originSuggestions: null == originSuggestions ? _self.originSuggestions : originSuggestions // ignore: cast_nullable_to_non_nullable
 as List<StopEntity>,destinationSuggestions: null == destinationSuggestions ? _self.destinationSuggestions : destinationSuggestions // ignore: cast_nullable_to_non_nullable
@@ -71,6 +71,8 @@ as List<FareResultEntity>,selectedOrigin: freezed == selectedOrigin ? _self.sele
 as StopEntity?,selectedDestination: freezed == selectedDestination ? _self.selectedDestination : selectedDestination // ignore: cast_nullable_to_non_nullable
 as StopEntity?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isDestinationsLoading: null == isDestinationsLoading ? _self.isDestinationsLoading : isDestinationsLoading // ignore: cast_nullable_to_non_nullable
+as bool,isOriginDropdownOpen: null == isOriginDropdownOpen ? _self.isOriginDropdownOpen : isOriginDropdownOpen // ignore: cast_nullable_to_non_nullable
+as bool,isDestinationDropdownOpen: null == isDestinationDropdownOpen ? _self.isDestinationDropdownOpen : isDestinationDropdownOpen // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,selectedRegion: null == selectedRegion ? _self.selectedRegion : selectedRegion // ignore: cast_nullable_to_non_nullable
 as TransitRegion,
@@ -182,10 +184,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  bool isDestinationsLoading,  String? errorMessage,  TransitRegion selectedRegion)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  bool isDestinationsLoading,  bool isOriginDropdownOpen,  bool isDestinationDropdownOpen,  String? errorMessage,  TransitRegion selectedRegion)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FareSearchState() when $default != null:
-return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.isDestinationsLoading,_that.errorMessage,_that.selectedRegion);case _:
+return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.isDestinationsLoading,_that.isOriginDropdownOpen,_that.isDestinationDropdownOpen,_that.errorMessage,_that.selectedRegion);case _:
   return orElse();
 
 }
@@ -203,10 +205,10 @@ return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareR
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  bool isDestinationsLoading,  String? errorMessage,  TransitRegion selectedRegion)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  bool isDestinationsLoading,  bool isOriginDropdownOpen,  bool isDestinationDropdownOpen,  String? errorMessage,  TransitRegion selectedRegion)  $default,) {final _that = this;
 switch (_that) {
 case _FareSearchState():
-return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.isDestinationsLoading,_that.errorMessage,_that.selectedRegion);case _:
+return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.isDestinationsLoading,_that.isOriginDropdownOpen,_that.isDestinationDropdownOpen,_that.errorMessage,_that.selectedRegion);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -223,10 +225,10 @@ return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareR
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  bool isDestinationsLoading,  String? errorMessage,  TransitRegion selectedRegion)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<StopEntity> originSuggestions,  List<StopEntity> destinationSuggestions,  List<FareResultEntity> fareResults,  StopEntity? selectedOrigin,  StopEntity? selectedDestination,  bool isLoading,  bool isDestinationsLoading,  bool isOriginDropdownOpen,  bool isDestinationDropdownOpen,  String? errorMessage,  TransitRegion selectedRegion)?  $default,) {final _that = this;
 switch (_that) {
 case _FareSearchState() when $default != null:
-return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.isDestinationsLoading,_that.errorMessage,_that.selectedRegion);case _:
+return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareResults,_that.selectedOrigin,_that.selectedDestination,_that.isLoading,_that.isDestinationsLoading,_that.isOriginDropdownOpen,_that.isDestinationDropdownOpen,_that.errorMessage,_that.selectedRegion);case _:
   return null;
 
 }
@@ -238,7 +240,7 @@ return $default(_that.originSuggestions,_that.destinationSuggestions,_that.fareR
 
 
 class _FareSearchState implements FareSearchState {
-  const _FareSearchState({final  List<StopEntity> originSuggestions = const [], final  List<StopEntity> destinationSuggestions = const [], final  List<FareResultEntity> fareResults = const [], this.selectedOrigin, this.selectedDestination, this.isLoading = false, this.isDestinationsLoading = false, this.errorMessage, this.selectedRegion = TransitRegion.dhakaMetro}): _originSuggestions = originSuggestions,_destinationSuggestions = destinationSuggestions,_fareResults = fareResults;
+  const _FareSearchState({final  List<StopEntity> originSuggestions = const [], final  List<StopEntity> destinationSuggestions = const [], final  List<FareResultEntity> fareResults = const [], this.selectedOrigin, this.selectedDestination, this.isLoading = false, this.isDestinationsLoading = false, this.isOriginDropdownOpen = false, this.isDestinationDropdownOpen = false, this.errorMessage, this.selectedRegion = TransitRegion.dhakaMetro}): _originSuggestions = originSuggestions,_destinationSuggestions = destinationSuggestions,_fareResults = fareResults;
   
 
  final  List<StopEntity> _originSuggestions;
@@ -266,6 +268,8 @@ class _FareSearchState implements FareSearchState {
 @override final  StopEntity? selectedDestination;
 @override@JsonKey() final  bool isLoading;
 @override@JsonKey() final  bool isDestinationsLoading;
+@override@JsonKey() final  bool isOriginDropdownOpen;
+@override@JsonKey() final  bool isDestinationDropdownOpen;
 @override final  String? errorMessage;
 @override@JsonKey() final  TransitRegion selectedRegion;
 
@@ -279,16 +283,16 @@ _$FareSearchStateCopyWith<_FareSearchState> get copyWith => __$FareSearchStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FareSearchState&&const DeepCollectionEquality().equals(other._originSuggestions, _originSuggestions)&&const DeepCollectionEquality().equals(other._destinationSuggestions, _destinationSuggestions)&&const DeepCollectionEquality().equals(other._fareResults, _fareResults)&&(identical(other.selectedOrigin, selectedOrigin) || other.selectedOrigin == selectedOrigin)&&(identical(other.selectedDestination, selectedDestination) || other.selectedDestination == selectedDestination)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isDestinationsLoading, isDestinationsLoading) || other.isDestinationsLoading == isDestinationsLoading)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.selectedRegion, selectedRegion) || other.selectedRegion == selectedRegion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FareSearchState&&const DeepCollectionEquality().equals(other._originSuggestions, _originSuggestions)&&const DeepCollectionEquality().equals(other._destinationSuggestions, _destinationSuggestions)&&const DeepCollectionEquality().equals(other._fareResults, _fareResults)&&(identical(other.selectedOrigin, selectedOrigin) || other.selectedOrigin == selectedOrigin)&&(identical(other.selectedDestination, selectedDestination) || other.selectedDestination == selectedDestination)&&(identical(other.isLoading, isLoading) || other.isLoading == isLoading)&&(identical(other.isDestinationsLoading, isDestinationsLoading) || other.isDestinationsLoading == isDestinationsLoading)&&(identical(other.isOriginDropdownOpen, isOriginDropdownOpen) || other.isOriginDropdownOpen == isOriginDropdownOpen)&&(identical(other.isDestinationDropdownOpen, isDestinationDropdownOpen) || other.isDestinationDropdownOpen == isDestinationDropdownOpen)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.selectedRegion, selectedRegion) || other.selectedRegion == selectedRegion));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_originSuggestions),const DeepCollectionEquality().hash(_destinationSuggestions),const DeepCollectionEquality().hash(_fareResults),selectedOrigin,selectedDestination,isLoading,isDestinationsLoading,errorMessage,selectedRegion);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_originSuggestions),const DeepCollectionEquality().hash(_destinationSuggestions),const DeepCollectionEquality().hash(_fareResults),selectedOrigin,selectedDestination,isLoading,isDestinationsLoading,isOriginDropdownOpen,isDestinationDropdownOpen,errorMessage,selectedRegion);
 
 @override
 String toString() {
-  return 'FareSearchState(originSuggestions: $originSuggestions, destinationSuggestions: $destinationSuggestions, fareResults: $fareResults, selectedOrigin: $selectedOrigin, selectedDestination: $selectedDestination, isLoading: $isLoading, isDestinationsLoading: $isDestinationsLoading, errorMessage: $errorMessage, selectedRegion: $selectedRegion)';
+  return 'FareSearchState(originSuggestions: $originSuggestions, destinationSuggestions: $destinationSuggestions, fareResults: $fareResults, selectedOrigin: $selectedOrigin, selectedDestination: $selectedDestination, isLoading: $isLoading, isDestinationsLoading: $isDestinationsLoading, isOriginDropdownOpen: $isOriginDropdownOpen, isDestinationDropdownOpen: $isDestinationDropdownOpen, errorMessage: $errorMessage, selectedRegion: $selectedRegion)';
 }
 
 
@@ -299,7 +303,7 @@ abstract mixin class _$FareSearchStateCopyWith<$Res> implements $FareSearchState
   factory _$FareSearchStateCopyWith(_FareSearchState value, $Res Function(_FareSearchState) _then) = __$FareSearchStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, bool isDestinationsLoading, String? errorMessage, TransitRegion selectedRegion
+ List<StopEntity> originSuggestions, List<StopEntity> destinationSuggestions, List<FareResultEntity> fareResults, StopEntity? selectedOrigin, StopEntity? selectedDestination, bool isLoading, bool isDestinationsLoading, bool isOriginDropdownOpen, bool isDestinationDropdownOpen, String? errorMessage, TransitRegion selectedRegion
 });
 
 
@@ -316,7 +320,7 @@ class __$FareSearchStateCopyWithImpl<$Res>
 
 /// Create a copy of FareSearchState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? originSuggestions = null,Object? destinationSuggestions = null,Object? fareResults = null,Object? selectedOrigin = freezed,Object? selectedDestination = freezed,Object? isLoading = null,Object? isDestinationsLoading = null,Object? errorMessage = freezed,Object? selectedRegion = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? originSuggestions = null,Object? destinationSuggestions = null,Object? fareResults = null,Object? selectedOrigin = freezed,Object? selectedDestination = freezed,Object? isLoading = null,Object? isDestinationsLoading = null,Object? isOriginDropdownOpen = null,Object? isDestinationDropdownOpen = null,Object? errorMessage = freezed,Object? selectedRegion = null,}) {
   return _then(_FareSearchState(
 originSuggestions: null == originSuggestions ? _self._originSuggestions : originSuggestions // ignore: cast_nullable_to_non_nullable
 as List<StopEntity>,destinationSuggestions: null == destinationSuggestions ? _self._destinationSuggestions : destinationSuggestions // ignore: cast_nullable_to_non_nullable
@@ -325,6 +329,8 @@ as List<FareResultEntity>,selectedOrigin: freezed == selectedOrigin ? _self.sele
 as StopEntity?,selectedDestination: freezed == selectedDestination ? _self.selectedDestination : selectedDestination // ignore: cast_nullable_to_non_nullable
 as StopEntity?,isLoading: null == isLoading ? _self.isLoading : isLoading // ignore: cast_nullable_to_non_nullable
 as bool,isDestinationsLoading: null == isDestinationsLoading ? _self.isDestinationsLoading : isDestinationsLoading // ignore: cast_nullable_to_non_nullable
+as bool,isOriginDropdownOpen: null == isOriginDropdownOpen ? _self.isOriginDropdownOpen : isOriginDropdownOpen // ignore: cast_nullable_to_non_nullable
+as bool,isDestinationDropdownOpen: null == isDestinationDropdownOpen ? _self.isDestinationDropdownOpen : isDestinationDropdownOpen // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,selectedRegion: null == selectedRegion ? _self.selectedRegion : selectedRegion // ignore: cast_nullable_to_non_nullable
 as TransitRegion,

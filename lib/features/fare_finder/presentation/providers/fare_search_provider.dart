@@ -48,17 +48,18 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
 
   Future<void> loadAllStops() async {
     if (!mounted) return;
-    state = state.copyWith(errorMessage: null);
+    state = state.copyWith(isLoading: true, errorMessage: null);
     final result = await _searchStops('', region: state.selectedRegion.value);
     if (!mounted) return;
     result.fold(
-      (failure) => state = state.copyWith(errorMessage: failure.message),
+      (failure) => state = state.copyWith(isLoading: false, errorMessage: failure.message),
       (stops) {
         final sorted = List<StopEntity>.from(stops)
           ..sort((a, b) => a.nameBn.compareTo(b.nameBn));
         _allStopsCache = sorted;
         state = state.copyWith(
-          originSuggestions: [],
+          isLoading: false,
+          originSuggestions: sorted,
           errorMessage: null,
         );
       },
@@ -105,7 +106,36 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       return nameBnMatch || nameEnMatch;
     }).toList();
 
-    state = state.copyWith(originSuggestions: filtered);
+    state = state.copyWith(
+      originSuggestions: filtered,
+      isOriginDropdownOpen: true,
+      isDestinationDropdownOpen: false,
+    );
+  }
+
+  void openOriginDropdown() {
+    state = state.copyWith(
+      isOriginDropdownOpen: true,
+      isDestinationDropdownOpen: false,
+      originSuggestions: state.originSuggestions.isEmpty ? _allStopsCache : state.originSuggestions,
+    );
+  }
+
+  void closeOriginDropdown() {
+    state = state.copyWith(isOriginDropdownOpen: false);
+  }
+
+  void openDestinationDropdown() {
+    if (state.selectedOrigin == null) return;
+    state = state.copyWith(
+      isOriginDropdownOpen: false,
+      isDestinationDropdownOpen: true,
+      destinationSuggestions: state.destinationSuggestions.isEmpty ? _connectedStopsCache : state.destinationSuggestions,
+    );
+  }
+
+  void closeDestinationDropdown() {
+    state = state.copyWith(isDestinationDropdownOpen: false);
   }
 
   Future<void> selectOrigin(StopEntity stop, {required String noRoutesError}) async {
@@ -116,6 +146,8 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       destinationSuggestions: [],
       fareResults: [],
       errorMessage: null,
+      isOriginDropdownOpen: false,
+      isDestinationDropdownOpen: false,
       isDestinationsLoading: true,
     );
 
@@ -153,7 +185,11 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     final cleanQuery = query.trim().toLowerCase();
 
     if (cleanQuery.isEmpty) {
-      state = state.copyWith(destinationSuggestions: _connectedStopsCache);
+      state = state.copyWith(
+        destinationSuggestions: _connectedStopsCache,
+        isDestinationDropdownOpen: true,
+        isOriginDropdownOpen: false,
+      );
       return;
     }
 
@@ -163,13 +199,18 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
       return nameBnMatch || nameEnMatch;
     }).toList();
 
-    state = state.copyWith(destinationSuggestions: filtered);
+    state = state.copyWith(
+      destinationSuggestions: filtered,
+      isDestinationDropdownOpen: true,
+      isOriginDropdownOpen: false,
+    );
   }
 
   void selectDestination(StopEntity stop) {
     state = state.copyWith(
       selectedDestination: stop,
       destinationSuggestions: [],
+      isDestinationDropdownOpen: false,
       errorMessage: null,
     );
   }
@@ -248,6 +289,8 @@ class FareSearchNotifier extends StateNotifier<FareSearchState> {
     state = state.copyWith(
       originSuggestions: [],
       destinationSuggestions: [],
+      isOriginDropdownOpen: false,
+      isDestinationDropdownOpen: false,
     );
   }
 

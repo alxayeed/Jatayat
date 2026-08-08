@@ -3,13 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/transit_region.dart';
-import '../../../../core/ui/widgets/app_text_field.dart';
 import '../../../../core/ui/widgets/custom_app_bar.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../domain/entities/stop_entity/stop_entity.dart';
 import '../providers/fare_search_provider.dart';
 import '../states/fare_search_state.dart';
-import '../widgets/app_suggestion_list.dart';
+import '../widgets/app_searchable_dropdown.dart';
 import '../widgets/fare_card.dart';
 
 class FareFinderScreen extends ConsumerStatefulWidget {
@@ -83,7 +82,8 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
-        notifier.clearSuggestions();
+        notifier.closeOriginDropdown();
+        notifier.closeDestinationDropdown();
       },
       child: Scaffold(
         body: CustomScrollView(
@@ -321,8 +321,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                   showCheckmark: false,
                   labelStyle: TextStyle(
                     fontSize: 12,
-                    fontWeight:
-                        state.selectedRegion == TransitRegion.dhakaMetro
+                    fontWeight: state.selectedRegion == TransitRegion.dhakaMetro
                         ? FontWeight.bold
                         : FontWeight.w600,
                     color: state.selectedRegion == TransitRegion.dhakaMetro
@@ -348,9 +347,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     side: BorderSide(
                       color: state.selectedRegion == TransitRegion.dhakaMetro
                           ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurface.withValues(
-                              alpha: 0.3,
-                            ),
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.3),
                       width: 1.5,
                     ),
                   ),
@@ -395,9 +392,7 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     side: BorderSide(
                       color: state.selectedRegion == TransitRegion.ctgMetro
                           ? theme.colorScheme.primary
-                          : theme.colorScheme.onSurface.withValues(
-                              alpha: 0.3,
-                            ),
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.3),
                       width: 1.5,
                     ),
                   ),
@@ -415,49 +410,44 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
           const SizedBox(height: 12),
           Column(
             children: [
-              AppTextField(
+              AppSearchableDropdown(
                 hintText: l10n.fromStop,
                 prefixIcon: Icons.my_location,
                 controller: originController,
+                isOpen: state.isOriginDropdownOpen,
+                isLoading: state.isLoading,
+                suggestions: state.originSuggestions,
                 onChanged: notifier.searchOrigin,
-                onTap: () {
-                  notifier.searchOrigin(originController.text);
+                onTap: notifier.openOriginDropdown,
+                onSelected: (stop) {
+                  originController.text = isBn
+                      ? stop.nameBn
+                      : (stop.nameEn ?? stop.nameBn);
+                  notifier.selectOrigin(
+                    stop,
+                    noRoutesError: l10n.stopsSearchErrorMessage,
+                  );
                 },
-                suffixIcon: originController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear, size: 20),
-                        onPressed: () {
-                          originController.clear();
-                          destinationController.clear();
-                          notifier.resetSearch();
-                        },
-                      )
-                    : null,
+                onClear: () {
+                  originController.clear();
+                  destinationController.clear();
+                  notifier.resetSearch();
+                },
               ),
-              if (state.originSuggestions.isNotEmpty)
-                AppSuggestionList(
-                  suggestions: state.originSuggestions,
-                  onSelected: (stop) {
-                    originController.text = isBn
-                        ? stop.nameBn
-                        : (stop.nameEn ?? stop.nameBn);
-                    notifier.selectOrigin(
-                      stop,
-                      noRoutesError: l10n.stopsSearchErrorMessage,
-                    );
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
               const SizedBox(height: 12),
-              AppTextField(
+              AppSearchableDropdown(
                 hintText: l10n.toStop,
                 prefixIcon: Icons.location_on,
                 controller: destinationController,
                 readOnly: state.selectedOrigin == null,
+                isOpen: state.isDestinationDropdownOpen,
+                isLoading: state.isDestinationsLoading,
+                errorMessage: state.errorMessage,
+                suggestions: state.destinationSuggestions,
                 onChanged: notifier.searchDestination,
                 onTap: () {
                   if (state.selectedOrigin != null) {
-                    notifier.searchDestination(destinationController.text);
+                    notifier.openDestinationDropdown();
                   } else {
                     ScaffoldMessenger.of(context).clearSnackBars();
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -472,7 +462,6 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                           ),
                         ),
                         backgroundColor: theme.colorScheme.errorContainer,
-                        // textColor: theme.colorScheme.onErrorContainer,
                         behavior: SnackBarBehavior.floating,
                         duration: const Duration(seconds: 2),
                         shape: RoundedRectangleBorder(
@@ -482,46 +471,21 @@ class _FareFinderPageState extends ConsumerState<FareFinderScreen> {
                     );
                   }
                 },
-                suffixIcon: destinationController.text.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.clear, size: 20),
-                        onPressed: () {
-                          destinationController.clear();
-                          notifier.searchDestination('');
-                          notifier.selectDestination(
-                            StopEntity(id: '', nameBn: ''),
-                          );
-                        },
-                      )
-                    : null,
+                onSelected: (stop) {
+                  destinationController.text = isBn
+                      ? stop.nameBn
+                      : (stop.nameEn ?? stop.nameBn);
+                  notifier.selectDestination(stop);
+                },
+                onClear: () {
+                  destinationController.clear();
+                  notifier.searchDestination('');
+                  notifier.selectDestination(StopEntity(id: '', nameBn: ''));
+                },
               ),
-              if (state.destinationSuggestions.isNotEmpty)
-                AppSuggestionList(
-                  suggestions: state.destinationSuggestions,
-                  onSelected: (stop) {
-                    destinationController.text = isBn
-                        ? stop.nameBn
-                        : (stop.nameEn ?? stop.nameBn);
-                    notifier.selectDestination(stop);
-                    FocusScope.of(context).unfocus();
-                  },
-                ),
             ],
           ),
           const SizedBox(height: 24),
-          if (state.errorMessage != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 12.0),
-              child: Text(
-                state.errorMessage!,
-                style: TextStyle(
-                  color: theme.colorScheme.error,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
           ElevatedButton(
             onPressed: () {
               setState(() => _manuallyExpanded = false);

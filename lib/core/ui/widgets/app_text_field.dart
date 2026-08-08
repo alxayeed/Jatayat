@@ -9,6 +9,7 @@ class AppTextField extends StatelessWidget {
   final VoidCallback? onTap;
   final bool readOnly;
   final Widget? suffixIcon;
+  final FocusNode? focusNode;
 
   const AppTextField({
     super.key,
@@ -20,6 +21,7 @@ class AppTextField extends StatelessWidget {
     this.onTap,
     this.readOnly = false,
     this.suffixIcon,
+    this.focusNode,
   });
 
   @override
@@ -51,6 +53,7 @@ class AppTextField extends StatelessWidget {
           ),
           child: TextField(
             controller: controller,
+            focusNode: focusNode,
             onChanged: onChanged,
             onTap: onTap,
             readOnly: readOnly,
