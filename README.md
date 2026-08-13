@@ -1,115 +1,125 @@
-# Jatayat (যাতায়াত) 🚌
+# <img src="assets/icon/transparent_app_logo.png" width="40" valign="middle"/> Jatayat (যাতায়াত)
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.11+-02569B?logo=flutter&logoColor=white)](https://flutter.dev)
-[![Riverpod](https://img.shields.io/badge/State--Management-Riverpod-3F51B5)](https://riverpod.dev)
-[![SQLite](https://img.shields.io/badge/Local--DB-SQLite-003B57?logo=sqlite&logoColor=white)](https://pub.dev/packages/sqflite)
-[![Supabase](https://img.shields.io/badge/Backend-Supabase-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
-[![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-E34F26)](#)
+![Feature Image](demo/Jatayat%20Feature%20Image.jpeg)
 
-**Jatayat** is a premium, high-performance transit helper utility mobile application designed for commuters in Dhaka City. It simplifies urban transport navigation by matching routes and displaying official bus fares sourced accurately from public **Bangladesh Road Transport Authority (BRTA)** gazettes.
+**Jatayat** is a high-performance, local-first transit utility & fare calculator designed for commuters navigating urban transport systems in Dhaka and Chattogram. Built to solve real-world daily commuter challenges, Jatayat provides instantaneous route matching and displays official government bus fares sourced directly from Bangladesh Road Transport Authority (BRTA) gazettes.
 
----
+With offline-first SQLite caching, native dual localization, transparent PDF proof rendering, and real-time remote configuration, Jatayat brings clarity, convenience, and reliability to millions of daily transit riders.
 
-## ✨ Core Features
-
-*   🔍 **High-Performance Fare Finder**: Select a starting stoppage and a destination, and let the app instantly compute your route, distance, official base rates, minimum fares, and maximum ticket prices.
-*   🗺️ **Interactive Route Explorer**: View bus stoppages on a responsive, gorgeous vertical timeline. Easily filter through hundreds of routes by code (e.g., A-101, A-132) or name in real-time.
-*   📑 **BRTA Gazette Proof Viewer**: Transparency at its core. Open the actual scanned official BRTA gazette PDF within the app, scrolled automatically to the exact page corresponding to the fare! Includes a robust local disk caching mechanism to avoid redundant downloads.
-*   💾 **Offline-First SQLite Bookmarks**: Save routes or specific fare calculations to access them 100% offline. The system automatically caches associated bus routes so details pages and timeline stoppages continue loading smoothly without internet access.
-*   🌐 **Dual Localization**: Complete native experience in both **English** and **Bengali (বাংলা)**, easily toggleable within settings.
-*   🎨 **Rich Premium UI/UX**: Outfitted with professional glassmorphic details, beautiful micro-interactions, responsive list views, soft empty states, and standard light/dark modes.
+[![Play Store](https://img.shields.io/badge/Google_Play-Live_App-green?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.raindropstudio.jatayat)
+[![Developer Portfolio](https://img.shields.io/badge/Portfolio-alxayeed-blue?logo=vercel&logoColor=white)](https://alxayeed-nine.vercel.app/)
 
 ---
 
-## 🏗️ Clean Architecture Specification
+## 📷 App Preview & User Interface
 
-Jatayat is engineered from the ground up using **Clean Architecture** patterns, ensuring a codebase that is highly modular, readable, and fully unit-testable.
+Jatayat delivers a modern, production-grade mobile UI styled with clean glassmorphic touches, responsive lists, smooth dark mode support, and crystal-clear data typography.
+
+<table>
+  <tr>
+    <td align="center" width="33%"><b>Fare Search</b><br/><img src="demo/fare%20search.png" width="100%" alt="Fare Search"/></td>
+    <td align="center" width="33%"><b>Fare Details</b><br/><img src="demo/fare%20details.png" width="100%" alt="Fare Details"/></td>
+    <td align="center" width="33%"><b>Route Explorer</b><br/><img src="demo/Routes.png" width="100%" alt="Routes"/></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><b>BRTA Gazette Proof</b><br/><img src="demo/Gazette.png" width="100%" alt="Gazette Proof"/></td>
+    <td align="center" width="33%"><b>PDF Document View</b><br/><img src="demo/view%20proof.png" width="100%" alt="PDF Viewer"/></td>
+    <td align="center" width="33%"><b>Chattogram Region Fares</b><br/><img src="demo/ctg%20fares.png" width="100%" alt="Chattogram Fares"/></td>
+  </tr>
+  <tr>
+    <td align="center" width="33%"><b>App Settings</b><br/><img src="demo/settings%202.png" width="100%" alt="Settings"/></td>
+    <td align="center" width="33%"><b>Dark Theme Mode</b><br/><img src="demo/dark%20theme.png" width="100%" alt="Dark Theme"/></td>
+    <td align="center" width="33%"><b>Feature Overview</b><br/><img src="demo/Jatayat%20Feature%20Image.jpeg" width="100%" alt="Feature Overview"/></td>
+  </tr>
+</table>
+
+---
+
+## 🚀 Key Features
+
+*   ⚡ **Instant Fare & Distance Engine**: Select starting and ending stoppages to dynamically compute official base rates, minimum charges, distance (km), and breakdown per passenger.
+*   🗺️ **Interactive Route Explorer**: Browse bus routes on interactive vertical timelines with real-time fuzzy search across route codes (e.g., A-101) and stoppage names.
+*   📑 **BRTA Gazette Proof Viewer**: Guarantees public transparency by linking fare computations directly to official scanned BRTA gazette pages, complete with page auto-jumping and local PDF caching.
+*   💾 **Offline-First SQLite Bookmarks**: Instant offline persistence for favorite routes and calculated fares via SQLite (`sqflite`), keeping commuters informed even with zero network connectivity.
+*   🌐 **Dual Native Localization**: Complete seamless switching between **English** and **Bengali (বাংলা)** across all screens using standard Flutter `.arb` localization resources.
+*   🔔 **Remote Feature Configuration & Analytics**: Integrated Firebase Remote Config, Crashlytics, FCM alerts, and automated user feedback loops for continuous production optimization.
+
+---
+
+## 🏛️ Architecture & Engineering Excellence
+
+Jatayat is engineered strictly adhering to **Clean Architecture** and SOLID design principles, demonstrating scalability, loose coupling, high testability, and clear separation of concerns.
 
 ```mermaid
 graph TD
-    A[Presentation Layer] -->|Consumes| B[Domain Layer]
-    C[Data Layer] -->|Implements| B[Domain Layer]
-    B -->|Defines Entities & Use Cases| B
+    A[Presentation Layer<br/>UI, Widgets, Riverpod Notifiers] -->|Consumes Use Cases| B[Domain Layer<br/>Entities, Repository Contracts, Use Cases]
+    C[Data Layer<br/>Supabase, SQLite, Data Models] -->|Implements Contracts| B
 ```
 
-### 📂 Feature Directory Structure
-Every feature (e.g. `bookmarks`, `fare_finder`, `route_explorer`, `documents`) follows this strict layer separation:
-
-*   **`domain/` (Core Business Rules)**:
-    *   `entities/`: Pure Dart models with zero external package dependencies.
-    *   `repositories/`: Abstract repository interfaces defining contracts.
-    *   `usecases/`: Granular business actions (single responsibility principle, callable classes).
-*   **`data/` (Infrastructure & Source Orchestration)**:
-    *   `datasources/`: Connects directly to external API engines (Supabase, SQLite, SharedPreferences).
-    *   `models/`: Handles serialization (`fromJson`, `toJson`) and type serialization mappings.
-    *   `repositories/`: Concrete implementations of domain repository contracts.
-*   **`presentation/` (Interactive Interfaces)**:
-    *   `providers/`: Reactive state controllers using Riverpod (`AsyncNotifierProvider`, `FutureProvider`).
-    *   `screens/`: UI templates and layouts.
-    *   `widgets/`: Focused, reusable UI subcomponents.
+*   **Design Pattern**: Clean Architecture separated into **Domain** (pure business rules & entities), **Data** (Supabase API, SQLite persistence, serialization), and **Presentation** (Riverpod controllers, UI screens).
+*   **State Management**: [Riverpod](https://pub.dev/packages/flutter_riverpod) utilizing `AsyncNotifierProvider` and `FutureProvider` for robust, unidirectional, reactive state flow.
+*   **Local Storage & Caching**: SQLite (`sqflite`) for structured relational caching of routes, fares, and bookmarks.
+*   **Remote Backend**: Supabase for real-time transit datasets and asset synchronization.
+*   **Functional Error Handling**: Functional programming constructs via [Dartz](https://pub.dev/packages/dartz) (`Either<Failure, Success>`) for explicit, type-safe exception handling without unchecked runtime errors.
+*   **Routing**: Declarative, deep-linkable routing configured via [GoRouter](https://pub.dev/packages/go_router).
 
 ---
 
-## 🛠️ Technology Stack
+<details>
+<summary><b>🛠️ Local Setup & Installation Instructions (Click to Expand)</b></summary>
 
-*   **Framework**: [Flutter](https://flutter.dev) (Dart SDK `^3.11.1`)
-*   **State Management**: [Riverpod](https://pub.dev/packages/flutter_riverpod) (`^2.6.1`)
-*   **Local Database**: [Sqflite](https://pub.dev/packages/sqflite) (`^2.3.0`) & SQLite
-*   **Remote Backend**: [Supabase Flutter](https://pub.dev/packages/supabase_flutter) (`^2.8.2`)
-*   **Navigation**: [GoRouter](https://pub.dev/packages/go_router) (`^14.7.2`)
-*   **Functional Programming**: [Dartz](https://pub.dev/packages/dartz) (`^0.10.1`)
-*   **UI Components**: [Google Fonts](https://pub.dev/packages/google_fonts), [Shimmer](https://pub.dev/packages/shimmer), [Flutter Svg](https://pub.dev/packages/flutter_svg)
-
----
-
-## 🚀 Getting Started
-
-Follow these steps to set up and run the project locally.
+<br/>
 
 ### Prerequisites
-*   [Flutter SDK](https://docs.flutter.dev/get-started/install) (`>= 3.11.1`)
-*   [Dart SDK](https://dart.dev/get-started)
-*   Android Studio / Xcode (for emulation)
+*   **Flutter SDK**: `>= 3.11.1`
+*   **Dart SDK**: Compatible with Flutter SDK
+*   Android Studio / Xcode (for device emulation)
 
-### Setup & Run
+### Step-by-Step Local Setup
+
 1.  **Clone the Repository**:
     ```bash
-    git clone https://github.com/your-username/jatayat.git
+    git clone https://github.com/alxayeed/jatayat.git
     cd jatayat
     ```
 
-2.  **Environment Setup**:
-    Create a `.env` file in the root directory and specify your Supabase credentials:
+2.  **Configure Environment Variables**:
+    Create a `.env` file in the root directory:
     ```env
     SUPABASE_URL=https://your-supabase-url.supabase.co
     SUPABASE_ANON_KEY=your-supabase-anon-key
     ```
 
-3.  **Fetch Dependencies**:
+3.  **Install Dependencies**:
     ```bash
     flutter pub get
     ```
 
 4.  **Run Code Generators**:
-    Jatayat uses code generators for JSON models and Freezed annotations:
+    Generate serialization code (`freezed`, `json_serializable`):
     ```bash
     dart run build_runner build --delete-conflicting-outputs
     ```
 
-5.  **Run App**:
+5.  **Generate Localizations**:
+    ```bash
+    flutter gen-l10n
+    ```
+
+6.  **Launch the Application**:
     ```bash
     flutter run
     ```
+</details>
 
 ---
 
-## 📝 Localization & Translation
+## 📞 Contact & Portfolio Links
 
-All static text strings are internationalized using standard Flutter `.arb` resource files under `lib/l10n/`:
-- **`app_en.arb`** (English Translation dictionary)
-- **`app_bn.arb`** (Bengali/বাংলা Translation dictionary)
+Engineered by **Al Xayeed**. Open for collaboration, technical discussions, and full-stack/mobile engineering opportunities.
 
-To regenerate localizations automatically when making updates, run:
-```bash
-flutter gen-l10n
-```
+*   **Live App**: [Google Play Store](https://play.google.com/store/apps/details?id=com.raindropstudio.jatayat)
+*   **Portfolio**: [alxayeed-nine.vercel.app](https://alxayeed-nine.vercel.app/)
+*   **Email**: [alxayeed@gmail.com](mailto:alxayeed@gmail.com)
+*   **LinkedIn**: [linkedin.com/in/alxayeed](https://www.linkedin.com/in/alxayeed)
+
