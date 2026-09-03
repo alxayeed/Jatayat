@@ -15,7 +15,8 @@ This playbook is **laser-focused on the exact technologies, patterns, algorithms
 4. [Graph Routing: $O(1)$ Adjacency Map Hub-Intersection Algorithm](#4-graph-routing-o1-adjacency-map-hub-intersection-algorithm)
 5. [Offline-First Sync & Deterministic AI Architecture](#5-offline-first-sync--deterministic-ai-architecture)
 6. [Test-Driven Development (TDD) & Quality Assurance](#6-test-driven-development-tdd--quality-assurance)
-7. [Master Study Guide: Exact Book Chapters & Page Numbers](#7-master-study-guide-exact-book-chapters--page-numbers)
+7. [Database Architecture & DBA Mastery Curriculum](#7-database-architecture--dba-mastery-curriculum)
+8. [Master Study Guide: Exact Book Chapters & Page Numbers](#8-master-study-guide-exact-book-chapters--page-numbers)
 
 ---
 
@@ -65,7 +66,7 @@ In Jatayat 2.0.0, our SQLite on-device database and Supabase PostgreSQL backend 
 1. **`stops` (Physical Geography)**:
    - *Why*: Encapsulates physical coordinates on Earth (`lat`, `lon`), official names (`name_bn`, `name_en`), and colloquial commuter aliases (`search_terms` like *"zoo", "চিড়িয়াখানা", "technical"*).
    - *Architectural Insight*: Keeps geographic nodes decoupled from any specific transit mode.
-   - *Canonical Reference*: *Database System Concepts (7th Ed.)*, Chapter 7: Database Design Using the E-R Model (pp. 261–285).
+   - *Canonical Reference*: *Database System Concepts (7th Ed.)*, Chapter 6: Database Design and the E-R Model (pp. 261–285).
 
 2. **`transit_services` (The Real-World Commuter Operators)**:
    - *Why*: Solves the 1.x limitation. Commuters look for actual bus companies (*"প্রজাপতি"*, *"বিকল্প"*, *"শিকড়"*) and Metro lines (*"মেট্রোরেল MRT-6"*), not regulatory codes.
@@ -98,7 +99,7 @@ CREATE INDEX idx_service_stops_lookup ON transit_service_stops(stop_id, service_
 1. SQLite maintains a multi-way balanced tree ordered by `stop_id`.
 2. When querying `WHERE stop_id = 'farmgate_uuid'`, SQLite performs binary pointer traversal in **$O(\log N)$ time** ($<1\text{ms}$).
 3. **Compound Order Rule**: Because `stop_id` is the leftmost column, queries filtering by stop hit the index immediately.
-4. *Canonical Reference*: *Designing Data-Intensive Applications (DDIA)* by Martin Kleppmann, Chapter 3: Storage and Retrieval - B-Trees (pp. 79–86).
+4. *Canonical Reference*: *SQL Performance Explained* by Markus Winand, Chapter 2: The WHERE Clause & Compound Indexes (pp. 23–45).
 
 ---
 
@@ -119,7 +120,7 @@ CREATE INDEX idx_service_stops_lookup ON transit_service_stops(stop_id, service_
 
 ### 1. Repository Pattern
 *   **Real Jatayat Implementation**: `GetTransitJourneysUseCase` only depends on `TransitRepository`. It has **zero imports** of SQLite or Supabase. If database technology changes, Domain code remains 100% untouched.
-*   **Exact Reading**: *Patterns of Enterprise Application Architecture* by Martin Fowler, Chapter 10: Data Source Architectural Patterns - Repository (pp. 322–327).
+*   **Exact Reading**: *Patterns of Enterprise Application Architecture (PoEAA)* by Martin Fowler, Chapter 10: Data Source Architectural Patterns - Repository (pp. 322–327).
 
 ### 2. Strategy Pattern
 *   **Real Jatayat Implementation**: User filters (`[All]`, `[Bus Only]`, `[Metro Preferred]`, `[Cheapest]`) are encapsulated into distinct sorting/filtering strategies without complex nested `if/else` ladders in widget build methods.
@@ -141,7 +142,7 @@ CREATE INDEX idx_service_stops_lookup ON transit_service_stops(stop_id, service_
 *   **Real Jatayat Implementation**:
     SQLite returns raw `Map<String, dynamic>`. We map this to `TransitServiceModel` (Data layer), and convert it via `toEntity()` to `TransitServiceEntity` (Domain layer).
     Ensures database representations (e.g. `is_ac = 1`) never leak into pure Dart domain entities.
-*   **Exact Reading**: *Patterns of Enterprise Application Architecture* by Martin Fowler, Chapter 15: Distribution Patterns - Data Transfer Object (pp. 401–407).
+*   **Exact Reading**: *PoEAA* by Martin Fowler, Chapter 15: Distribution Patterns - Data Transfer Object (pp. 401–407).
 
 ### 6. Observer / Reactive State Pattern
 *   **Real Jatayat Implementation**:
@@ -216,7 +217,7 @@ Classical Dijkstra runs an unconstrained graph traversal ($O(V \log V + E)$). On
 # 5. Offline-First Sync & Deterministic AI Architecture
 
 1. **SQLite WAL (Write-Ahead Logging)**: Enables concurrent reads while background synchronization writes updates.
-   - *Reading*: *DDIA* by Martin Kleppmann, Chapter 7: Transactions - Write-Ahead Logs (pp. 227–233).
+   - *Reading*: *Designing Data-Intensive Applications (DDIA)* by Martin Kleppmann, Chapter 7: Transactions - Write-Ahead Logs (pp. 227–233).
 2. **Monotonic Delta Sync**: App checks `revisions.data_updated_at`. If unchanged, **zero bytes** are downloaded.
    - *Reading*: *DDIA*, Chapter 5: Replication & Leaderless Systems (pp. 170–178).
 3. **Deterministic AI**: Gemini 2.5 Flash acts strictly as an intent and entity extractor. All fares and routes are calculated by the deterministic Dart graph engine to eliminate hallucinations.
@@ -235,11 +236,35 @@ Classical Dijkstra runs an unconstrained graph traversal ($O(V \log V + E)$). On
 
 ---
 
-# 7. Master Study Guide: Exact Book Chapters & Page Numbers
+# 7. Database Architecture & DBA Mastery Curriculum
+
+For aspiring **Software Architects and Database Administrators (DBAs)**, master these 4 canonical texts:
+
+### 1. *Database System Concepts (7th Ed.)* — Silberschatz, Korth, Sudarshan
+- **Chapter 2: The Relational Model (pp. 41–60)**: Mathematical relations, primary/foreign keys, integrity rules.
+- **Chapter 6: E-R Modeling (pp. 261–305)**: Entity sets, $1:1, 1:N, M:N$ cardinalities.
+- **Chapter 7: Relational Design & Normalization (pp. 307–360)**: Functional dependencies, 1NF, 2NF, 3NF, BCNF lossless decomposition.
+- **Chapter 14: Indexing and Hashing (pp. 649–700)**: B+ Tree page splits, depth, pointer fan-out.
+- **Chapter 15: Query Processing (pp. 703–750)**: Nested-loop vs Hash Join cost algorithms.
+
+### 2. *SQL Performance Explained* — Markus Winand
+- **Chapter 1: Anatomy of an Index (pp. 1–22)**: B-Tree doubly-linked leaf nodes.
+- **Chapter 2: The WHERE Clause & Compound Indexes (pp. 23–45)**: Leftmost prefix rule, column order mechanics.
+- **Chapter 3: Index-Only Scans (pp. 47–68)**: Eliminating disk heap table visits.
+
+### 3. *Database Design for Mere Mortals (4th Ed.)* — Michael J. Hernandez
+- **Chapter 7 & 8: Table Linking & Foreign Keys (pp. 180–240)**: Cascade deletion, orphan record prevention.
+
+### 4. *SQL and Relational Theory (3rd Ed.)* — C.J. Date
+- **Chapter 2 & 4: Sets, Predicates, and Relations (pp. 25–95)**: E.F. Codd relational foundations and avoiding NULL trap bugs.
+
+---
+
+# 8. Master Study Guide: Exact Book Chapters & Page Numbers
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ 📖 CANONICAL BOOK & CHAPTER CURRICULUM FOR JATAYAT 2.0.0                                                           │
+│ 📖 COMPLETE CANONICAL BOOK & CHAPTER CURRICULUM FOR JATAYAT 2.0.0                                                  │
 ├───────────────────────────────────┬─────────────────────────┬──────────────────────────┬───────────────────────────┤
 │ Concept Applied                   │ Book Title              │ Author & Edition         │ Exact Chapter & Pages     │
 ├───────────────────────────────────┼─────────────────────────┼──────────────────────────┼───────────────────────────┤
@@ -253,7 +278,10 @@ Classical Dijkstra runs an unconstrained graph traversal ($O(V \log V + E)$). On
 │ Proxy Pattern (Multi-Tier Cache)  │ Design Patterns (GoF)   │ Gamma et al. (1994)      │ Chapter 4 (pp. 207–217)   │
 │ Command Pattern (AI Tool Calling) │ Design Patterns (GoF)   │ Gamma et al. (1994)      │ Chapter 5 (pp. 233–242)   │
 │ Observer Pattern (Reactive State) │ Design Patterns (GoF)   │ Gamma et al. (1994)      │ Chapter 5 (pp. 293–303)   │
-│ B-Tree Database Indexing          │ DDIA                    │ Martin Kleppmann (2017)  │ Chapter 3 (pp. 79–86)     │
+│ Relational Design & Normalization │ Database System Concepts│ Silberschatz (7th, 2019) │ Chapter 7 (pp. 307–360)   │
+│ B+ Tree Mechanics & Query Engine  │ Database System Concepts│ Silberschatz (7th, 2019) │ Chapter 14 (pp. 649–700)  │
+│ Compound Index Leftmost Rule      │ SQL Performance Explain │ Markus Winand (2012)     │ Chapter 2 (pp. 23–45)     │
+│ B-Tree vs LSM-Tree Storage Engine │ DDIA                    │ Martin Kleppmann (2017)  │ Chapter 3 (pp. 79–86)     │
 │ Write-Ahead Logging (WAL)         │ DDIA                    │ Martin Kleppmann (2017)  │ Chapter 7 (pp. 227–233)   │
 │ Graph Adjacency List & Hash Maps  │ Introduction to Algo    │ CLRS 4th Ed. (2022)      │ Chapter 20 (pp. 589–596)  │
 │ Shortest Path & Hub Traversal     │ Algo Design Manual      │ Steven Skiena (2020)     │ Chapter 8 (pp. 245–262)   │
